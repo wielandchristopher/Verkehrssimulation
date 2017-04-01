@@ -1,11 +1,11 @@
-## Verkehrssimulation SST-SS2017
+## Verkehrssimulation SST-SS2017 ##
 
-#### Aufgabenstellung ####
+### Aufgabenstellung ###
 Ziel ist das entwerfen, dokumentieren und implementieren
 einer Verteilten komponentenbasierten Verkehrssiumulation mit VS2015 und C#.
 
 **Die Simulation soll folgende Punkte unterstützen:**
-* Mikroskopische Simulation der FAhrzeuge (PKW und LKW) und Ampelanlagen
+* Mikroskopische Simulation der Fahrzeuge (PKW und LKW) und Ampelanlagen
 * Zusammenhängendes Verkehrs-/Straßennetz
 * Geregelte und ungeregelte Kreuzungen
 * Verhalten der Verkehrsteilnehmer sollte weitgehend parametrisierbar sein (variabel/zufällig/individuell)
@@ -13,7 +13,7 @@ einer Verteilten komponentenbasierten Verkehrssiumulation mit VS2015 und C#.
 * Anzahl der über Einfahrtsstraßen in das System zu fahrenden Fahrzeuge regelbar
 * Grafische Darstellung und einfache Benutzerschnittstelle
 
-#### Group ####
+### Group ###
 * Christopher Wieland
 * Stephanie Kaschnitz
 * Andreas Lippmann
