@@ -1,0 +1,23 @@
+﻿{
+  "geregelte_kreuzungen": [
+    {
+      "xpos": 270,
+      "ypos": 250
+    },
+    {
+      "xpos": 320,
+      "ypos": 140
+    }
+  ],
+
+  "ungeregelte_kreuzungen": [
+    {
+
+    }
+  ],
+  "schilder": [
+    {
+
+    }
+  ]
+}
