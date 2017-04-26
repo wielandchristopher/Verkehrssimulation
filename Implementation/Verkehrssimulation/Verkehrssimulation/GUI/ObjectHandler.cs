@@ -12,25 +12,31 @@ namespace Verkehrssimulation.GUI
     {
 
         
-        List<Testobject> objlist;
+        List<Auto> objlist;
         Canvas canvas;
 
         public ObjectHandler(Canvas mycanvas)
         {
-            objlist = new List<Testobject>();
+            objlist = new List<Auto>();
             canvas = mycanvas;
         }
 
-        public bool addObject(Testobject obj)
+        public bool addObject(Auto obj)
         {
             objlist.Add(obj);
             canvas.Children.Add(obj.getShape());
             return true;
         }
 
+        public bool addStrasse(Strasse obj)
+        {
+            canvas.Children.Add(obj.getShape());
+            return true;
+        }
+
         public void UpdateAll() // just for testing
         {
-            foreach( Testobject obj in objlist){
+            foreach( Auto obj in objlist){
                 //obj.setColor(Colors.Green);
                 obj.update(5);
             }
@@ -38,7 +44,7 @@ namespace Verkehrssimulation.GUI
 
         public void UpdateID(int id) 
         {
-            foreach (Testobject obj in objlist)
+            foreach (Auto obj in objlist)
             {
                 if (obj.getID() == id)
                 {

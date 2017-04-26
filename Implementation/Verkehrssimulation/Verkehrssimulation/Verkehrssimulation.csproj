@@ -64,10 +64,11 @@
     </ApplicationDefinition>
     <Compile Include="Ampelsteuerung\Ampelhandler.cs" />
     <Compile Include="Ampelsteuerung\IF_Ampel.cs" />
+    <Compile Include="GUI\Strasse.cs" />
     <Compile Include="GUI\ObjectHandler.cs" />
     <Compile Include="GUI\ObjectInterface.cs" />
     <Compile Include="GUI\ObjHandlerInterface.cs" />
-    <Compile Include="GUI\Testobject.cs" />
+    <Compile Include="GUI\Auto.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentBuilder.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentHandler.cs" />
     <Compile Include="Verkehrsregeln\AllgemeineVerkehrsregeln.cs" />

@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace Verkehrssimulation.GUI
 {
-    class Testobject : ObjectInterface 
+    class Auto : ObjectInterface 
     {
         Shape shp;
         int posx, posy;
@@ -22,7 +22,7 @@ namespace Verkehrssimulation.GUI
         public Shape objshp { get { return shp; } set { shp = value; }}
 
 
-        public Testobject(double x,double y, int cardirection, int newid) 
+        public Auto(double x,double y, int cardirection, int newid) 
         //cardirection braucht die gui dann nicht! nur für test
         {
             shp = new Rectangle(); // shape kann alles sein Rect,Ellipse,Polygon,...

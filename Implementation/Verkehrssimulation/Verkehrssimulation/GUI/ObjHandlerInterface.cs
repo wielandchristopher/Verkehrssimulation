@@ -8,6 +8,6 @@ namespace Verkehrssimulation.GUI
 {
     interface ObjHandlerInterface
     {
-        bool addObject(Testobject obj); // testobj ersetzen durch generisches Object
+        bool addObject(Auto obj); // testobj ersetzen durch generisches Object
     }
 }
