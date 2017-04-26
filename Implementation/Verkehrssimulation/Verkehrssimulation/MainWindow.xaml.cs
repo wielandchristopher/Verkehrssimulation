@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using Verkehrssimulation.GUI;
 using Verkehrssimulation.Verkehrsnetz;
+using Verkehrssimulation.Verkehrsregeln;
 
 namespace Verkehrssimulation
 {
@@ -23,7 +24,6 @@ namespace Verkehrssimulation
     /// </summary>
     public partial class MainWindow : Window
     {
-
         private DispatcherTimer dispatchTimer;
         private ObjectHandler oh;
         public MainWindow()
