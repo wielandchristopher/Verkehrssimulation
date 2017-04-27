@@ -6,24 +6,6 @@ using System.Linq;
 
 namespace Ampelsteuerung
 {
-    [ServiceBehavior(Name = "SimpleServer", InstanceContextMode = InstanceContextMode.Single)]
-
-    class ServerSvc : IChatService
-    {
-        ServerSvc _serverCtrl = null;
-        private Ampelsteuerung _serverCtrl1;
-
-        public ServerSvc(Ampelsteuerung _serverCtrl1)
-        {
-            this._serverCtrl1 = _serverCtrl1;
-        }
-
-        public void getAmpelInformation(string ampelid, string ausfall)
-        {
-            Console.WriteLine("blöd");
-        }
-    }
-
     class Ampeln
     {
         public int getStatus()
@@ -57,13 +39,12 @@ namespace Ampelsteuerung
         bool defect = false;
     }
 
-    partial class Ampelsteuerung : IChatService
+    [ServiceBehavior(Name = "Ampelsteuerung", InstanceContextMode = InstanceContextMode.Single)]
+    class Ampelsteuerung : IChatService
     {
         ServiceHost host;
-        bool _serverRunning = false;
-        Ampelsteuerung _serverCtrl = null;
+        bool _serverRunning = false;        
         List<Ampeln> Trafficlights = new List<Ampeln>();
-
 
         private void StartServer()
         {
@@ -73,8 +54,7 @@ namespace Ampelsteuerung
 
                 if (_serverRunning)
                 {
-                    ServerSvc svc = new ServerSvc(_serverCtrl);
-                    host = new ServiceHost(svc, new Uri[] { new Uri("net.pipe://localhost") });
+                    host = new ServiceHost(new Ampelsteuerung(), new Uri[] { new Uri("net.pipe://localhost") });
                     host.AddServiceEndpoint(typeof(IChatService), new NetNamedPipeBinding(), "Ampelsteuerung");
                     host.Open();
 
@@ -96,7 +76,45 @@ namespace Ampelsteuerung
                 ex.ToString();
             }
         }
+        public void getAmpelInformation(string ampelid, string ausfall)
+        {
+            bool Ausgeschalten;
+            int AmpelID;
+            //Stelle Verbindung zu Client her
 
+            if (ampelid.Equals("0"))
+            {
+                for (int i = 0; i < Trafficlights.Count; i++)
+                {
+                    AmpelID = Trafficlights.ElementAt(i).getID();
+                    //und sende ihm appe AmpelIDs hintereinander
+                }
+            }
+            else
+            {
+                AmpelID = Trafficlights.ElementAt(Int32.Parse(ampelid)).getID();
+                //und sende ihm  den Status der spezifisch übergebenen ID
+            }
+            if (ausfall.Equals("check"))
+            {
+                if (ampelid.Equals("0"))
+                {
+                    for (int i = 0; i < Trafficlights.Count; i++)
+                    {
+                        Ausgeschalten = Trafficlights.ElementAt(i).getDefect();
+                        //und sende ihm appe AmpelStatus hintereinander
+                    }
+                }
+                else
+                {
+                    Ausgeschalten = Trafficlights.ElementAt(Int32.Parse(ampelid)).getDefect(); //true oder false
+                                                                                               //und sende ihm  den Status der spezifisch übergebenen ID
+                }
+                //sende ihm den Status des Ausfalls der Ampel mit 
+            }
+
+            Console.WriteLine(ampelid, ausfall);
+        }
         public List<Ampeln> factory(int anzahl)
         {
             for (int i = 0; i < anzahl; i++)
@@ -146,46 +164,6 @@ namespace Ampelsteuerung
         {
             Ampelsteuerung test = new Ampelsteuerung();
             test.StartServer();
-        }
-
-        public void getAmpelInformation(string ampelid, string ausfall)
-        {
-            bool Ausgeschalten;
-            int AmpelID;
-            //Stelle Verbindung zu Client her
-
-            if (ampelid.Equals("0"))
-            {
-                for (int i = 0; i < Trafficlights.Count; i++)
-                {
-                    AmpelID = Trafficlights.ElementAt(i).getID();
-                    //und sende ihm appe AmpelIDs hintereinander
-                }
-            }
-            else
-            {
-                AmpelID = Trafficlights.ElementAt(Int32.Parse(ampelid)).getID();
-                //und sende ihm  den Status der spezifisch übergebenen ID
-            }
-            if (ausfall.Equals("check"))
-            {
-                if (ampelid.Equals("0"))
-                {
-                    for (int i = 0; i < Trafficlights.Count; i++)
-                    {
-                        Ausgeschalten = Trafficlights.ElementAt(i).getDefect();
-                        //und sende ihm appe AmpelStatus hintereinander
-                    }
-                }
-                else
-                {
-                    Ausgeschalten = Trafficlights.ElementAt(Int32.Parse(ampelid)).getDefect(); //true oder false
-                                                                                               //und sende ihm  den Status der spezifisch übergebenen ID
-                }
-                //sende ihm den Status des Ausfalls der Ampel mit 
-            }
-
-            Console.WriteLine(ampelid, ausfall);
         }
     }
 }
