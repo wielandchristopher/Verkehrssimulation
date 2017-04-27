@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
+using System.IO.Pipes;
+using System.Diagnostics;
 
 namespace Ampelsteuerung
 {
@@ -42,7 +45,6 @@ namespace Ampelsteuerung
 
     class Ampelsteuerung
     {
-
         public List<Ampeln> factory(int anzahl)
         {
             List<Ampeln> Trafficlights = new List<Ampeln>();
@@ -82,7 +84,7 @@ namespace Ampelsteuerung
                     Thread.Sleep(3000); //3 Sekunden bei Gelb
                 }
                 else {
-                    Thread.Sleep(10000); //10 Sekunden bei Rot und Grün
+                    Thread.Sleep(10000); //10 Sekunden bei Rot und Grünund Ausfall
                 }
             }          
         }
@@ -95,4 +97,5 @@ namespace Ampelsteuerung
 
         }
     }
+
 }

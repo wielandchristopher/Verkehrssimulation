@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{599CEFAA-80DF-4EDE-9BFC-DCC4ABE7AA67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{0BDDD31E-6BA2-467F-A3B5-F9E9574BB6A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server Components", "Server Components", "{4634F710-F16E-444B-B3F4-F05975318BC3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{F8461DB0-7681-4AA5-8314-F945849FC2E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{E40AFDFA-711E-4A46-B720-8F53ADB0C81E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerLib", "Server Components\ServerLib\ServerLib.csproj", "{FAB487A4-27FF-4940-84B8-07523B6B4882}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcadServer", "Server Components\AcadServer\AcadServer.csproj", "{22209577-1715-4E98-A9D4-0BE7BAEAD97F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleServer", "Server Components\SimpleServer\SimpleServer.csproj", "{A0C6FA3C-3900-45D2-9FE3-20224AD1AA10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventorServer", "Server Components\InventorServer\InventorServer.csproj", "{3DC284CE-6572-439D-ADA3-E703FF8498B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{599CEFAA-80DF-4EDE-9BFC-DCC4ABE7AA67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{599CEFAA-80DF-4EDE-9BFC-DCC4ABE7AA67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{599CEFAA-80DF-4EDE-9BFC-DCC4ABE7AA67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{599CEFAA-80DF-4EDE-9BFC-DCC4ABE7AA67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BDDD31E-6BA2-467F-A3B5-F9E9574BB6A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BDDD31E-6BA2-467F-A3B5-F9E9574BB6A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BDDD31E-6BA2-467F-A3B5-F9E9574BB6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BDDD31E-6BA2-467F-A3B5-F9E9574BB6A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAB487A4-27FF-4940-84B8-07523B6B4882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAB487A4-27FF-4940-84B8-07523B6B4882}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAB487A4-27FF-4940-84B8-07523B6B4882}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAB487A4-27FF-4940-84B8-07523B6B4882}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22209577-1715-4E98-A9D4-0BE7BAEAD97F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22209577-1715-4E98-A9D4-0BE7BAEAD97F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22209577-1715-4E98-A9D4-0BE7BAEAD97F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22209577-1715-4E98-A9D4-0BE7BAEAD97F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C6FA3C-3900-45D2-9FE3-20224AD1AA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C6FA3C-3900-45D2-9FE3-20224AD1AA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0C6FA3C-3900-45D2-9FE3-20224AD1AA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0C6FA3C-3900-45D2-9FE3-20224AD1AA10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC284CE-6572-439D-ADA3-E703FF8498B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC284CE-6572-439D-ADA3-E703FF8498B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC284CE-6572-439D-ADA3-E703FF8498B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC284CE-6572-439D-ADA3-E703FF8498B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{599CEFAA-80DF-4EDE-9BFC-DCC4ABE7AA67} = {F8461DB0-7681-4AA5-8314-F945849FC2E6}
+		{0BDDD31E-6BA2-467F-A3B5-F9E9574BB6A7} = {E40AFDFA-711E-4A46-B720-8F53ADB0C81E}
+		{FAB487A4-27FF-4940-84B8-07523B6B4882} = {4634F710-F16E-444B-B3F4-F05975318BC3}
+		{22209577-1715-4E98-A9D4-0BE7BAEAD97F} = {4634F710-F16E-444B-B3F4-F05975318BC3}
+		{A0C6FA3C-3900-45D2-9FE3-20224AD1AA10} = {4634F710-F16E-444B-B3F4-F05975318BC3}
+		{3DC284CE-6572-439D-ADA3-E703FF8498B6} = {4634F710-F16E-444B-B3F4-F05975318BC3}
+	EndGlobalSection
+EndGlobal
