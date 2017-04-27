@@ -6,7 +6,23 @@ using System.Threading.Tasks;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
-    class EnvironmentHandler
+    class EnvironmentHandler : IF_Teilnehmer
     {
+
+        int output;
+
+        public EnvironmentHandler()
+        {
+            output = 2;
+        }
+        public int getNeededEnvironmentRules(int x, int y)
+        {
+            return output;
+        }
+
+        public void changeOutput(int val)
+        {
+            output = val;
+        }
     }
 }

@@ -71,10 +71,15 @@
     <Compile Include="GUI\Auto.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentBuilder.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentHandler.cs" />
+    <Compile Include="Verkehrsnetz\IF_Teilnehmer.cs" />
     <Compile Include="Verkehrsnetz\Streetelem.cs" />
     <Compile Include="Verkehrsregeln\AllgemeineVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\IVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\Schilder.cs" />
+    <Compile Include="Verkehrsteilnehmer\Car.cs" />
+    <Compile Include="Verkehrsteilnehmer\TrafficHandler.cs" />
+    <Compile Include="Verkehrsteilnehmer\TrafficObject.cs" />
+    <Compile Include="Verkehrsteilnehmer\Truck.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -117,9 +122,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Verkehrsteilnehmer\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Verkehrsnetz\StrTop.bmp" />
   </ItemGroup>

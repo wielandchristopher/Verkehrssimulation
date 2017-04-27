@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using Verkehrssimulation.GUI;
 using Verkehrssimulation.Verkehrsnetz;
 using Verkehrssimulation.Verkehrsregeln;
+using Verkehrssimulation.Verkehrsteilnehmer;
 
 namespace Verkehrssimulation
 {
@@ -35,7 +36,11 @@ namespace Verkehrssimulation
             dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas);
+            EnvironmentHandler envhandler = new EnvironmentHandler();
+            TrafficHandler traffichandler = new TrafficHandler(ref envhandler);
 
+            envhandler.changeOutput(27);
+            traffichandler.writeneededEnvrules();
             oh = new ObjectHandler(myCanvas);
             //oh.addStrasse(new Strasse(150, 150, 1));
 
