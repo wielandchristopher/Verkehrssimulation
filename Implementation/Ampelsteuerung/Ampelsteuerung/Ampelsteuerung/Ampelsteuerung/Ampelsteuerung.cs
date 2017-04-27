@@ -13,16 +13,31 @@ namespace Ampelsteuerung
         {
             return Status;
         }
+        public int getID()
+        {
+            return ID;
+        }
+        public bool setDefect(bool value)
+        {
+            return defect = value;
+        }
 
+        public bool getDefect()
+        {
+            return defect;
+        }
         public int setStatus(int value)
         {
             return Status = value;
         }
+        public int setID(int value)
+        {
+            return ID = value;
+        }
 
-        int Status;
+        int Status; // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
         int ID;
-        bool defect;
-
+        bool defect = false;
     }
 
     class Ampelsteuerung
@@ -32,20 +47,44 @@ namespace Ampelsteuerung
         {
             List<Ampeln> Trafficlights = new List<Ampeln>();
 
-
             for(int i = 0; i<anzahl; i++)
             {
                 Ampeln Ampel = new Ampeln();
+                Ampel.setID(i + 1);
                 Ampel.setStatus(2);
                 Trafficlights.Add(Ampel);
             }
 
-
             while (true)
             {
-                
-                Thread.Sleep(10000); //10 seconds
-            }
+                int Status = 0;
+                for (int i = 0; i < anzahl; i++)
+                {
+                    Trafficlights.ElementAt(i).getStatus();
+                    if (Trafficlights.ElementAt(i).getStatus() >= 2)
+                    {
+                        if(Trafficlights.ElementAt(i).getDefect() == false)
+                        {
+                            Status= Trafficlights.ElementAt(i).setStatus(0);
+                        }
+                        else
+                            Status = Trafficlights.ElementAt(i).setStatus(3);
+                    }
+                    else
+                    {
+                        Status = Trafficlights.ElementAt(i).setStatus(Trafficlights.ElementAt(i).getStatus() + 1);
+                    }
+                    Console.WriteLine("AmpelID: " + Trafficlights.ElementAt(i).getID());
+                    Console.WriteLine("AmpelStatus: " + Trafficlights.ElementAt(i).getStatus() + "\n");
+
+                }
+                if (Status == 1) {
+                    Thread.Sleep(3000); //3 Sekunden bei Gelb
+                }
+                else {
+                    Thread.Sleep(10000); //10 Sekunden bei Rot und Grün
+                }
+            }          
         }
 
         static void Main(string[] args)
