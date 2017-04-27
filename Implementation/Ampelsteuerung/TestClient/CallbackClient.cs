@@ -1,6 +1,5 @@
-﻿using SimpleServer;
+﻿using Ampelsteuerung;
 using System;
-
 
 namespace Client
 {

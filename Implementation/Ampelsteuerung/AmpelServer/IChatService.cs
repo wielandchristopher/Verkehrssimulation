@@ -1,6 +1,6 @@
 ﻿using System.ServiceModel;
 
-namespace SimpleServer
+namespace Ampelsteuerung
 {
     [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(IChatCallback))]
 

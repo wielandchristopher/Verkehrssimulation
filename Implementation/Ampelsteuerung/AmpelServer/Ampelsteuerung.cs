@@ -3,18 +3,17 @@ using System.ServiceModel;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
-using SimpleServer;
 
-namespace SimpleServer
+namespace Ampelsteuerung
 {
     [ServiceBehavior(Name = "SimpleServer", InstanceContextMode = InstanceContextMode.Single)]
 
     class ServerSvc : IChatService
     {
         ServerSvc _serverCtrl = null;
-        private Program _serverCtrl1;
+        private Ampelsteuerung _serverCtrl1;
 
-        public ServerSvc(Program _serverCtrl1)
+        public ServerSvc(Ampelsteuerung _serverCtrl1)
         {
             this._serverCtrl1 = _serverCtrl1;
         }
@@ -58,11 +57,11 @@ namespace SimpleServer
         bool defect = false;
     }
 
-    partial class Program : IChatService
+    partial class Ampelsteuerung : IChatService
     {
         ServiceHost host;
         bool _serverRunning = false;
-        Program _serverCtrl = null;
+        Ampelsteuerung _serverCtrl = null;
         List<Ampeln> Trafficlights = new List<Ampeln>();
 
 
@@ -81,7 +80,7 @@ namespace SimpleServer
 
                     Console.WriteLine("Server ist gestartet!!");
 
-                    Program Ampel = new Program();
+                    Ampelsteuerung Ampel = new Ampelsteuerung();
                     // 5 Ampeln werden angelegt!
                     Ampel.factory(5);
 
@@ -145,7 +144,7 @@ namespace SimpleServer
         [STAThread]
         static void Main()
         {
-            Program test = new Program();
+            Ampelsteuerung test = new Ampelsteuerung();
             test.StartServer();
         }
 

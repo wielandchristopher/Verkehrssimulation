@@ -71,9 +71,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Server Components\SimpleServer\SimpleServer.csproj">
+    <ProjectReference Include="..\AmpelServer\Ampelsteuerung.csproj">
       <Project>{A0C6FA3C-3900-45D2-9FE3-20224AD1AA10}</Project>
-      <Name>SimpleServer</Name>
+      <Name>Ampelsteuerung</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
