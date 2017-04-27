@@ -71,6 +71,7 @@
     <Compile Include="GUI\Auto.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentBuilder.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentHandler.cs" />
+    <Compile Include="Verkehrsnetz\Streetelem.cs" />
     <Compile Include="Verkehrsregeln\AllgemeineVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\IVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\Schilder.cs" />
@@ -118,6 +119,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Verkehrsteilnehmer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\StrTop.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\StrTop2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\4kreuzung.bmp" />
+    <Resource Include="Verkehrsnetz\StrTop2 - Kopie %283%29.bmp" />
+    <Resource Include="Verkehrsnetz\StrTop2 - Kopie %284%29.bmp" />
+    <Resource Include="Verkehrsnetz\StrTop2 - Kopie.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -32,21 +32,17 @@ namespace Verkehrssimulation
 
             dispatchTimer = new DispatcherTimer();
             dispatchTimer.Tick += dispatchTimer_Tick;
-            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 150);
+            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 
+            EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas);
 
             oh = new ObjectHandler(myCanvas);
-            oh.addStrasse(new Strasse(150, 150, 1));
+            //oh.addStrasse(new Strasse(150, 150, 1));
 
-            //  public Testobject(double x,double y, int cardirection, int newid)  
-            oh.addObject(new Auto(250, 250,1,25));
-            oh.addObject(new Auto(270, 180,2,26));
-            oh.addObject(new Auto(150, 300,3,27));
-            oh.addObject(new Auto(100, 340, 4, 28));
 
-            EnvironmentBuilder builder = new EnvironmentBuilder();
 
-            
+
+
             dispatchTimer.Start();
 
         }
@@ -54,9 +50,8 @@ namespace Verkehrssimulation
         private void dispatchTimer_Tick(object sender, EventArgs e)
         {
             oh.UpdateAll(); //update aller elemente (um 5 verschieben je nach direction)
-            oh.UpdateID(27); // update des Testobjectes mit der id 28 für vergleich
-            oh.UpdateID(27); // update des Testobjectes mit der id 28 für vergleich
-            oh.UpdateID(27); // update des Testobjectes mit der id 28 für vergleich
         }
+
+
     }
 }
