@@ -38,9 +38,7 @@ namespace Verkehrssimulation
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas);
             EnvironmentHandler envhandler = new EnvironmentHandler();
             TrafficHandler traffichandler = new TrafficHandler(ref envhandler);
-
-            envhandler.changeOutput(27);
-            traffichandler.writeneededEnvrules();
+            
             oh = new ObjectHandler(myCanvas);
             //oh.addStrasse(new Strasse(150, 150, 1));
 

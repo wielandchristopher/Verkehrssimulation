@@ -49,16 +49,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                     addObject(i, y);
                 }
             }
- 
 
-            //Console.WriteLine("Geregelte Kreuzungen:");
-            //Console.WriteLine(((JObject)(obj.GetValue("geregelte_kreuzungen")[0])).GetValue("xpos"));
-
-            //Console.WriteLine("Ungeregelte Kreuzungen:");
-            //Console.WriteLine(obj.GetValue("ungeregelte_kreuzungen"));
-
-            //Console.WriteLine("Schilder Kreuzungen:");
-            //Console.WriteLine(obj.GetValue("schilder"));
 
         }
 
@@ -81,7 +72,6 @@ namespace Verkehrssimulation.Verkehrsnetz
             imgs.Add(simpleImage);
 
             canvas.Children.Add(simpleImage);
-            Console.WriteLine(x);
             Canvas.SetTop(simpleImage, x);
             Canvas.SetLeft(simpleImage, y);
             // Set the image source.

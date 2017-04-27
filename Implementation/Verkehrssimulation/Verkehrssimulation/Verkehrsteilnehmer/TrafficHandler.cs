@@ -9,14 +9,13 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 {
     class TrafficHandler
     {
-        private List<TrafficObject> trafficobjs;
-        private EnvironmentHandler eb;
+        private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
+        private EnvironmentHandler eb; // ref auf Environmenthandler zum abfragen der rules
 
         public TrafficHandler(ref EnvironmentHandler _eb)
         {
             trafficobjs = new List<TrafficObject>();
             eb = _eb;
-            writeneededEnvrules();
         }
 
         public void updateAll()
@@ -27,9 +26,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
         }
 
-        public void writeneededEnvrules()
+        public void getEnvRules(int x, int y)
         {
-            Console.WriteLine(eb.getNeededEnvironmentRules(4, 5));
+            Console.WriteLine(eb.getNeededEnvironmentRules(x, y));
         }
 
         public void calcNeighbours()
