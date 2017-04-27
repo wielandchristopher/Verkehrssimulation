@@ -5,6 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Verkehrssimulation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="730" Width="710">
-    <Canvas x:Name="myCanvas" Margin="0" Width="800" Height="800"/>
+        Title="Verkehrssimulation" Height="730" Width="710" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="Verkehrsnetz/FieldBitmaps/Icon.bmp">
+    <Canvas x:Name="myCanvas" Margin="0" Width="800" Height="800" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 </Window>

@@ -6,20 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
-    class EnvironmentBuilder
+    class EnvironmentBuilder 
     {
         JObject obj; // für json -> Projekt-> nu-getpakete verwalten -> json linq irgendwas
         private Canvas canvas;
-        List<Image> imgs;
+        List<EnvElement> elem;
         public EnvironmentBuilder(Canvas mycanvas)
-        {
+        {            
             canvas = mycanvas;
             Console.WriteLine("Buidler loaded");
-             imgs = new List<Image>();
+            elem = new List<EnvElement>();
             //LoadJson();
             LoadEnvironment();
         }
@@ -37,12 +38,12 @@ namespace Verkehrssimulation.Verkehrsnetz
         public void LoadEnvironment()
         {
             //JArray arr = (JArray)obj.GetValue("geregelte_kreuzungen");
-            //foreach(JObject obj in arr)
+            //foreach (JObject obj in arr)
             //{
             //    addObject(obj.GetValue("xpos").Value<double>(), obj.GetValue("ypos").Value<double>());
             //}
 
-            for(int i = 0; i<700; i+=100)
+            for (int i = 0; i<700; i+=100)
             {
                 for(int y = 0; y<700; y+=100)
                 {
@@ -53,42 +54,16 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
-        public void addObject(double x, double y)
+        public void addObject(int x, int y)
         {
-            // Create the image element.
-            Image simpleImage = new Image();
-            simpleImage.Width = 100;
-            simpleImage.Height = 100;
-            simpleImage.MouseEnter += enter;
-            simpleImage.MouseLeave += leave;
 
-            // Create source.
-            BitmapImage bi = new BitmapImage();
-            // BitmapImage.UriSource must be in a BeginInit/EndInit block.
-            bi.BeginInit();
-            bi.UriSource = new Uri(@"/Verkehrsnetz/4kreuzung.bmp", UriKind.RelativeOrAbsolute);
-            bi.EndInit();
+            //StreetType { Street = 1, ThreeKreuzung = 2, FourKreuzung = 3, Grass = 4 };
+            EnvElement e = new Streetelem(x,y,1,3);
+            elem.Add(e);
 
-            imgs.Add(simpleImage);
-
-            canvas.Children.Add(simpleImage);
-            Canvas.SetTop(simpleImage, x);
-            Canvas.SetLeft(simpleImage, y);
-            // Set the image source.
-            simpleImage.Source = bi;
+            canvas.Children.Add(e.getImage());
+            Canvas.SetTop(e.getImage(), x);
+            Canvas.SetLeft(e.getImage(), y);        
         }
-
-        public void enter(object sender, EventArgs e)
-        {
-            ((Image)sender).Opacity = 0.9;
-        }
-
-        public void leave(object sender, EventArgs e)
-        {
-            ((Image)sender).Opacity = 1;
-        }
-
-
-
     }
 }

@@ -69,6 +69,7 @@
     <Compile Include="GUI\ObjectInterface.cs" />
     <Compile Include="GUI\ObjHandlerInterface.cs" />
     <Compile Include="GUI\Auto.cs" />
+    <Compile Include="Verkehrsnetz\EnvElement.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentBuilder.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentHandler.cs" />
     <Compile Include="Verkehrsnetz\IF_Teilnehmer.cs" />
@@ -122,18 +123,22 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Verkehrsnetz\StrTop.bmp" />
+    <Resource Include="Verkehrsnetz\FieldBitmaps\StrTop.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Verkehrsnetz\StrTop2.bmp" />
+    <Resource Include="Verkehrsnetz\FieldBitmaps\4kreuzung.bmp" />
+    <Resource Include="Verkehrsnetz\FieldBitmaps\StrRightshort.bmp" />
+    <Resource Include="Verkehrsnetz\FieldBitmaps\grass.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Verkehrsnetz\4kreuzung.bmp" />
-    <Resource Include="Verkehrsnetz\StrTop2 - Kopie %283%29.bmp" />
-    <Resource Include="Verkehrsnetz\StrTop2 - Kopie %284%29.bmp" />
-    <Resource Include="Verkehrsnetz\StrTop2 - Kopie.bmp" />
+    <Resource Include="Verkehrsnetz\FieldBitmaps\3kreuzung.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\street.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\Icon.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
