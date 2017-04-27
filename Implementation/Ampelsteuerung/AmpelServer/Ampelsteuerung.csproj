@@ -44,8 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IChatCallback.cs" />
-    <Compile Include="IChatService.cs" />
+    <Compile Include="IAmpelCallback.cs" />
+    <Compile Include="IAmpelService.cs" />
     <Compile Include="Ampelsteuerung.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

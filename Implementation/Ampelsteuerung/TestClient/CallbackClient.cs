@@ -1,20 +1,32 @@
 ﻿using Ampelsteuerung;
 using System;
+using Client;
 
-namespace Client
+namespace CallbackCli
 {
-    class CallbackClient: IChatCallback
+    class CallbackClient: IAmpelCallback
     {
-        TestClient _client;
 
-        public CallbackClient(TestClient client)
+        CallbackClient _client;
+        private TestClient _client1;
+
+        public CallbackClient(TestClient _client1)
+        {
+            this._client1 = _client1;
+        }
+
+        public CallbackClient(CallbackClient client)
         {
             _client = client;
         }
 
+        public CallbackClient()
+        {
+        }
+
         public void OnNewMessage(string msg)
         {
-            Console.WriteLine(msg + "OnNewMessage");
+            Console.WriteLine(msg);
         }
     }
 }

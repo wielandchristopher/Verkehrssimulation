@@ -2,7 +2,7 @@
 
 namespace Ampelsteuerung
 {
-    public interface IChatCallback
+    public interface IAmpelCallback
     {
         [OperationContract(IsOneWay = true)]
         void OnNewMessage(string msg);

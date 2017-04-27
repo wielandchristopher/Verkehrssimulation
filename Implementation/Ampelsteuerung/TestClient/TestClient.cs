@@ -1,4 +1,5 @@
 ﻿using Ampelsteuerung;
+using CallbackCli;
 using System;
 using System.ServiceModel;
 
@@ -6,7 +7,7 @@ namespace Client
 {
     public partial class TestClient
     {
-        IChatService _chatSrv;
+        IAmpelService _chatSrv;
         CallbackClient _callback;
         TestClient _client;
 
@@ -15,7 +16,7 @@ namespace Client
             try
             {
                 _callback = new CallbackClient(_client);
-                DuplexChannelFactory<IChatService> factory = new DuplexChannelFactory<IChatService>(_callback, new NetNamedPipeBinding(), new EndpointAddress("net.pipe://localhost/Ampelsteuerung"));
+                DuplexChannelFactory<IAmpelService> factory = new DuplexChannelFactory<IAmpelService>(_callback, new NetNamedPipeBinding(), new EndpointAddress("net.pipe://localhost/Ampelsteuerung"));
                 _chatSrv = factory.CreateChannel();               
             }
             catch (Exception ex)
@@ -32,9 +33,18 @@ namespace Client
             test.StartVerkehrssimulation();
             //Sende in dieser Reihenfolge für informationen:
             //ID Der Ampel: 0 steht für alle ampeln, 1 - n für eine Spezifische. 
-            //getAmpelInformation(ID der Ampel (in String), Ausfall der Ampel (in String))
-            test._chatSrv.getAmpelInformation("0", "false");
-            //Noch funktion zum ersten erstellen der Ampeln
+            //getAmpelInformation(ID der Ampel (in int), Ausfall der Ampel (in String))
+            try
+            {
+                test._chatSrv.getAmpelInformation(1, "check");
+
+            }
+            catch(NullReferenceException nre)
+            {
+                Console.WriteLine("Der Server ist nicht gestartet!");
+                nre.ToString();
+            }
+
         }
     }
 }
