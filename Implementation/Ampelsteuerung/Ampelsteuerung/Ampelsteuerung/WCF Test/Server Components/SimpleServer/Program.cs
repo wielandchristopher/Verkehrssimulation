@@ -1,44 +1,193 @@
-﻿// (C) Copyright 2013 by Autodesk, Inc. 
-//
-// Written by Philippe Leefsma, December 2013.
-//
-// Permission to use, copy, modify, and distribute this software in
-// object code form for any purpose and without fee is hereby granted, 
-// provided that the above copyright notice appears in all copies and 
-// that both that copyright notice and the limited warranty and
-// restricted rights notice below appear in all supporting 
-// documentation.
-//
-// AUTODESK PROVIDES THIS PROGRAM "AS IS" AND WITH ALL FAULTS. 
-// AUTODESK SPECIFICALLY DISCLAIMS ANY IMPLIED WARRANTY OF
-// MERCHANTABILITY OR FITNESS FOR A PARTICULAR USE.  AUTODESK, INC. 
-// DOES NOT WARRANT THAT THE OPERATION OF THE PROGRAM WILL BE
-// UNINTERRUPTED OR ERROR FREE.
-//
-// Use, duplication, or disclosure by the U.S. Government is subject to 
-// restrictions set forth in FAR 52.227-19 (Commercial Computer
-// Software - Restricted Rights) and DFAR 252.227-7013(c)(1)(ii)
-// (Rights in Technical Data and Computer Software), as applicable.
-
-using System;
+﻿using System;
+using System.ServiceModel;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using SimpleServer;
 
 namespace SimpleServer
 {
-    static class Program
+    [ServiceBehavior(Name = "SimpleServer", InstanceContextMode = InstanceContextMode.Single)]
+
+    class ServerSvc : IChatService
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        ServerSvc _serverCtrl = null;
+        private Program _serverCtrl1;
+
+        public ServerSvc(Program _serverCtrl1)
+        {
+            this._serverCtrl1 = _serverCtrl1;
+        }
+
+        public void getAmpelInformation(string ampelid, string ausfall)
+        {
+            Console.WriteLine("blöd");
+        }
+    }
+
+    class Ampeln
+    {
+        public int getStatus()
+        {
+            return Status;
+        }
+        public int getID()
+        {
+            return ID;
+        }
+        public bool setDefect(bool value)
+        {
+            return defect = value;
+        }
+
+        public bool getDefect()
+        {
+            return defect;
+        }
+        public int setStatus(int value)
+        {
+            return Status = value;
+        }
+        public int setID(int value)
+        {
+            return ID = value;
+        }
+
+        int Status; // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
+        int ID;
+        bool defect = false;
+    }
+
+    partial class Program : IChatService
+    {
+        ServiceHost host;
+        bool _serverRunning = false;
+        Program _serverCtrl = null;
+        List<Ampeln> Trafficlights = new List<Ampeln>();
+
+
+        private void StartServer()
+        {
+            try
+            {
+                _serverRunning = !_serverRunning;
+
+                if (_serverRunning)
+                {
+                    ServerSvc svc = new ServerSvc(_serverCtrl);
+                    host = new ServiceHost(svc, new Uri[] { new Uri("net.pipe://localhost") });
+                    host.AddServiceEndpoint(typeof(IChatService), new NetNamedPipeBinding(), "Ampelsteuerung");
+                    host.Open();
+
+                    Console.WriteLine("Server ist gestartet!!");
+
+                    Program Ampel = new Program();
+                    // 5 Ampeln werden angelegt!
+                    Ampel.factory(5);
+
+                }
+                else
+                {
+                    host.Close();
+                    host = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+        }
+
+        public List<Ampeln> factory(int anzahl)
+        {
+            for (int i = 0; i < anzahl; i++)
+            {
+                Ampeln Ampel = new Ampeln();
+                Ampel.setID(i + 1);
+                Ampel.setStatus(2);
+                Trafficlights.Add(Ampel);
+            }
+
+            while (true)
+            {
+                int Status = 0;
+                for (int i = 0; i < anzahl; i++)
+                {
+                    Trafficlights.ElementAt(i).getStatus();
+                    if (Trafficlights.ElementAt(i).getStatus() >= 2)
+                    {
+                        if (Trafficlights.ElementAt(i).getDefect() == false)
+                        {
+                            Status = Trafficlights.ElementAt(i).setStatus(0);
+                        }
+                        else
+                            Status = Trafficlights.ElementAt(i).setStatus(3);
+                    }
+                    else
+                    {
+                        Status = Trafficlights.ElementAt(i).setStatus(Trafficlights.ElementAt(i).getStatus() + 1);
+                    }
+                    Console.WriteLine("AmpelID: " + Trafficlights.ElementAt(i).getID());
+                    Console.WriteLine("AmpelStatus: " + Trafficlights.ElementAt(i).getStatus() + "\n");
+
+                }
+                if (Status == 1)
+                {
+                    Thread.Sleep(3000); //3 Sekunden bei Gelb
+                }
+                else
+                {
+                    Thread.Sleep(10000); //10 Sekunden bei Rot und Grünund Ausfall
+                }
+            }
+        }
+
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SimpleServerForm());
+            Program test = new Program();
+            test.StartServer();
+        }
+
+        public void getAmpelInformation(string ampelid, string ausfall)
+        {
+            bool Ausgeschalten;
+            int AmpelID;
+            //Stelle Verbindung zu Client her
+
+            if (ampelid.Equals("0"))
+            {
+                for (int i = 0; i < Trafficlights.Count; i++)
+                {
+                    AmpelID = Trafficlights.ElementAt(i).getID();
+                    //und sende ihm appe AmpelIDs hintereinander
+                }
+            }
+            else
+            {
+                AmpelID = Trafficlights.ElementAt(Int32.Parse(ampelid)).getID();
+                //und sende ihm  den Status der spezifisch übergebenen ID
+            }
+            if (ausfall.Equals("check"))
+            {
+                if (ampelid.Equals("0"))
+                {
+                    for (int i = 0; i < Trafficlights.Count; i++)
+                    {
+                        Ausgeschalten = Trafficlights.ElementAt(i).getDefect();
+                        //und sende ihm appe AmpelStatus hintereinander
+                    }
+                }
+                else
+                {
+                    Ausgeschalten = Trafficlights.ElementAt(Int32.Parse(ampelid)).getDefect(); //true oder false
+                                                                                               //und sende ihm  den Status der spezifisch übergebenen ID
+                }
+                //sende ihm den Status des Ausfalls der Ampel mit 
+            }
+
+            Console.WriteLine(ampelid, ausfall);
         }
     }
 }
+
