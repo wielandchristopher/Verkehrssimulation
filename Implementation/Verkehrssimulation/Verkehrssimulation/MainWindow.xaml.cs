@@ -27,6 +27,7 @@ namespace Verkehrssimulation
     {
         private DispatcherTimer dispatchTimer;
         private ObjectHandler oh;
+        private AmpelHandler ap;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,11 +41,43 @@ namespace Verkehrssimulation
             TrafficHandler traffichandler = new TrafficHandler(ref envhandler);
             
             oh = new ObjectHandler(myCanvas);
-            //oh.addStrasse(new Strasse(150, 150, 1));
+            ap = new AmpelHandler(myCanvas);
 
+            // Ampel Kreuzung unten
+            for (int i = 60; i < 700; i += 100)
+            {
+                for (int y = 60; y < 700; y += 100)
+                {
+                    ap.addAmpel(new Ampel(i, y, 1));
+                }
+            }
 
+            // Ampel Kreuzung rechts
+            for (int i = 30; i < 700; i += 100)
+            {
+                for (int y = 60; y < 700; y += 100)
+                {
+                    ap.addAmpel(new Ampel(i, y, 2));
+                }
+            }
 
-
+            // Ampel Kreuzung oben
+            for (int i = 18; i < 700; i += 100)
+            {
+                for (int y = 30; y < 700; y += 100)
+                {
+                    ap.addAmpel(new Ampel(i, y, 3));
+                }
+            }
+            
+            // Ampel Kreuzung links
+            for (int i = 60; i < 700; i += 100)
+            {
+                for (int y = 18; y < 700; y += 100)
+                {
+                    ap.addAmpel(new Ampel(i, y, 4));
+                }
+            }
 
             dispatchTimer.Start();
 

@@ -33,12 +33,6 @@ namespace Verkehrssimulation.GUI
             return true;
         }
 
-        public bool addStrasse(Strasse obj)
-        {
-            canvas.Children.Add(obj.getShape());
-            return true;
-        }
-
         public void UpdateAll() // just for testing
         {
             foreach( Auto obj in objlist){

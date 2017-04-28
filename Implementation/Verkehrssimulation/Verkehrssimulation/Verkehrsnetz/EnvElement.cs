@@ -10,7 +10,7 @@ namespace Verkehrssimulation.Verkehrsnetz
 {
     abstract class EnvElement
     {
-        public enum StreetType { Street = 1, ThreeKreuzung = 2, FourKreuzung = 3, Grass = 4 };
+        public enum StreetType { Street = 1, ThreeKreuzung = 2, FourKreuzung = 3, Grass = 4, Green = 5 };
         protected Image img;
         protected int x,y,dir;
         protected StreetType stype;

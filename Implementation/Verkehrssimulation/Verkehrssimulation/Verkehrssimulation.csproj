@@ -64,7 +64,9 @@
     </ApplicationDefinition>
     <Compile Include="Ampelsteuerung\Ampelhandler.cs" />
     <Compile Include="Ampelsteuerung\IF_Ampel.cs" />
-    <Compile Include="GUI\Strasse.cs" />
+    <Compile Include="GUI\Ampel.cs" />
+    <Compile Include="GUI\AmpelHandler.cs" />
+    <Compile Include="GUI\AmpelInterface.cs" />
     <Compile Include="GUI\ObjectHandler.cs" />
     <Compile Include="GUI\ObjectInterface.cs" />
     <Compile Include="GUI\ObjHandlerInterface.cs" />
@@ -139,6 +141,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Verkehrsnetz\FieldBitmaps\Icon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\green.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

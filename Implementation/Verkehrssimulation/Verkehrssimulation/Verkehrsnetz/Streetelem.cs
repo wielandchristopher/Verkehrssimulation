@@ -53,6 +53,9 @@ namespace Verkehrssimulation.Verkehrsnetz
                 case StreetType.ThreeKreuzung:
                     bi.UriSource = new Uri(@"/Verkehrsnetz/FieldBitmaps/3kreuzung.bmp", UriKind.RelativeOrAbsolute);
                     break;
+                case StreetType.Green:
+                    bi.UriSource = new Uri(@"/Verkehrsnetz/FieldBitmaps/green.bmp", UriKind.RelativeOrAbsolute);
+                    break;
                 default:
                     bi.UriSource = new Uri(@"/Verkehrsnetz/FieldBitmaps/grass.bmp", UriKind.RelativeOrAbsolute);
                     break;      
