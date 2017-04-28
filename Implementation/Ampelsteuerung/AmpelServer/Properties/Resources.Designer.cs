@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SimpleServer.Properties {
+namespace Ampelsteuerung.Properties {
     using System;
     
     
