@@ -65,7 +65,7 @@ namespace Ampelsteuerung
                     Ampelsteuerung Ampel = new Ampelsteuerung();
 
                     // 5 Ampeln werden angelegt!
-                    Trafficlights = Ampel.factory(5);
+                    Trafficlights = Ampel.factory(Int32.Parse(ConfigurationManager.AppSettings["Ampelanzahl"]));
 
                     while (true)
                     {
