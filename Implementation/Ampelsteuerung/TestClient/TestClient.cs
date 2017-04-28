@@ -33,6 +33,7 @@ namespace Client
 
             try
             {
+                test._chatSrv.setAmpelAnzahl(5);
                 test._chatSrv.getAmpelStatus (0);
                 //test._chatSrv.setAmpelAusfall(2);
                 //test._chatSrv.setAmpelAusfall(1);
@@ -51,7 +52,6 @@ namespace Client
                 Console.WriteLine("Der Server ist nicht gestartet!");
                 enfe.ToString();
             }
-
         }
     }
 }

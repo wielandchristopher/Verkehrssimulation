@@ -7,6 +7,8 @@ namespace Ampelsteuerung
     public interface IAmpelService
     {
         [OperationContract]
+        void setAmpelAnzahl(int anzahl);
+        [OperationContract]
         void getAmpelStatus(int ampelid);
 
         [OperationContract]
