@@ -13,9 +13,10 @@ namespace Verkehrssimulation.GUI
     {
         int id;
         Shape shp;
-        Shape greenCircle;
         Shape redCircle;
-        public bool green, red;
+        Shape yellowCircle;
+        Shape greenCircle;
+        public bool green, yellow, red;
         int posx, posy;
         int dir; // 1 = vertical, 2 = horizontal, 3 = horizontal swapped, 3 = vertical swapped
 
@@ -25,6 +26,7 @@ namespace Verkehrssimulation.GUI
         public int objdir { get { return dir; } set { dir = value; } }
         public Shape objshp { get { return shp; } set { shp = value; } }
         public Shape greenLight { get { return greenCircle; } set { greenCircle = value; } }
+        public Shape yellowLight { get { return yellowCircle; } set { yellowCircle = value; } }
         public Shape redLight { get { return redCircle; } set { redCircle = value; } }
 
         public Ampel(double x, double y, int dir, int testId)
@@ -36,8 +38,15 @@ namespace Verkehrssimulation.GUI
             greenCircle = new Ellipse();
             greenCircle.Width = 8;
             greenCircle.Height = 8;
-            greenCircle.Fill = new SolidColorBrush(Colors.Green);
-            green = true;
+            greenCircle.Fill = new SolidColorBrush(Colors.White);
+            green = false;
+
+            // grün
+            yellowCircle = new Ellipse();
+            yellowCircle.Width = 8;
+            yellowCircle.Height = 8;
+            yellowCircle.Fill = new SolidColorBrush(Colors.Yellow);
+            yellow = true;
 
             // rot
             redCircle = new Ellipse();
@@ -54,25 +63,31 @@ namespace Verkehrssimulation.GUI
 
             if (dir == 1)
             {
-                Canvas.SetTop(greenCircle, x + 11);
+                Canvas.SetTop(greenCircle, x + 22);
                 Canvas.SetLeft(greenCircle, y + 1);
+
+                Canvas.SetTop(yellowCircle, x + 11);
+                Canvas.SetLeft(yellowCircle, y + 1);
 
                 Canvas.SetTop(redCircle, x + 1);
                 Canvas.SetLeft(redCircle, y + 1);
 
                 shp.Width = 10;
-                shp.Height = 22;
+                shp.Height = 33;
             }
 
             if (dir == 2)
             {
                 Canvas.SetTop(greenCircle, x + 1);
-                Canvas.SetLeft(greenCircle, y + 11);
+                Canvas.SetLeft(greenCircle, y + 22);
+
+                Canvas.SetTop(yellowCircle, x + 1);
+                Canvas.SetLeft(yellowCircle, y + 11);
 
                 Canvas.SetTop(redCircle, x + 1);
                 Canvas.SetLeft(redCircle, y + 1);
 
-                shp.Width = 22;
+                shp.Width = 33;
                 shp.Height = 10;
             }
 
@@ -82,11 +97,14 @@ namespace Verkehrssimulation.GUI
                 Canvas.SetTop(greenCircle, x + 1);
                 Canvas.SetLeft(greenCircle, y + 1);
 
-                Canvas.SetTop(redCircle, x + 11);
+                Canvas.SetTop(yellowCircle, x + 11);
+                Canvas.SetLeft(yellowCircle, y + 1);
+
+                Canvas.SetTop(redCircle, x + 22);
                 Canvas.SetLeft(redCircle, y + 1);
 
                 shp.Width = 10;
-                shp.Height = 22;
+                shp.Height = 33;
             }
 
             if (dir == 4)
@@ -94,10 +112,13 @@ namespace Verkehrssimulation.GUI
                 Canvas.SetTop(greenCircle, x + 1);
                 Canvas.SetLeft(greenCircle, y + 1);
 
-                Canvas.SetTop(redCircle, x + 1);
-                Canvas.SetLeft(redCircle, y + 11);
+                Canvas.SetTop(yellowCircle, x + 1);
+                Canvas.SetLeft(yellowCircle, y + 11);
 
-                shp.Width = 22;
+                Canvas.SetTop(redCircle, x + 1);
+                Canvas.SetLeft(redCircle, y + 22);
+
+                shp.Width = 33;
                 shp.Height = 10;
             }
         }
@@ -112,19 +133,24 @@ namespace Verkehrssimulation.GUI
             return this.greenCircle;
         }
 
+        public Shape getCircleYellow()
+        {
+            return this.yellowCircle;
+        }
+
         public Shape getCircleRed()
         {
             return this.redCircle;
         }
 
-        public void setRed()
+        public void setYellow()
         {
-            redCircle.Fill = new SolidColorBrush(Colors.Red);
+            yellowCircle.Fill = new SolidColorBrush(Colors.Yellow);
         }
 
-        public void unsetRed()
+        public void unsetYellow()
         {
-            redCircle.Fill = new SolidColorBrush(Colors.White);
+            yellowCircle.Fill = new SolidColorBrush(Colors.White);
         }
     }
 }

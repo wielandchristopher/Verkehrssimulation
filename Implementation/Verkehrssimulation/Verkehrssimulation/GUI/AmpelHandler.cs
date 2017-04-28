@@ -43,7 +43,7 @@ namespace Verkehrssimulation.GUI
             }
 
             // Ampel Kreuzung oben
-            for (int i = 18; i < 700; i += 100)
+            for (int i = 7; i < 700; i += 100)
             {
                 for (int y = 30; y < 700; y += 100)
                 {
@@ -54,7 +54,7 @@ namespace Verkehrssimulation.GUI
             // Ampel Kreuzung links
             for (int i = 60; i < 700; i += 100)
             {
-                for (int y = 18; y < 700; y += 100)
+                for (int y = 7; y < 700; y += 100)
                 {
                     Ampel a = new Ampel(i, y, 4, j+1);
                     addAmpel(a);
@@ -67,23 +67,26 @@ namespace Verkehrssimulation.GUI
             ampellist.Add(ampel);
             canvas.Children.Add(ampel.getShape());
             canvas.Children.Add(ampel.getCircleGreen());
+            canvas.Children.Add(ampel.getCircleYellow());
             canvas.Children.Add(ampel.getCircleRed());
             return true;
         }
 
-        public void blinky(int id)
+        public void blinky()
         {
-            Ampel a = ampellist[id];
+            foreach (Ampel a in ampellist)
+            {
+                if (a.yellow == false)
+                {
+                    a.setYellow();
+                    a.yellow = true;
+                }
+                else
+                {
+                    a.unsetYellow();
+                    a.yellow = false;
+                }
 
-            if(a.red == false)
-            {
-                a.setRed();
-                a.red = true;
-            }
-            else
-            {
-                a.unsetRed();
-                a.red = false;
             }
         }
     }
