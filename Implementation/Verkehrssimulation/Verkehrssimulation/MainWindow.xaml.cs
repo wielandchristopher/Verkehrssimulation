@@ -25,7 +25,7 @@ namespace Verkehrssimulation
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DispatcherTimer dispatchTimer;
+        private DispatcherTimer dispatchTimer, dpTimer2;
         private ObjectHandler oh;
         private AmpelHandler ap;
         public MainWindow()
@@ -36,6 +36,11 @@ namespace Verkehrssimulation
             dispatchTimer.Tick += dispatchTimer_Tick;
             dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 
+            // Test mit blinkender Ampel
+            dpTimer2 = new DispatcherTimer();
+            dpTimer2.Tick += dpTimer2_Tick;
+            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 1000);
+
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas);
             EnvironmentHandler envhandler = new EnvironmentHandler();
             TrafficHandler traffichandler = new TrafficHandler(ref envhandler);
@@ -43,43 +48,8 @@ namespace Verkehrssimulation
             oh = new ObjectHandler(myCanvas);
             ap = new AmpelHandler(myCanvas);
 
-            // Ampel Kreuzung unten
-            for (int i = 60; i < 700; i += 100)
-            {
-                for (int y = 60; y < 700; y += 100)
-                {
-                    ap.addAmpel(new Ampel(i, y, 1));
-                }
-            }
-
-            // Ampel Kreuzung rechts
-            for (int i = 30; i < 700; i += 100)
-            {
-                for (int y = 60; y < 700; y += 100)
-                {
-                    ap.addAmpel(new Ampel(i, y, 2));
-                }
-            }
-
-            // Ampel Kreuzung oben
-            for (int i = 18; i < 700; i += 100)
-            {
-                for (int y = 30; y < 700; y += 100)
-                {
-                    ap.addAmpel(new Ampel(i, y, 3));
-                }
-            }
-            
-            // Ampel Kreuzung links
-            for (int i = 60; i < 700; i += 100)
-            {
-                for (int y = 18; y < 700; y += 100)
-                {
-                    ap.addAmpel(new Ampel(i, y, 4));
-                }
-            }
-
             dispatchTimer.Start();
+            dpTimer2.Start();
 
         }
 
@@ -88,6 +58,12 @@ namespace Verkehrssimulation
             oh.UpdateAll(); //update aller elemente (um 5 verschieben je nach direction)
         }
 
-
+        private void dpTimer2_Tick(object sender, EventArgs e)
+        {
+            ap.blinky(7);
+            ap.blinky(10);
+            ap.blinky(13);
+            ap.blinky(16);
+        }
     }
 }

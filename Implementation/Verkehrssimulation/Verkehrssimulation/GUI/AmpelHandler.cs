@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace Verkehrssimulation.GUI
 {
@@ -11,12 +12,54 @@ namespace Verkehrssimulation.GUI
     {
         List<Ampel> ampellist;
         Canvas canvas;
-        Random random;
 
         public AmpelHandler(Canvas mycanvas)
         {
             ampellist = new List<Ampel>();
             canvas = mycanvas;
+
+            initialize();
+        }
+
+        private void initialize()
+        {
+            int j = 0;
+            // Ampel Kreuzung unten
+            for (int i = 60; i < 700; i += 100)
+            {
+                for (int y = 60; y < 700; y += 100)
+                {
+                    addAmpel(new Ampel(i, y, 1, j+1));
+                }
+            }
+
+            // Ampel Kreuzung rechts
+            for (int i = 30; i < 700; i += 100)
+            {
+                for (int y = 60; y < 700; y += 100)
+                {
+                    addAmpel(new Ampel(i, y, 2, j+1));
+                }
+            }
+
+            // Ampel Kreuzung oben
+            for (int i = 18; i < 700; i += 100)
+            {
+                for (int y = 30; y < 700; y += 100)
+                {
+                    addAmpel(new Ampel(i, y, 3, j+1));
+                }
+            }
+
+            // Ampel Kreuzung links
+            for (int i = 60; i < 700; i += 100)
+            {
+                for (int y = 18; y < 700; y += 100)
+                {
+                    Ampel a = new Ampel(i, y, 4, j+1);
+                    addAmpel(a);
+                }
+            }
         }
 
         public bool addAmpel(Ampel ampel)
@@ -26,6 +69,22 @@ namespace Verkehrssimulation.GUI
             canvas.Children.Add(ampel.getCircleGreen());
             canvas.Children.Add(ampel.getCircleRed());
             return true;
+        }
+
+        public void blinky(int id)
+        {
+            Ampel a = ampellist[id];
+
+            if(a.red == false)
+            {
+                a.setRed();
+                a.red = true;
+            }
+            else
+            {
+                a.unsetRed();
+                a.red = false;
+            }
         }
     }
 }
