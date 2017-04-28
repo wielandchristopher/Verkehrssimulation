@@ -13,18 +13,41 @@ namespace Ampelsteuerung
         {
             return Status;
         }
+        public int getRotPhase()
+        {
+            return rotphase;
+        }
+        public int getGelbPhase()
+        {
+            return gelbphase;
+        }
+        public int getGruenPhase()
+        {
+            return gruenphase;
+        }
+        public bool getDefect()
+        {
+            return defect;
+        }
         public int getID()
         {
             return ID;
         }
+        public int setRotPhase(int value)
+        {
+            return rotphase = value;
+        }
+        public int setGelbPhase(int value)
+        {
+            return gelbphase = value;
+        }
+        public int setGruenPhase(int value)
+        {
+            return gruenphase = value;
+        }
         public bool setDefect(bool value)
         {
             return defect = value;
-        }
-
-        public bool getDefect()
-        {
-            return defect;
         }
         public int setStatus(int value)
         {
@@ -38,6 +61,9 @@ namespace Ampelsteuerung
         int Status; // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
         int ID;
         bool defect = false;
+        int rotphase = 7; //in sekunden
+        int gelbphase = 3; //in sekunden
+        int gruenphase = 7; //in sekunden
     }
 
     [ServiceBehavior(Name = "Ampelsteuerung", InstanceContextMode = InstanceContextMode.Single)]
@@ -45,7 +71,6 @@ namespace Ampelsteuerung
     {
         ServiceHost host;
         bool _serverRunning = false;
-
         public static List<Ampeln> Trafficlights = new List<Ampeln>();
 
         private void StartServer()
@@ -64,8 +89,8 @@ namespace Ampelsteuerung
 
                     Ampelsteuerung Ampel = new Ampelsteuerung();
 
-                    // 5 Ampeln werden angelegt!
-                    Trafficlights = Ampel.factory(Int32.Parse(ConfigurationManager.AppSettings["Ampelanzahl"]));
+                    // auslagern!!
+                    Trafficlights = Ampel.factory(5);
 
                     while (true)
                     {
@@ -86,14 +111,18 @@ namespace Ampelsteuerung
                             {
                                 Status = Trafficlights.ElementAt(i).setStatus(Trafficlights.ElementAt(i).getStatus() + 1);
                             }
-                        }
-                        if (Status == 1)
-                        {
-                            Thread.Sleep(3000); //3 Sekunden bei Gelb
-                        }
-                        else
-                        {
-                            Thread.Sleep(10000); //10 Sekunden bei Rot und Grünund Ausfall
+                            if (Status == 0)
+                            {
+                                Thread.Sleep(Trafficlights.ElementAt(i).getRotPhase() * 1000);
+                            }
+                            else if (Status == 1)
+                            {
+                                Thread.Sleep(Trafficlights.ElementAt(i).getGelbPhase() * 1000);
+                            }
+                            else if (Status == 2 || Status == 3)
+                            {
+                                Thread.Sleep(Trafficlights.ElementAt(i).getGruenPhase() * 1000);
+                            }
                         }
                     }
                 }
@@ -108,9 +137,8 @@ namespace Ampelsteuerung
                 ex.ToString();
             }
         }
-        public void getAmpelInformation(int ampelid, string ausfall)
-        {           
-            bool Ausgeschalten = false;
+        public void getAmpelStatus(int ampelid)
+        {
             int AmpelStatus;
             OperationContext ctx = OperationContext.Current;
             IAmpelCallback answer = OperationContext.Current.GetCallbackChannel<IAmpelCallback>();
@@ -125,38 +153,95 @@ namespace Ampelsteuerung
             }
             else
             {
-                AmpelStatus = Trafficlights.ElementAt(ampelid-1).getStatus();
+                AmpelStatus = Trafficlights.ElementAt(ampelid - 1).getStatus();
                 answer.OnNewMessage("Status der Ampel mit der ID: " + Trafficlights.ElementAt(ampelid - 1).getID() + " hat den Status: " + AmpelStatus.ToString());
             }
-            if (ausfall.Equals("check"))
+        }
+        public void getAmpelAusfall(int ampelid)
+        {
+
+            OperationContext ctx = OperationContext.Current;
+            IAmpelCallback answer = OperationContext.Current.GetCallbackChannel<IAmpelCallback>();
+            bool Ausgeschalten = false;
+
+            if (ampelid == 0)
             {
-                if (ampelid == 0)
+                for (int i = 0; i < Trafficlights.Count; i++)
                 {
-                    for (int i = 0; i < Trafficlights.Count; i++)
+                    Ausgeschalten = Trafficlights.ElementAt(i).getDefect();
+                    if (Ausgeschalten)
                     {
-                        int count = 0;
-                        Ausgeschalten = Trafficlights.ElementAt(i).getDefect();
-                        if (Ausgeschalten)
-                        {
-                            count++;
-                        }
-                        answer.OnNewMessage("Ausgeschalten sind: " + count.ToString() + " Ampeln.");
-                    }
-                }
-                else
-                {
-                    Ausgeschalten = Trafficlights.ElementAt(ampelid-1).getDefect(); 
-                    if (!Ausgeschalten)
-                    {
-                        answer.OnNewMessage("Diese Ampel funktioniert einwandfrei");
+                        answer.OnNewMessage("Ausgeschalten ist die Ampel: " + Trafficlights.ElementAt(i).getID() + " ....");
                     }
                     else
                     {
-                        answer.OnNewMessage("Diese Ampel ist nicht ausgefallen oder ausgeschaltet");
+                        answer.OnNewMessage("Die Ampel: " + Trafficlights.ElementAt(i).getID() + " funktioniert....");
                     }
                 }
             }
+            else
+            {
+                Ausgeschalten = Trafficlights.ElementAt(ampelid-1).getDefect();
+                if (Ausgeschalten)
+                {
+                    int ausgabe = ampelid - 1;
+                    answer.OnNewMessage("Die Ampel mit der ID: " + ausgabe + " ist ausgefallen!");
+                }
+                else
+                {
+                    answer.OnNewMessage("Diese Ampel ist nicht ausgefallen oder ausgeschaltet");
+                }
+            }
         }
+        public void setAmpelAusfall(int ampelid)
+        {
+            Trafficlights.ElementAt(ampelid-1).setDefect(true);
+        }
+        public void setAmpelOn(int ampelid)
+        {
+            Trafficlights.ElementAt(ampelid-1).setDefect(false);
+        }
+        public void setAmpelStatus(int ampelid, int neuerStatus)
+        {
+            Trafficlights.ElementAt(ampelid).setStatus(neuerStatus);
+        }
+        public void getRotPhase(int ampelid)
+        {
+            OperationContext ctx = OperationContext.Current;
+            IAmpelCallback answer = OperationContext.Current.GetCallbackChannel<IAmpelCallback>();
+
+            answer.OnNewMessage("Die Ampel mit der ID: " + ampelid + " ist auf folgene Zeit für Rot eingestellt: " + Trafficlights.ElementAt(ampelid - 1).getRotPhase());
+
+        }
+        public void getGelbPhase(int ampelid)
+        {
+            OperationContext ctx = OperationContext.Current;
+            IAmpelCallback answer = OperationContext.Current.GetCallbackChannel<IAmpelCallback>();
+
+            answer.OnNewMessage("Die Ampel mit der ID: " + ampelid + " ist auf folgene Zeit für Gelb eingestellt: " + Trafficlights.ElementAt(ampelid - 1).getGelbPhase());
+
+        }
+        public void getGruenPhase(int ampelid)
+        {
+            OperationContext ctx = OperationContext.Current;
+            IAmpelCallback answer = OperationContext.Current.GetCallbackChannel<IAmpelCallback>();
+
+            answer.OnNewMessage("Die Ampel mit der ID: " + ampelid + " ist auf folgene Zeit für Grün eingestellt: " + Trafficlights.ElementAt(ampelid - 1).getGruenPhase());
+        
+        }
+        public void setGruenPhase(int ampelid, int zeit)
+        {
+            Trafficlights.ElementAt(ampelid - 1).setGruenPhase(zeit);
+        }
+        public void setGelbPhase(int ampelid, int zeit)
+        {
+            Trafficlights.ElementAt(ampelid - 1).setGelbPhase(zeit);
+        }
+        public void setRotPhase(int ampelid, int zeit)
+        {
+            Trafficlights.ElementAt(ampelid - 1).setRotPhase(zeit);
+        }
+
         public List<Ampeln> factory(int anzahl)
         {
             for (int i = 0; i < anzahl; i++)

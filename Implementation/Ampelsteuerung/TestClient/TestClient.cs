@@ -17,7 +17,7 @@ namespace Client
             {
                 _callback = new CallbackClient(_client);
                 DuplexChannelFactory<IAmpelService> factory = new DuplexChannelFactory<IAmpelService>(_callback, new NetNamedPipeBinding(), new EndpointAddress("net.pipe://localhost/Ampelsteuerung"));
-                _chatSrv = factory.CreateChannel();               
+                _chatSrv = factory.CreateChannel();
             }
             catch (Exception ex)
             {
@@ -28,21 +28,28 @@ namespace Client
         [STAThread]
         static void Main()
         {
-
             TestClient test = new TestClient();
             test.StartVerkehrssimulation();
-            //Sende in dieser Reihenfolge für informationen:
-            //ID Der Ampel: 0 steht für alle ampeln, 1 - n für eine Spezifische. 
-            //getAmpelInformation(ID der Ampel (in int), Ausfall der Ampel (in String))
+
             try
             {
-                test._chatSrv.getAmpelInformation(1, "check");
-
+                test._chatSrv.getAmpelStatus (0);
+                //test._chatSrv.setAmpelAusfall(2);
+                //test._chatSrv.setAmpelAusfall(1);
+                test._chatSrv.setRotPhase(1,10);
+                test._chatSrv.getRotPhase(1);
+                //test._chatSrv.setAmpelOn(1);
+                //test._chatSrv.getAmpelAusfall(0);
             }
-            catch(NullReferenceException nre)
+            catch (NullReferenceException nre)
             {
                 Console.WriteLine("Der Server ist nicht gestartet!");
                 nre.ToString();
+            }
+            catch (EndpointNotFoundException enfe)
+            {
+                Console.WriteLine("Der Server ist nicht gestartet!");
+                enfe.ToString();
             }
 
         }
