@@ -1,6 +1,7 @@
 ﻿using Ampelsteuerung;
 using CallbackCli;
 using System;
+using System.Diagnostics;
 using System.ServiceModel;
 
 namespace Client
@@ -10,11 +11,13 @@ namespace Client
         IAmpelService _chatSrv;
         CallbackClient _callback;
         TestClient _client;
+        //Process myAmpelsteuerung = new Process();
 
         public void StartVerkehrssimulation()
         {
             try
             {
+                //myAmpelsteuerung = Process.Start("Ampelsteuerung.exe");                
                 _callback = new CallbackClient(_client);
                 DuplexChannelFactory<IAmpelService> factory = new DuplexChannelFactory<IAmpelService>(_callback, new NetNamedPipeBinding(), new EndpointAddress("net.pipe://localhost/Ampelsteuerung"));
                 _chatSrv = factory.CreateChannel();
@@ -37,10 +40,11 @@ namespace Client
                 test._chatSrv.getAmpelStatus (0);
                 //test._chatSrv.setAmpelAusfall(2);
                 //test._chatSrv.setAmpelAusfall(1);
-                test._chatSrv.setRotPhase(1,10);
+                //test._chatSrv.setRotPhase(1,89);
                 test._chatSrv.getRotPhase(1);
                 //test._chatSrv.setAmpelOn(1);
                 //test._chatSrv.getAmpelAusfall(0);
+                
             }
             catch (NullReferenceException nre)
             {

@@ -7,8 +7,8 @@
     <ProjectGuid>{A0C6FA3C-3900-45D2-9FE3-20224AD1AA10}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleServer</RootNamespace>
-    <AssemblyName>SimpleServer</AssemblyName>
+    <RootNamespace>Ampelsteuerung</RootNamespace>
+    <AssemblyName>Ampelsteuerung</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
