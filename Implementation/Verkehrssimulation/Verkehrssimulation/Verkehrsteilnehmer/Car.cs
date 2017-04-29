@@ -11,7 +11,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         public override void Update()
         {
             throw new NotImplementedException();
-                        
         }
     }
 }
