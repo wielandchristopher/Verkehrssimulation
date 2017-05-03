@@ -79,10 +79,8 @@
     <Compile Include="Verkehrsregeln\AllgemeineVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\IVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\Schilder.cs" />
-    <Compile Include="Verkehrsteilnehmer\Car.cs" />
     <Compile Include="Verkehrsteilnehmer\TrafficHandler.cs" />
     <Compile Include="Verkehrsteilnehmer\TrafficObject.cs" />
-    <Compile Include="Verkehrsteilnehmer\Truck.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

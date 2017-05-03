@@ -179,9 +179,26 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             return eb.getNeededEnvironmentRules(x, y);
         }
 
-        public void createNewVerkehrsteilnehmer()
+        public void createNewVerkehrsteilnehmer(int id, int x, int y, int speed, int direction, int nextDirection)
         {
-            throw new NotImplementedException();
+      
+            trafficobjs.Add(new TrafficObject(id,x, y, speed, direction, nextDirection));
+        }
+
+        public void removeVerkehrteilnehmer(int id)
+        {
+            TrafficObject removeObject = null;
+            foreach (TrafficObject obj in trafficobjs)
+            {
+                if (obj.Id.Equals(id))
+                {
+                    removeObject = obj;
+                }
+            }
+            if (removeObject != null)
+            {
+                trafficobjs.Remove(removeObject);
+            }
         }
 
         private Boolean checkIfTileIsEmpty(int x, int y,int direction)
