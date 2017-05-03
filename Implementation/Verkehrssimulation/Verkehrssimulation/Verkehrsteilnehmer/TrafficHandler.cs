@@ -32,7 +32,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 nextRoadX = nextRoadTileXY.Item1;
                 nextRoadY = nextRoadTileXY.Item2;
 
-                //TODO implement traffic light variants
                 switch (thisRoadInfo)
                 {
                     case (int)EnvElement.StreetType.Street:
@@ -54,7 +53,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             obj.MayDrive = true;
                         }
                         break;
-                    //TODO get information if traffic light or not.
                     case (int)EnvElement.StreetType.FourKreuzung:
                         if (checkIfCanDrive4WayWithoutTrafficLight(obj) && checkIfTileIsEmpty(nextRoadX, nextRoadY, obj.NextDirection))
                         {
@@ -62,6 +60,13 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             obj.MayDrive = true;
                         }
                         
+                        break;
+                    case 0: //traffic Light
+                        if (checkIfCanDriveWithTrafficLight(obj) && checkIfTileIsEmpty(nextRoadX, nextRoadY, obj.NextDirection))
+                        {
+                            //may drive
+                            obj.MayDrive = true;
+                        }
                         break;
                     default:
                         throw new NotImplementedException();
@@ -174,6 +179,11 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             return eb.getNeededEnvironmentRules(x, y);
         }
 
+        public void createNewVerkehrsteilnehmer()
+        {
+            throw new NotImplementedException();
+        }
+
         private Boolean checkIfTileIsEmpty(int x, int y,int direction)
         {
             foreach (TrafficObject obj in trafficobjs)
@@ -275,6 +285,27 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     return checkIfTileIsEmpty(obj.X, obj.Y, (obj.Direction + 1) % 4) && checkIfTileIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);//schau ob rechts und vorne nichts kommt
                 default:
                     return false;
+            }
+        }
+
+        private Boolean checkIfCanDriveWithTrafficLight(TrafficObject obj)
+        {
+            //TODO get trafficlightstatus from Verkehrsnetz
+            Boolean isGreen = true;
+            if (!isGreen)
+            {
+                return false;
+            }
+            else
+            {
+                if ((obj.NextDirection - obj.Direction) % 4 == 3) //links abiegen{
+                {
+                   return checkIfTileIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
 
