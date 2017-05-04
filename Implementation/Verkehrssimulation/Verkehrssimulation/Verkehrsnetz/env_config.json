@@ -1,34 +1,203 @@
 ﻿{
   "geregelte_kreuzungen": [
     {
-      "xpos": 300,
+      "xpos": 100,
+      "ypos": 0
+    },
+    {
+      "xpos": 100,
       "ypos": 200
     },
     {
       "xpos": 100,
-      "ypos": 100
-    },       
-     {
-      "xpos": 200,
       "ypos": 400
     },
     {
-      "xpos": 200,
-      "ypos": 100
-    },    
+      "xpos": 100,
+      "ypos": 600
+    },
+    {
+      "xpos": 300,
+      "ypos": 0
+    },
+    {
+      "xpos": 300,
+      "ypos": 200
+    },
+    {
+      "xpos": 300,
+      "ypos": 400
+    },
+    {
+      "xpos": 300,
+      "ypos": 600
+    },
+    {
+      "xpos": 500,
+      "ypos": 0
+    },
+    {
+      "xpos": 500,
+      "ypos": 200
+    },
+    {
+      "xpos": 500,
+      "ypos": 400
+    },
+    {
+      "xpos": 500,
+      "ypos": 600
+    }
+  ],
+
+  "ungeregelte_kreuzungen": [
     {
       "xpos": 0,
       "ypos": 0
     },
     {
       "xpos": 100,
-      "ypos": 0
-    }
-  ],
-
-  "ungeregelte_kreuzungen": [
+      "ypos": 100
+    },
     {
-
+      "xpos": 100,
+      "ypos": 300
+    },
+    {
+      "xpos": 100,
+      "ypos": 500
+    },
+    {
+      "xpos": 0,
+      "ypos": 100
+    },
+    {
+      "xpos": 0,
+      "ypos": 200
+    },
+    {
+      "xpos": 0,
+      "ypos": 300
+    },
+    {
+      "xpos": 0,
+      "ypos": 400
+    },
+    {
+      "xpos": 0,
+      "ypos": 500
+    },
+    {
+      "xpos": 0,
+      "ypos": 600
+    },
+    {
+      "xpos": 200,
+      "ypos": 0
+    },
+    {
+      "xpos": 200,
+      "ypos": 100
+    },
+    {
+      "xpos": 200,
+      "ypos": 200
+    },
+    {
+      "xpos": 200,
+      "ypos": 300
+    },
+    {
+      "xpos": 200,
+      "ypos": 400
+    },
+    {
+      "xpos": 200,
+      "ypos": 500
+    },
+    {
+      "xpos": 200,
+      "ypos": 600
+    },
+        {
+      "xpos": 300,
+      "ypos": 100
+    },
+    {
+      "xpos": 300,
+      "ypos": 300
+    },
+    {
+      "xpos": 300,
+      "ypos": 500
+    },
+    {
+      "xpos": 400,
+      "ypos": 0
+    },
+    {
+      "xpos": 400,
+      "ypos": 100
+    },
+    {
+      "xpos": 400,
+      "ypos": 200
+    },
+    {
+      "xpos": 400,
+      "ypos": 300
+    },
+    {
+      "xpos": 400,
+      "ypos": 400
+    },
+    {
+      "xpos": 400,
+      "ypos": 500
+    },
+    {
+      "xpos": 400,
+      "ypos": 600
+    },
+    {
+      "xpos": 500,
+      "ypos": 100
+    },
+    {
+      "xpos": 500,
+      "ypos": 300
+    },
+    {
+      "xpos": 500,
+      "ypos": 500
+    },
+    {
+      "xpos": 600,
+      "ypos": 0
+    },
+    {
+      "xpos": 600,
+      "ypos": 100
+    },
+    {
+      "xpos": 600,
+      "ypos": 200
+    },
+    {
+      "xpos": 600,
+      "ypos": 300
+    },
+    {
+      "xpos": 600,
+      "ypos": 400
+    },
+    {
+      "xpos": 600,
+      "ypos": 500
+    },
+    {
+      "xpos": 600,
+      "ypos": 600
     }
   ],
   "schilder": [

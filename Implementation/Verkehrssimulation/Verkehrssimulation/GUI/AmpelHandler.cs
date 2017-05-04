@@ -18,7 +18,7 @@ namespace Verkehrssimulation.GUI
             ampellist = new List<Ampel>();
             canvas = mycanvas;
 
-            initialize();
+            //initialize();
         }
 
         private void initialize()
