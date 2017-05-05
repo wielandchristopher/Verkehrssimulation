@@ -55,7 +55,7 @@ namespace Verkehrssimulation
 
         private void dispatchTimer_Tick(object sender, EventArgs e)
         {
-            oh.UpdateAll(); //update aller elemente (um 5 verschieben je nach direction)
+            //oh.UpdateAll(); //update aller elemente (um 5 verschieben je nach direction)
         }
 
         private void dpTimer2_Tick(object sender, EventArgs e)

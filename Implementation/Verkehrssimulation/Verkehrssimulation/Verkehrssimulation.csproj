@@ -70,7 +70,7 @@
     <Compile Include="GUI\ObjectHandler.cs" />
     <Compile Include="GUI\ObjectInterface.cs" />
     <Compile Include="GUI\ObjHandlerInterface.cs" />
-    <Compile Include="GUI\Auto.cs" />
+    <Compile Include="GUI\Verkehrsteilnehmer.cs" />
     <Compile Include="Verkehrsnetz\EnvElement.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentBuilder.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentHandler.cs" />

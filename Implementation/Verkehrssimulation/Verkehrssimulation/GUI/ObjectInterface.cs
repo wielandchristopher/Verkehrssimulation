@@ -15,12 +15,6 @@ namespace Verkehrssimulation.GUI
             set;
         }
 
-        int objid
-        {
-            get;
-            set;
-        }
-
         int xpos
         {
             get;
