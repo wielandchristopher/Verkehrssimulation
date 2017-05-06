@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Verkehrssimulation.GUI;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
@@ -16,16 +17,23 @@ namespace Verkehrssimulation.Verkehrsnetz
         JObject obj; // für json -> Projekt-> nu-getpakete verwalten -> json linq irgendwas
         private Canvas canvas;
         List<EnvElement> elem;
-
+        AmpelHandler ah;
         EnvElement[,] elems = new EnvElement[7, 7];
+        int ampelcnt = 0;
 
-        public EnvironmentBuilder(Canvas mycanvas)
-        {            
+
+
+        public EnvironmentBuilder(Canvas mycanvas, ref AmpelHandler _ah)
+        {
+            ah = _ah;
             canvas = mycanvas;
             Console.WriteLine("Buidler loaded");
             elem = new List<EnvElement>();
             LoadJson();
             LoadEnvironment();
+            
+           
+            
         }
 
         public void LoadJson()
@@ -50,19 +58,30 @@ namespace Verkehrssimulation.Verkehrsnetz
                 
                 elems[xpos/100,ypos/100] = addObject(xpos, ypos, 3);
 
-                addAmpel(xpos + 60, ypos + 60, 1);
-                addAmpel(xpos + 30, ypos + 60, 2);
-                addAmpel(xpos + 7, ypos + 30, 3);
-                addAmpel(xpos + 60, ypos + 7, 4);
+                ah.addTrafficLight(xpos + 60, ypos + 60, 1,ampelcnt++);
+                ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++);
+                ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++);
+                ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++);
 
                 addSolution(xpos,ypos);
 
 
             }
 
+            for(int i = 0; i< ampelcnt; i++)
+            {
+                ah.setGreenLight(i);
+                ah.setYellowLight(i);
+                ah.setRedLight(i);
+                ah.setYellowLight(i);
+                ah.setGreenLight(i);
+                ah.setYellowLight(i);
+                ah.setRedLight(i);
+            }
 
 
             fillWithGrass();
+
             /*for (int i = 0; i<700; i+=100)
             {
                 for(int y = 0; y<700; y+=100)
