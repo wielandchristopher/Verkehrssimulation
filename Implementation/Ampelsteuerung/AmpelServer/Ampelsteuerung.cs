@@ -141,6 +141,9 @@ namespace Ampelsteuerung
                 ex.ToString();
             }
         }
+        //Gibt 2 Integer zurück: 
+        //Erster integer gibt ampelID zurück
+        //Zweiter integer gibt Status der Ampel zurück 
         public void getAmpelStatus(int ampelid)
         {
             int AmpelStatus;
@@ -152,15 +155,18 @@ namespace Ampelsteuerung
                 for (int i = 0; i < Trafficlights.Count; i++)
                 {
                     AmpelStatus = Trafficlights.ElementAt(i).getStatus();
-                    answer.OnNewMessage("Ampel mit der ID: " + Trafficlights.ElementAt(i).getID() + " hat den Status: " + AmpelStatus.ToString());
+                    answer.OnNewMessage(Trafficlights.ElementAt(i).getID() + " " + AmpelStatus.ToString());
                 }
             }
             else
             {
                 AmpelStatus = Trafficlights.ElementAt(ampelid - 1).getStatus();
-                answer.OnNewMessage("Ampel mit der ID: " + Trafficlights.ElementAt(ampelid - 1).getID() + " hat den Status: " + AmpelStatus.ToString());
+                answer.OnNewMessage(Trafficlights.ElementAt(ampelid - 1).getID() + " " + AmpelStatus.ToString());
             }
         }
+        //Gibt integer und boolean zurück: 
+        //integer ist die AmpelID
+        //true - Ampel Funktioniert, false - Ampel ausgeschaltet
         public void getAmpelAusfall(int ampelid)
         {
 
@@ -175,11 +181,11 @@ namespace Ampelsteuerung
                     Ausgeschalten = Trafficlights.ElementAt(i).getDefect();
                     if (Ausgeschalten)
                     {
-                        answer.OnNewMessage("Ausgeschalten ist die Ampel: " + Trafficlights.ElementAt(i).getID() + " ....");
+                        answer.OnNewMessage(Trafficlights.ElementAt(i).getID() + " false");
                     }
                     else
                     {
-                        answer.OnNewMessage("Die Ampel: " + Trafficlights.ElementAt(i).getID() + " funktioniert....");
+                        answer.OnNewMessage(Trafficlights.ElementAt(i).getID() + " true");
                     }
                 }
             }
@@ -189,48 +195,60 @@ namespace Ampelsteuerung
                 if (Ausgeschalten)
                 {
                     int ausgabe = ampelid - 1;
-                    answer.OnNewMessage("Die Ampel mit der ID: " + ausgabe + " ist ausgefallen!");
+                    answer.OnNewMessage(ausgabe + " false");
                 }
                 else
                 {
-                    answer.OnNewMessage("Diese Ampel ist nicht ausgefallen oder ausgeschaltet");
+                    int ausgabe = ampelid - 1;
+                    answer.OnNewMessage(ausgabe + " true");
                 }
             }
         }
         public void setAmpelAusfall(int ampelid)
         {
             Trafficlights.ElementAt(ampelid - 1).setDefect(true);
+            Trafficlights.ElementAt(ampelid - 1).setStatus(3);
         }
         public void setAmpelOn(int ampelid)
         {
             Trafficlights.ElementAt(ampelid - 1).setDefect(false);
+            Trafficlights.ElementAt(ampelid - 1).setStatus(0);
         }
         public void setAmpelStatus(int ampelid, int neuerStatus)
         {
             Trafficlights.ElementAt(ampelid).setStatus(neuerStatus);
         }
+        //Gibt 2 Integer zurück: 
+        //Erster integer gibt ampelID zurück
+        //Zweiter integer gibt die Sekunden der Rotphase zurück
         public void getRotPhase(int ampelid)
         {
             OperationContext ctx = OperationContext.Current;
             IAmpelCallback answer = OperationContext.Current.GetCallbackChannel<IAmpelCallback>();
 
-            answer.OnNewMessage("Die Ampel mit der ID: " + ampelid + " ist auf folgene Zeit für Rot eingestellt: " + Trafficlights.ElementAt(ampelid - 1).getRotPhase());
+            answer.OnNewMessage(ampelid + " " + Trafficlights.ElementAt(ampelid - 1).getRotPhase());
 
         }
+        //Gibt 2 Integer zurück: 
+        //Erster integer gibt ampelID zurück
+        //Zweiter integer gibt die Sekunden der Gelbphase zurück
         public void getGelbPhase(int ampelid)
         {
             OperationContext ctx = OperationContext.Current;
             IAmpelCallback answer = OperationContext.Current.GetCallbackChannel<IAmpelCallback>();
 
-            answer.OnNewMessage("Die Ampel mit der ID: " + ampelid + " ist auf folgene Zeit für Gelb eingestellt: " + Trafficlights.ElementAt(ampelid - 1).getGelbPhase());
+            answer.OnNewMessage(ampelid + " " + Trafficlights.ElementAt(ampelid - 1).getGelbPhase());
 
         }
+        //Gibt 2 Integer zurück: 
+        //Erster integer gibt ampelID zurück
+        //Zweiter integer gibt die Sekunden der Grünphase zurück
         public void getGruenPhase(int ampelid)
         {
             OperationContext ctx = OperationContext.Current;
             IAmpelCallback answer = OperationContext.Current.GetCallbackChannel<IAmpelCallback>();
 
-            answer.OnNewMessage("Die Ampel mit der ID: " + ampelid + " ist auf folgene Zeit für Grün eingestellt: " + Trafficlights.ElementAt(ampelid - 1).getGruenPhase());
+            answer.OnNewMessage(ampelid + " " + Trafficlights.ElementAt(ampelid - 1).getGruenPhase());
 
         }
         public void setGruenPhase(int ampelid, int zeit)
@@ -249,6 +267,7 @@ namespace Ampelsteuerung
         {
             Anzahl = anzahl;
         }
+        //Gibt die Anzahl der erstellten Ampeln zurück
         public int getAmpelAnzahl()
         {
             return Anzahl;
