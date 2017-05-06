@@ -11,9 +11,6 @@ namespace Verkehrssimulation.Verkehrsnetz
 {
     class Streetelem : EnvElement
     {
-
-        
-
         public Streetelem(int _x, int _y, int _dir, int _type)
         {
 
@@ -31,6 +28,13 @@ namespace Verkehrssimulation.Verkehrsnetz
             initImgType();
             addContextMenue();
 
+        }
+
+
+        public void updateType(StreetType type)
+        {
+            this.stype = type;
+            initImgType();
         }
 
         private void initImgType()
@@ -143,6 +147,11 @@ namespace Verkehrssimulation.Verkehrsnetz
 
             img.Source = bi;
 
+        }
+
+        public StreetType getStreetType()
+        {
+            return this.stype;
         }
 
         public void elemRotate(object sender, EventArgs e)

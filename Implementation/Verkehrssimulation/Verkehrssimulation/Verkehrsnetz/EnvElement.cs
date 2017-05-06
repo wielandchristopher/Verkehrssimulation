@@ -27,5 +27,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
             ((Image)sender).Opacity = 1;
         }
+
+
     }
 }

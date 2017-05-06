@@ -119,6 +119,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Verkehrsnetz\env_config.json" />
+    <None Include="Verkehrsnetz\env_config_save.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
