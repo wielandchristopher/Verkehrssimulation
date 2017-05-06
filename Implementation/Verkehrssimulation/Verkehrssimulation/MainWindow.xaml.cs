@@ -41,12 +41,13 @@ namespace Verkehrssimulation
             dpTimer2.Tick += dpTimer2_Tick;
             dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 1000);
 
-
-            EnvironmentHandler envhandler = new EnvironmentHandler();
-            TrafficHandler traffichandler = new TrafficHandler(ref envhandler);
-            
             oh = new ObjectHandler(myCanvas);
             ap = new AmpelHandler(myCanvas);
+
+            EnvironmentHandler envhandler = new EnvironmentHandler();
+            TrafficHandler traffichandler = new TrafficHandler(ref envhandler, ref oh);
+            
+           
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap);
 
             dispatchTimer.Start();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Verkehrssimulation.Verkehrsnetz;
+using Verkehrssimulation.GUI;
 
 namespace Verkehrssimulation.Verkehrsteilnehmer
 {
@@ -11,11 +12,15 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
     {
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
         private EnvironmentHandler eb; // ref auf Environmenthandler zum abfragen der rules
+        private ObjectHandler oh; //ref zu GUI
         Random rng = new Random(); //random number generator
 
-        public TrafficHandler(ref EnvironmentHandler _eb)
+        public enum StreetRegion { NormalStreet = 0, IntersectionAhead = 1, Intersection = 2};
+
+        public TrafficHandler(ref EnvironmentHandler _eb, ref ObjectHandler _oh)
         {
             trafficobjs = new List<TrafficObject>();
+            oh = _oh;
             eb = _eb;
         }
 
@@ -31,41 +36,133 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 Tuple<int,int> nextRoadTileXY = getNextRoadTileXY(obj);
                 nextRoadX = nextRoadTileXY.Item1;
                 nextRoadY = nextRoadTileXY.Item2;
-
                 switch (thisRoadInfo)
                 {
                     case (int)EnvElement.StreetType.Street:
-                        if(checkIfTileIsEmpty(nextRoadX, nextRoadY, obj.NextDirection))
-                        {
-                            //may drive
-                            obj.MayDrive = true;
-                        }
+                        //may drive if road ahead is empty
+                        obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
                         break;
-                    //TODO get more detailed information where I can go.
-                    //TODO get information if traffic light or not.
-                    case (int)EnvElement.StreetType.ThreeKreuzung:
-                        //TODO get Ausrichtung Kreuzung
-                        int layout = 1;
-                        if (checkIfCanDrive3WayWithoutTrafficLight(layout, obj) && checkIfTileIsEmpty(nextRoadX, nextRoadY, obj.NextDirection))
-                        {
-
-                            //may drive
-                            obj.MayDrive = true;
-                        }
-                        break;
-                    case (int)EnvElement.StreetType.FourKreuzung:
-                        if (checkIfCanDrive4WayWithoutTrafficLight(obj) && checkIfTileIsEmpty(nextRoadX, nextRoadY, obj.NextDirection))
-                        {
-                            //may drive
-                            obj.MayDrive = true;
-                        }
+                        //TODO get more detailed information where I can go.
+                        //TODO get information if traffic light or not.
                         
+                    case (int)EnvElement.StreetType.ThreeKreuzung:
+                    case (int)EnvElement.StreetType.FourKreuzung:
+                        int streetRegion = getStreetRegion(obj.X, obj.Y);
+                        switch (streetRegion)
+                        {
+                            case (int) StreetRegion.NormalStreet:
+                                obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                break;
+                            case (int)StreetRegion.IntersectionAhead:
+                                obj.MayDrive = checkIfCanDrive4WayWithoutTrafficLight(obj) && checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                break;
+                            //TODO find Solution for "zugestaute Kreuzungen"
+                            case (int)StreetRegion.Intersection:
+                                switch ((obj.NextDirection - obj.Direction) % 4)
+                                {
+                                    case 0: //contues to drive in same direction
+                                        obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                        break;
+                                    default: //biegt wo ab.
+                                        switch (obj.NextDirection)
+                                        {
+                                            case (int) TrafficObject.Dir.Up:
+                                                if ((obj.X % 100 <= 55 && nextRoadX%100 >= 55) || (obj.X % 100 >= 55 && nextRoadX % 100 <= 55))
+                                                {
+                                                    decimal d = nextRoadX / 100;
+                                                    nextRoadX = ((int)Math.Floor(d) * 100) + 55;
+                                                    obj.Direction = obj.NextDirection;
+                                                }
+                                                break;
+                                            case (int) TrafficObject.Dir.Down:
+                                                if ((obj.X % 100 <= 45 && nextRoadX % 100 >= 45) || (obj.X % 100 >= 45 && nextRoadX % 100 <= 45))
+                                                {
+                                                    decimal d = nextRoadX / 100;
+                                                    nextRoadX = ((int)Math.Floor(d) * 100) + 45;
+                                                    obj.Direction = obj.NextDirection;
+                                                }
+                                                break;
+                                            case (int)TrafficObject.Dir.Right:
+                                                if ((obj.Y % 100 <= 55 && nextRoadY % 100 >= 55) || (obj.Y % 100 >= 55 && nextRoadY % 100 <= 55))
+                                                {
+                                                    decimal d = nextRoadY / 100;
+                                                    nextRoadY = ((int)Math.Floor(d) * 100) + 55;
+                                                    obj.Direction = obj.NextDirection;
+                                                }
+                                                break;
+                                            case (int)TrafficObject.Dir.Left:
+                                                if ((obj.Y % 100 <= 45 && nextRoadY % 100 >= 45) || (obj.Y % 100 >= 45 && nextRoadY % 100 <= 45))
+                                                {
+                                                    decimal d = nextRoadY / 100;
+                                                    nextRoadY = ((int)Math.Floor(d) * 100) + 45;
+                                                    obj.Direction = obj.NextDirection;
+                                                }
+                                                break;
+                                        }
+                                        break;
+                                }
+                                obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                break;
+                        }
                         break;
                     case 0: //traffic Light
-                        if (checkIfCanDriveWithTrafficLight(obj) && checkIfTileIsEmpty(nextRoadX, nextRoadY, obj.NextDirection))
+                        //TODO reduce duplicate code with no traffic light
+                        int streetRegion2 = getStreetRegion(obj.X, obj.Y);
+                        switch (streetRegion2)
                         {
-                            //may drive
-                            obj.MayDrive = true;
+                            case (int)StreetRegion.NormalStreet:
+                                obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                break;
+                            case (int)StreetRegion.IntersectionAhead:
+                                obj.MayDrive = checkIfCanDriveWithTrafficLight(obj) && checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                break;
+                            //TODO find Solution for "zugestaute Kreuzungen"
+                            case (int)StreetRegion.Intersection:
+                                switch ((obj.NextDirection - obj.Direction) % 4)
+                                {
+                                    case 0: //contues to drive in same direction
+                                        obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                        break;
+                                    default: //biegt wo ab.
+                                        switch (obj.NextDirection)
+                                        {
+                                            case (int)TrafficObject.Dir.Up:
+                                                if ((obj.X % 100 <= 55 && nextRoadX % 100 >= 55) || (obj.X % 100 >= 55 && nextRoadX % 100 <= 55))
+                                                {
+                                                    decimal d = nextRoadX / 100;
+                                                    nextRoadX = ((int)Math.Floor(d) * 100) + 55;
+                                                    obj.Direction = obj.NextDirection;
+                                                }
+                                                break;
+                                            case (int)TrafficObject.Dir.Down:
+                                                if ((obj.X % 100 <= 45 && nextRoadX % 100 >= 45) || (obj.X % 100 >= 45 && nextRoadX % 100 <= 45))
+                                                {
+                                                    decimal d = nextRoadX / 100;
+                                                    nextRoadX = ((int)Math.Floor(d) * 100) + 45;
+                                                    obj.Direction = obj.NextDirection;
+                                                }
+                                                break;
+                                            case (int)TrafficObject.Dir.Right:
+                                                if ((obj.Y % 100 <= 55 && nextRoadY % 100 >= 55) || (obj.Y % 100 >= 55 && nextRoadY % 100 <= 55))
+                                                {
+                                                    decimal d = nextRoadY / 100;
+                                                    nextRoadY = ((int)Math.Floor(d) * 100) + 55;
+                                                    obj.Direction = obj.NextDirection;
+                                                }
+                                                break;
+                                            case (int)TrafficObject.Dir.Left:
+                                                if ((obj.Y % 100 <= 45 && nextRoadY % 100 >= 45) || (obj.Y % 100 >= 45 && nextRoadY % 100 <= 45))
+                                                {
+                                                    decimal d = nextRoadY / 100;
+                                                    nextRoadY = ((int)Math.Floor(d) * 100) + 45;
+                                                    obj.Direction = obj.NextDirection;
+                                                }
+                                                break;
+                                        }
+                                        break;
+                                }
+                                obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                break;
                         }
                         break;
                     default:
@@ -78,98 +175,100 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 if (obj.MayDrive)
                 { 
                     Tuple<int, int> nextRoadXY = getNextRoadTileXY(obj);
-                    obj.X = nextRoadXY.Item1;
-                    obj.Y = nextRoadXY.Item2;//move the car to its new position
-
-                    int nextRoadInfo = getEnvRules(obj.X, obj.Y); //decide where to go next
-                    switch (nextRoadInfo)
+                    int nextRoadX = nextRoadXY.Item1;
+                    int nextRoadY = nextRoadXY.Item2;
+                    //decide where to go next when leaving roadTile
+                    if ((Math.Abs(obj.X % 100 - nextRoadX % 100) > (obj.Speed + 1)) || (Math.Abs(obj.Y % 100 - nextRoadY % 100) > (obj.Speed + 1)))
                     {
-                        case (int)EnvElement.StreetType.Street:
-                            //no direction change posible
-                            break;
-                        case (int)EnvElement.StreetType.ThreeKreuzung:
-                            //TODO get layout from Straßennetz
-                            int layout = 1;
-                            int rotation_modifier = 0;
-                            //TODO find a way to resolve Deadlocks
-                            switch (layout)
-                            {
-                                case 1:
-                                    //    ||
-                                    // ===
-                                    //    ||
-                                    rotation_modifier = 0;
-                                    break;
-                                case 2:
-                                    // ===  ===
-                                    //    ||
-                                    rotation_modifier = 1;
-                                    break;
-                                case 3:
-                                    // ||
-                                    //   ===
-                                    // ||
-                                    rotation_modifier = 2;
-                                    break;
-                                case 4:
-                                    //    ||
-                                    // ===  ===
-                                    rotation_modifier = 3;
-                                    break;
-                                default:
-                                    rotation_modifier = 0;
-                                    break;
-                            }
-                            int rn = rng.Next(0, 2);
-                            switch ((obj.Direction + rotation_modifier) % 4)
-                            {
-                                
-                                case (int)TrafficObject.Dir.Up:
-                                    if(rn == 0)
-                                    {
-                                        obj.NextDirection = ((int)TrafficObject.Dir.Up + rotation_modifier) % 4;
-                                    }
-                                    else
-                                    {
-                                        obj.NextDirection = ((int)TrafficObject.Dir.Left + rotation_modifier) % 4;
-                                    }
-                                    break;
-                                case (int)TrafficObject.Dir.Down:
-                                    if (rn == 0)
-                                    {
-                                        obj.NextDirection = ((int)TrafficObject.Dir.Down + rotation_modifier) % 4;
-                                    }
-                                    else
-                                    {
-                                        obj.NextDirection = ((int)TrafficObject.Dir.Left + rotation_modifier) % 4;
-                                    }
-                                    break;
-                                case (int)TrafficObject.Dir.Right:
-                                    if (rn == 0)
-                                    {
-                                        obj.NextDirection = ((int)TrafficObject.Dir.Down + rotation_modifier) % 4;
-                                    }
-                                    else
-                                    {
-                                        obj.NextDirection = ((int)TrafficObject.Dir.Up + rotation_modifier) % 4;
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
+                        int nextRoadInfo = getEnvRules(nextRoadX, nextRoadY); 
+                        switch (nextRoadInfo)
+                        {
+                            case (int)EnvElement.StreetType.Street:
+                                //no direction change posible
+                                break;
+                            case (int)EnvElement.StreetType.ThreeKreuzung:
+                                //TODO get layout from Straßennetz
+                                int layout = 1;
+                                int rotation_modifier = 0;
+                                switch (layout)
+                                {
+                                    case 1:
+                                        //    ||
+                                        // ===
+                                        //    ||
+                                        rotation_modifier = 0;
+                                        break;
+                                    case 2:
+                                        // ===  ===
+                                        //    ||
+                                        rotation_modifier = 1;
+                                        break;
+                                    case 3:
+                                        // ||
+                                        //   ===
+                                        // ||
+                                        rotation_modifier = 2;
+                                        break;
+                                    case 4:
+                                        //    ||
+                                        // ===  ===
+                                        rotation_modifier = 3;
+                                        break;
+                                    default:
+                                        rotation_modifier = 0;
+                                        break;
+                                }
+                                int rn = rng.Next(0, 2);
+                                switch ((obj.Direction + rotation_modifier) % 4)
+                                {
 
-                
-                            break;
-                        case (int)EnvElement.StreetType.FourKreuzung:
-                            int rngMinus1toPlus1 = rng.Next(1, 4) - 2; // -1 <= rng <= 1
-                            obj.Direction = (obj.Direction + rngMinus1toPlus1) % 4;
-                            break;
+                                    case (int)TrafficObject.Dir.Up:
+                                        if (rn == 0)
+                                        {
+                                            obj.NextDirection = ((int)TrafficObject.Dir.Up + rotation_modifier) % 4;
+                                        }
+                                        else
+                                        {
+                                            obj.NextDirection = ((int)TrafficObject.Dir.Left + rotation_modifier) % 4;
+                                        }
+                                        break;
+                                    case (int)TrafficObject.Dir.Down:
+                                        if (rn == 0)
+                                        {
+                                            obj.NextDirection = ((int)TrafficObject.Dir.Down + rotation_modifier) % 4;
+                                        }
+                                        else
+                                        {
+                                            obj.NextDirection = ((int)TrafficObject.Dir.Left + rotation_modifier) % 4;
+                                        }
+                                        break;
+                                    case (int)TrafficObject.Dir.Right:
+                                        if (rn == 0)
+                                        {
+                                            obj.NextDirection = ((int)TrafficObject.Dir.Down + rotation_modifier) % 4;
+                                        }
+                                        else
+                                        {
+                                            obj.NextDirection = ((int)TrafficObject.Dir.Up + rotation_modifier) % 4;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
+                            case (int)EnvElement.StreetType.FourKreuzung:
+                                int rngMinus1toPlus1 = rng.Next(1, 4) - 2; // -1 <= rng <= 1
+                                obj.Direction = (obj.Direction + rngMinus1toPlus1) % 4;
+                                break;
+                        }
                     }
 
                     obj.MayDrive = false;
 
-                    //TODO send update to UI
-                    throw new NotImplementedException();
+                    obj.X = nextRoadXY.Item1;
+                    obj.Y = nextRoadXY.Item2;//move the car to its new position
+                    //send update to UI
+                    oh.updateCarWithID(obj.X, obj.Y, obj.Id);
                 }
             }
         }
@@ -201,93 +300,28 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
         }
 
-        private Boolean checkIfTileIsEmpty(int x, int y,int direction)
+        private Boolean checkIfTilesAreEmpty(int startX, int startY, int destX, int destY)
         {
             foreach (TrafficObject obj in trafficobjs)
             {
-                if (obj.X == x && obj.Y == y && obj.Direction == direction)
+                int xIncrement = 1;
+                int yIncrement = 1;
+                if (startX > destX)
                 {
-                    return false;
+                    xIncrement = -1;
                 }
+                if (startY > destY)
+                {
+                    yIncrement = -1;
+                }
+                for(int x = startX; x!=(destX+xIncrement); x=x+xIncrement)
+                    for (int y = startY; y != (destY + yIncrement); y = y + yIncrement)
+                        if (obj.X == x && obj.Y == y)
+                        {
+                            return false;
+                        }
             }
             return true;
-        }
-
-        private Boolean checkIfCanDrive3WayWithoutTrafficLight(int layout, TrafficObject obj)
-        {
-            int rotation_modifier=0;
-            //TODO find a way to resolve Deadlocks
-            switch (layout)
-            {
-                case 1:
-                    //    ||
-                    // ===
-                    //    ||
-                    rotation_modifier = 0;
-                    break;
-                case 2:
-                    // ===  ===
-                    //    ||
-                    rotation_modifier = 1;
-                    break;
-                case 3:
-                    // ||
-                    //   ===
-                    // ||
-                    rotation_modifier = 2;
-                    break;
-                case 4:
-                    //    ||
-                    // ===  ===
-                    rotation_modifier = 3;
-                    break;
-                default:
-                    rotation_modifier = 0;
-                    break;
-            }
-
-            switch ((obj.Direction + rotation_modifier) % 4)
-            {
-                case (int)TrafficObject.Dir.Up:
-                    switch ((obj.NextDirection + rotation_modifier) % 4)
-                    {
-                        case (int)TrafficObject.Dir.Up:
-                            //may always drive
-                            return true;
-                        case (int)TrafficObject.Dir.Left:
-                            //may only drive if there is noone coming from front
-                            return checkIfTileIsEmpty(obj.X, obj.Y, (int) TrafficObject.Dir.Down);
-                        default:
-                            //car wants to go where no road is, should never happen.
-                            return false;
-                    }
-                case (int)TrafficObject.Dir.Right:
-                    switch ((obj.NextDirection + rotation_modifier) % 4)
-                    {
-                        case (int)TrafficObject.Dir.Down:
-                            //may always drive
-                            return true;
-                        case (int)TrafficObject.Dir.Up:
-                            return checkIfTileIsEmpty(obj.X, obj.Y, (int) TrafficObject.Dir.Up);
-                        default:
-                            //car wants to go where no road is, should never happen.
-                            return false;
-                    }
-                case (int)TrafficObject.Dir.Down:
-                    switch ((obj.NextDirection + rotation_modifier) % 4)
-                    {
-                        case (int)TrafficObject.Dir.Left:
-                            //may always drive
-                            return true;
-                        case (int)TrafficObject.Dir.Down:
-                            return checkIfTileIsEmpty(obj.X, obj.Y, (int)TrafficObject.Dir.Right);
-                        default:
-                            return false;
-                    }
-                default:
-                    return false;
-            }
-                
         }
 
         private Boolean checkIfCanDrive4WayWithoutTrafficLight (TrafficObject obj)
@@ -297,9 +331,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 case 1: //rechts abbiegen
                     return true;
                 case 2: //geradeaus
-                    return checkIfTileIsEmpty(obj.X, obj.Y, (obj.Direction + 1) % 4); //schau ob rechts nichts kommt
+                    return checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 1) % 4); //schau ob rechts nichts kommt
                 case 3://links abbiegen
-                    return checkIfTileIsEmpty(obj.X, obj.Y, (obj.Direction + 1) % 4) && checkIfTileIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);//schau ob rechts und vorne nichts kommt
+                    return checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 1) % 4) && checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);//schau ob rechts und vorne nichts kommt
                 default:
                     return false;
             }
@@ -317,7 +351,8 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             {
                 if ((obj.NextDirection - obj.Direction) % 4 == 3) //links abiegen{
                 {
-                   return checkIfTileIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);
+                    return checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);//schau vorne nichts kommt
+
                 }
                 else
                 {
@@ -331,15 +366,68 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             switch (obj.Direction)
             {
                 case (int)TrafficObject.Dir.Up:
-                    return new Tuple<int, int>(obj.X - 1, obj.Y);
+                    return new Tuple<int, int>(obj.X - obj.Speed, obj.Y);
                 case (int)TrafficObject.Dir.Down:
-                    return new Tuple<int, int>(obj.X + 1, obj.Y);
+                    return new Tuple<int, int>(obj.X + obj.Speed, obj.Y);
                 case (int)TrafficObject.Dir.Left:
-                    return new Tuple<int, int>(obj.X, obj.Y - 1);
+                    return new Tuple<int, int>(obj.X, obj.Y - obj.Speed);
                 case (int)TrafficObject.Dir.Right:
-                    return new Tuple<int, int>(obj.X, obj.Y + 1);
+                    return new Tuple<int, int>(obj.X, obj.Y + obj.Speed);
                 default:
                     throw new NotImplementedException();
+            }
+        }
+
+        private Boolean checkIfIntersectionEntryIsEmpty(int x, int y, int direction) //dirction describes in what direction a car would, therefore a car coming from right would have direction left
+        {
+            decimal d = x / 100;
+            x = (int) Math.Floor(d)*100;
+            d = y / 100;
+            y = (int)Math.Floor(d) * 100;
+
+            switch (direction)
+            {
+                case (int)TrafficObject.Dir.Down:
+                    return checkIfTilesAreEmpty(x + 40, x + 50, y + 0, y + 40);
+                case (int)TrafficObject.Dir.Right:
+                    return checkIfTilesAreEmpty(x + 0, x + 40, y + 50, y + 60);
+                case (int)TrafficObject.Dir.Up:
+                    return checkIfTilesAreEmpty(x + 50, x + 60, y + 60, y + 100);
+                case (int)TrafficObject.Dir.Left:
+                    return checkIfTilesAreEmpty(x + 60, x + 100, y + 40, y + 50);
+                default:
+                    return false;
+            }
+        }
+
+        private int getStreetRegion(int x, int y)
+        {
+            x = x % 100;
+            y = y % 100;
+
+            if (x >= 40 && x <= 60 && y >= 40 && y <= 60)//intersection
+            {
+                return (int) StreetRegion.Intersection;
+            }
+            else if (x >= 40 && x <= 50 && y >= 30 && y <= 40) //down-intersection-entry
+            {
+                return (int)StreetRegion.IntersectionAhead;
+            }
+            else if (x >= 30 && x <= 40 && y >= 50 && y <= 60)//right-intersection-entry
+            {
+                return (int)StreetRegion.IntersectionAhead;
+            }
+            else if (x >= 50 && x <= 60 && y >= 60 && y <= 70)//up-intersection-entry
+            {
+                return (int)StreetRegion.IntersectionAhead;
+            }
+            else if (x >= 60 && x <= 70 && y >= 40 && y <= 50)//left-intersection-entry
+            {
+                return (int)StreetRegion.IntersectionAhead;
+            }
+            else
+            {
+                return (int)StreetRegion.NormalStreet;
             }
         }
 

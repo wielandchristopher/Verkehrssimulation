@@ -18,7 +18,8 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         public int Id { get; set; }
         public int X { get; set; }
-        public int Y { get; set; } 
+        public int Y { get; set; }
+        public int Speed { get; set; }
         public int Direction{ get; set; }
         public int NextDirection { get; set; }
         public Boolean MayDrive { get; set; }
