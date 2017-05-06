@@ -60,7 +60,7 @@ namespace Verkehrssimulation
 
         private void dpTimer2_Tick(object sender, EventArgs e)
         {
-            ap.blinky();
+            //ap.blinky();
         }
     }
 }

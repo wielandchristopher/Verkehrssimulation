@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -57,6 +52,7 @@ namespace Verkehrssimulation.GUI
 
             // shape
             shp = new Rectangle();
+
             shp.Fill = new SolidColorBrush(Colors.Black);
             Canvas.SetTop(shp, x);
             Canvas.SetLeft(shp, y);
@@ -141,16 +137,6 @@ namespace Verkehrssimulation.GUI
         public Shape getCircleRed()
         {
             return this.redCircle;
-        }
-
-        public void setYellow()
-        {
-            yellowCircle.Fill = new SolidColorBrush(Colors.Yellow);
-        }
-
-        public void unsetYellow()
-        {
-            yellowCircle.Fill = new SolidColorBrush(Colors.White);
         }
     }
 }
