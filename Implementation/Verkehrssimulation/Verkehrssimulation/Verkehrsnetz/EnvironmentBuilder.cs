@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Verkehrssimulation.GUI;
+using Verkehrssimulation.AmpelHandler;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
@@ -18,12 +19,14 @@ namespace Verkehrssimulation.Verkehrsnetz
         private Canvas canvas;
         List<Streetelem> elem;
         GUI.AmpelHandler ah;
+        AmpelHandler.AmpelHandler extah;
         Streetelem[,] elems = new Streetelem[7, 7];
         int ampelcnt = 0;
 
-        public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah)
+        public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref AmpelHandler.AmpelHandler _extah)
         {
             ah = _ah;
+            extah = _extah;
             canvas = mycanvas;
             Console.WriteLine("Buidler loaded");
             elem = new List<Streetelem>();
