@@ -14,6 +14,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         private EnvironmentHandler eb; // ref auf Environmenthandler zum abfragen der rules
         private ObjectHandler oh; //ref zu GUI
         Random rng = new Random(); //random number generator
+        int id_number;
 
         public enum StreetRegion { NormalStreet = 0, IntersectionAhead = 1, Intersection = 2};
 
@@ -22,6 +23,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             trafficobjs = new List<TrafficObject>();
             oh = _oh;
             eb = _eb;
+            id_number = 1;
         }
 
         public void updateAll()
@@ -278,10 +280,12 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             return eb.getNeededEnvironmentRules(x, y);
         }
 
-        public void createNewVerkehrsteilnehmer(int id, int x, int y, int speed, int direction, int nextDirection)
+        public void createNewVerkehrsteilnehmer(int x, int y, int speed, int direction, int nextDirection)
         {
       
-            trafficobjs.Add(new TrafficObject(id,x, y, speed, direction, nextDirection));
+            trafficobjs.Add(new TrafficObject(id_number,x, y, speed, direction, nextDirection));
+            oh.addCarObject(x, y, id_number);
+            id_number++;
         }
 
         public void removeVerkehrteilnehmer(int id)
@@ -298,6 +302,8 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             {
                 trafficobjs.Remove(removeObject);
             }
+
+            //TODO call UI to remove car
         }
 
         private Boolean checkIfTilesAreEmpty(int startX, int startY, int destX, int destY)
