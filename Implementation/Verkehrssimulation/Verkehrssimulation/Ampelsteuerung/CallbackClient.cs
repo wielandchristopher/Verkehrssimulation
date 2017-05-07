@@ -1,6 +1,7 @@
 ﻿using Ampelsteuerung;
 using System;
 using Verkehrssimulation.AmpelHandler;
+using Verkehrssimulation;
 
 namespace CallbackCli
 {
@@ -9,6 +10,7 @@ namespace CallbackCli
 
         CallbackClient _client;
         private AmpelHandler _client1;
+        private MainWindow client;
 
         public CallbackClient(AmpelHandler _client1)
         {
@@ -22,6 +24,11 @@ namespace CallbackCli
 
         public CallbackClient()
         {
+        }
+
+        public CallbackClient(MainWindow client)
+        {
+            this.client = client;
         }
 
         public void OnNewMessage(string msg)

@@ -1,23 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using Verkehrssimulation.GUI;
 using Verkehrssimulation.Verkehrsnetz;
-using Verkehrssimulation.Verkehrsregeln;
 using Verkehrssimulation.Verkehrsteilnehmer;
-using Verkehrssimulation.AmpelHandler;
+using Ampelsteuerung;
+using CallbackCli;
+using System.ServiceModel;
 
 namespace Verkehrssimulation
 {
@@ -29,6 +18,26 @@ namespace Verkehrssimulation
         private DispatcherTimer dispatchTimer, dpTimer2;
         private ObjectHandler oh;
         private GUI.AmpelHandler ap;
+        AmpelHandler.AmpelHandler extAH = new AmpelHandler.AmpelHandler();
+        IAmpelService trafficlight;
+        CallbackClient _callback;
+        MainWindow client;
+
+        //Diese Funktion muss gestartet werden, damit eine Verbindung zum Server aufgebaut werden kann. 
+        public void StartAmpelsteuerung()
+        {
+            try
+            {
+                _callback = new CallbackClient(client);
+                DuplexChannelFactory<IAmpelService> factory = new DuplexChannelFactory<IAmpelService>(_callback, new NetNamedPipeBinding(), new EndpointAddress("net.pipe://localhost/Ampelsteuerung"));
+                trafficlight = factory.CreateChannel();
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -48,14 +57,25 @@ namespace Verkehrssimulation
             EnvironmentHandler envhandler = new EnvironmentHandler();
             TrafficHandler traffichandler = new TrafficHandler(ref envhandler, ref oh);
 
-<<<<<<< HEAD
-            AmpelHandler.AmpelHandler extAH = new AmpelHandler.AmpelHandler();
+            MainWindow extAH = new MainWindow();
             extAH.StartAmpelsteuerung();
 
-=======
-            AmpelHandler.AmpelHandler extAH = null; //new AmpelHandler.AmpelHandler();
+            try
+            {
+                extAH.trafficlight.setAmpelAnzahl(5);                  
+            }
+            catch (NullReferenceException nre)
+            {
+                Console.WriteLine("Der Server ist nicht gestartet!");
+                nre.ToString();
+            }
+            catch (EndpointNotFoundException enfe)
+            {
+                Console.WriteLine("Der Server ist nicht gestartet!");
+                enfe.ToString();
+            }
+
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
->>>>>>> origin/master
 
             dispatchTimer.Start();
             dpTimer2.Start();
@@ -70,6 +90,6 @@ namespace Verkehrssimulation
         private void dpTimer2_Tick(object sender, EventArgs e)
         {
             //ap.blinky();
-        }
+        } 
     }
 }
