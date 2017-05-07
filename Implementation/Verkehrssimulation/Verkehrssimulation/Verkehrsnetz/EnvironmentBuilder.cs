@@ -2,14 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Verkehrssimulation.GUI;
-using Verkehrssimulation.AmpelHandler;
+
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
@@ -29,6 +23,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             extah = _extah;
             canvas = mycanvas;
             Console.WriteLine("Buidler loaded");
+            
             elem = new List<Streetelem>();
             LoadJson();
             LoadEnvironment();

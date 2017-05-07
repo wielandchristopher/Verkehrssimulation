@@ -14,13 +14,13 @@ namespace Ampelsteuerung
         //Erster integer gibt ampelID zurück
         //Zweiter integer gibt Status der Ampel zurück 
         [OperationContract]
-        void getAmpelStatus(int ampelid);
+        string getAmpelStatus(int ampelid);
 
         //Gibt integer und boolean zurück: 
         //integer ist die AmpelID
         //true - Ampel Funktioniert, false - Ampel ausgeschaltet
         [OperationContract]
-        void getAmpelAusfall(int ampelid);
+        string getAmpelAusfall(int ampelid);
 
         //Schaltet die mitgegebene Ampel wieder aus
         [OperationContract]
@@ -51,18 +51,24 @@ namespace Ampelsteuerung
         //Erster integer gibt ampelID zurück
         //Zweiter integer gibt die Sekunden der Rotphase zurück
         [OperationContract]
-        void getRotPhase(int ampelid);
+        string getRotPhase(int ampelid);
 
         //Gibt 2 Integer zurück: 
         //Erster integer gibt ampelID zurück
         //Zweiter integer gibt die Sekunden der Gelbphase zurück
         [OperationContract]
-        void getGelbPhase(int ampelid);
+        string getGelbPhase(int ampelid);
 
         //Gibt 2 Integer zurück: 
         //Erster integer gibt ampelID zurück
         //Zweiter integer gibt die Sekunden der Grünphase zurück
         [OperationContract]
-        void getGruenPhase(int ampelid);
+        string getGruenPhase(int ampelid);
+
+        //Gibt 2 Integer zurück: 
+        //Erster integer gibt ampelID zurück
+        //Zweiter integer gibt die Sekunden der Grünphase zurück
+        [OperationContract]
+        int getAmpelAnzahl();
     }
 }
