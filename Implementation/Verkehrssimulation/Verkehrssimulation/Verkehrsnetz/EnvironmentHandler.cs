@@ -13,7 +13,7 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         public EnvironmentHandler()
         {
-            output = 2;
+            output = 3;
         }
         public int getNeededEnvironmentRules(int x, int y)
         {

@@ -46,7 +46,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         break;
                         //TODO get more detailed information where I can go.
                         //TODO get information if traffic light or not.
-                        
+
                     case (int)EnvElement.StreetType.ThreeKreuzung:
                     case (int)EnvElement.StreetType.FourKreuzung:
                         int streetRegion = getStreetRegion(obj.X, obj.Y);
@@ -60,7 +60,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                 break;
                             //TODO find Solution for "zugestaute Kreuzungen"
                             case (int)StreetRegion.Intersection:
-                                switch ((obj.NextDirection - obj.Direction) % 4)
+                                switch ((obj.NextDirection - obj.Direction +4) % 4)
                                 {
                                     case 0: //contues to drive in same direction
                                         obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
@@ -260,7 +260,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                 break;
                             case (int)EnvElement.StreetType.FourKreuzung:
                                 int rngMinus1toPlus1 = rng.Next(1, 4) - 2; // -1 <= rng <= 1
-                                obj.Direction = (obj.Direction + rngMinus1toPlus1) % 4;
+                                obj.NextDirection = (obj.NextDirection + rngMinus1toPlus1 + 4) % 4;
                                 break;
                         }
                     }
@@ -356,7 +356,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
             else
             {
-                if ((obj.NextDirection - obj.Direction) % 4 == 1) //links abiegen{
+                if ((obj.NextDirection - obj.Direction + 4) % 4 == 1) //links abiegen{
                 {
                     return checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);//schau vorne nichts kommt
 
