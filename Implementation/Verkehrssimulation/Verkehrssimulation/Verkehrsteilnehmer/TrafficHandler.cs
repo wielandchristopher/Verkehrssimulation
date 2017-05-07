@@ -73,7 +73,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                                 {
                                                     decimal d = nextRoadX / 100;
                                                     nextRoadX = ((int)Math.Floor(d) * 100) + 55;
-                                                    obj.Direction = obj.NextDirection;
+                                                    //obj.Direction = obj.NextDirection;
                                                 }
                                                 break;
                                             case (int) TrafficObject.Dir.Down:
@@ -81,7 +81,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                                 {
                                                     decimal d = nextRoadX / 100;
                                                     nextRoadX = ((int)Math.Floor(d) * 100) + 45;
-                                                    obj.Direction = obj.NextDirection;
+                                                    //obj.Direction = obj.NextDirection;
                                                 }
                                                 break;
                                             case (int)TrafficObject.Dir.Right:
@@ -89,7 +89,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                                 {
                                                     decimal d = nextRoadY / 100;
                                                     nextRoadY = ((int)Math.Floor(d) * 100) + 55;
-                                                    obj.Direction = obj.NextDirection;
+                                                    //obj.Direction = obj.NextDirection;
                                                 }
                                                 break;
                                             case (int)TrafficObject.Dir.Left:
@@ -97,7 +97,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                                 {
                                                     decimal d = nextRoadY / 100;
                                                     nextRoadY = ((int)Math.Floor(d) * 100) + 45;
-                                                    obj.Direction = obj.NextDirection;
+                                                    //obj.Direction = obj.NextDirection;
                                                 }
                                                 break;
                                         }
@@ -132,8 +132,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                                 if ((obj.X % 100 <= 55 && nextRoadX % 100 >= 55) || (obj.X % 100 >= 55 && nextRoadX % 100 <= 55))
                                                 {
                                                     decimal d = nextRoadX / 100;
-                                                    nextRoadX = ((int)Math.Floor(d) * 100) + 55;
-                                                    obj.Direction = obj.NextDirection;
+                                                    nextRoadX = ((int)Math.Floor(d) * 100) + 55; 
                                                 }
                                                 break;
                                             case (int)TrafficObject.Dir.Down:
@@ -141,7 +140,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                                 {
                                                     decimal d = nextRoadX / 100;
                                                     nextRoadX = ((int)Math.Floor(d) * 100) + 45;
-                                                    obj.Direction = obj.NextDirection;
                                                 }
                                                 break;
                                             case (int)TrafficObject.Dir.Right:
@@ -149,7 +147,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                                 {
                                                     decimal d = nextRoadY / 100;
                                                     nextRoadY = ((int)Math.Floor(d) * 100) + 55;
-                                                    obj.Direction = obj.NextDirection;
                                                 }
                                                 break;
                                             case (int)TrafficObject.Dir.Left:
@@ -157,7 +154,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                                 {
                                                     decimal d = nextRoadY / 100;
                                                     nextRoadY = ((int)Math.Floor(d) * 100) + 45;
-                                                    obj.Direction = obj.NextDirection;
                                                 }
                                                 break;
                                         }
@@ -172,14 +168,14 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 }
             }
 
-            foreach (TrafficObject obj in trafficobjs) //update cars
+            foreach (TrafficObject obj in trafficobjs) //update cars if they may drive
             {
                 if (obj.MayDrive)
                 { 
                     Tuple<int, int> nextRoadXY = getNextRoadTileXY(obj);
                     int nextRoadX = nextRoadXY.Item1;
                     int nextRoadY = nextRoadXY.Item2;
-                    //decide where to go next when leaving roadTile
+                    //decide where to go next (only) when leaving (100x100) roadTile
                     if ((Math.Abs(obj.X % 100 - nextRoadX % 100) > (obj.Speed + 1)) || (Math.Abs(obj.Y % 100 - nextRoadY % 100) > (obj.Speed + 1)))
                     {
                         int nextRoadInfo = getEnvRules(nextRoadX, nextRoadY); 
@@ -267,10 +263,51 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
                     obj.MayDrive = false;
 
-                    obj.X = nextRoadXY.Item1;
-                    obj.Y = nextRoadXY.Item2;//move the car to its new position
+                    //fix position when taking a turn
+                    if ((getStreetRegion(obj.X, obj.Y) == (int) StreetRegion.Intersection) && ((obj.NextDirection - obj.Direction) % 4) != 0){
+                        switch (obj.NextDirection)
+                        {
+                            case (int)TrafficObject.Dir.Up:
+                                if ((obj.X % 100 <= 55 && nextRoadX % 100 >= 55) || (obj.X % 100 >= 55 && nextRoadX % 100 <= 55))
+                                {
+                                    decimal d = nextRoadX / 100;
+                                    nextRoadX = ((int)Math.Floor(d) * 100) + 55;
+                                    obj.Direction = obj.NextDirection;
+
+                                }
+                                break;
+                            case (int)TrafficObject.Dir.Down:
+                                if ((obj.X % 100 <= 45 && nextRoadX % 100 >= 45) || (obj.X % 100 >= 45 && nextRoadX % 100 <= 45))
+                                {
+                                    decimal d = nextRoadX / 100;
+                                    nextRoadX = ((int)Math.Floor(d) * 100) + 45;
+                                    obj.Direction = obj.NextDirection;
+                                }
+                                break;
+                            case (int)TrafficObject.Dir.Right:
+                                if ((obj.Y % 100 <= 55 && nextRoadY % 100 >= 55) || (obj.Y % 100 >= 55 && nextRoadY % 100 <= 55))
+                                {
+                                    decimal d = nextRoadY / 100;
+                                    nextRoadY = ((int)Math.Floor(d) * 100) + 55;
+                                    obj.Direction = obj.NextDirection;
+                                }
+                                break;
+                            case (int)TrafficObject.Dir.Left:
+                                if ((obj.Y % 100 <= 45 && nextRoadY % 100 >= 45) || (obj.Y % 100 >= 45 && nextRoadY % 100 <= 45))
+                                {
+                                    decimal d = nextRoadY / 100;
+                                    nextRoadY = ((int)Math.Floor(d) * 100) + 45;
+                                    obj.Direction = obj.NextDirection;
+                                }
+                                break;
+                        }
+
+                    }
+
+                    obj.X = nextRoadX;
+                    obj.Y = nextRoadY;//move the car to its new position
                     //send update to UI
-                    oh.updateCarWithID(obj.Y, obj.X, obj.Id); //xy and y are in ui the other way around;
+                    oh.updateCarWithID(obj.Y, obj.X, obj.Id); //x and y are in ui the other way around
                 }
             }
         }
