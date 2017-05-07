@@ -34,7 +34,7 @@ namespace Verkehrssimulation.GUI
             greenCircle.Width = 8;
             greenCircle.Height = 8;
             greenCircle.Fill = new SolidColorBrush(Colors.White);
-            green = false;
+            green = true;
 
             // grün
             yellowCircle = new Ellipse();

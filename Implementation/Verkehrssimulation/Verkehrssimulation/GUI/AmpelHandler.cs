@@ -29,61 +29,41 @@ namespace Verkehrssimulation.GUI
             return true;
         }
 
-        public void setRedLight(int id)
+        public void setNext(int id)
         {
             foreach (Ampel a in ampellist)
             {
                 if (a.objid == id)
                 {
-                    // turn off yellow light
-                    Shape yellow = a.getCircleYellow();
-                    yellow.Fill = new SolidColorBrush(Colors.White);
+                    if (a.yellow == true && a.red == true)
+                    {
+                        // turn off yellow light
+                        Shape yellow = a.getCircleYellow();
+                        yellow.Fill = new SolidColorBrush(Colors.White);
 
-                    // turn on red light
-                    Shape red = a.getCircleRed();
-                    red.Fill = new SolidColorBrush(Colors.Red);
+                        // turn on green light
+                        Shape green = a.getCircleGreen();
+                        green.Fill = new SolidColorBrush(Colors.Green);
 
-                    a.red = true;
-                    a.yellow = false;
-                }
-                else
-                {
-                    new Exception("Die Ampel mit der ID:" + id + "wurde nicht gefunden");
-                }
-            }
-        }
+                        a.green = true;
+                        a.yellow = false;
+                        a.red = false;
+                    }
+                    else if (a.yellow == true && a.green == true)
+                    {
+                        // turn off yellow light
+                        Shape yellow = a.getCircleYellow();
+                        yellow.Fill = new SolidColorBrush(Colors.White);
 
-        public void setGreenLight(int id)
-        {
-            foreach (Ampel a in ampellist)
-            {
-                if (a.objid == id)
-                {
-                    // turn off yellow light
-                    Shape yellow = a.getCircleYellow();
-                    yellow.Fill = new SolidColorBrush(Colors.White);
+                        // turn on red light
+                        Shape red = a.getCircleRed();
+                        red.Fill = new SolidColorBrush(Colors.Red);
 
-                    // turn on green light
-                    Shape green = a.getCircleGreen();
-                    green.Fill = new SolidColorBrush(Colors.Green);
-
-                    a.green = true;
-                    a.yellow = false;
-                }
-                else
-                {
-                    new Exception("Die Ampel mit der ID:" + id + "wurde nicht gefunden");
-                }
-            }
-        }
-
-        public void setYellowLight(int id)
-        {
-            foreach (Ampel a in ampellist)
-            {
-                if (a.objid == id)
-                {
-                    if (a.red == true)
+                        a.red = true;
+                        a.yellow = false;
+                        a.green = false;
+                    }
+                    else if (a.red == true)
                     {
                         // turn off red light
                         Shape red = a.getCircleRed();
@@ -94,7 +74,6 @@ namespace Verkehrssimulation.GUI
                         yellow.Fill = new SolidColorBrush(Colors.Yellow);
 
                         a.yellow = true;
-                        a.red = false;
                     }
                     else if (a.green == true)
                     {
@@ -107,7 +86,6 @@ namespace Verkehrssimulation.GUI
                         yellow.Fill = new SolidColorBrush(Colors.Yellow);
 
                         a.yellow = true;
-                        a.green = false;
                     }
                     else
                     {

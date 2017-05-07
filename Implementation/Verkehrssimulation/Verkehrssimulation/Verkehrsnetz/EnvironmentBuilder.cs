@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Ampelsteuerung;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,28 +8,30 @@ using System.Windows.Controls;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
-    class EnvironmentBuilder 
+    class EnvironmentBuilder : IF_Teilnehmer
     {
         JObject obj; // für json -> Projekt-> nu-getpakete verwalten -> json linq irgendwas
         private Canvas canvas;
         List<Streetelem> elem;
         GUI.AmpelHandler ah;
-        AmpelHandler.AmpelHandler extah;
+        IAmpelService trafficlight;
         Streetelem[,] elems = new Streetelem[7, 7];
         int ampelcnt = 0;
 
-        public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref AmpelHandler.AmpelHandler _extah)
+        public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref IAmpelService _trafficlight)
         {
             ah = _ah;
-            extah = _extah;
+            trafficlight = _trafficlight;
+            
             canvas = mycanvas;
             Console.WriteLine("Buidler loaded");
             
             elem = new List<Streetelem>();
             LoadJson();
             LoadEnvironment();
-      
+       
         }
+
 
         public void LoadJson()
         {
@@ -53,25 +56,21 @@ namespace Verkehrssimulation.Verkehrsnetz
                 elems[xpos/100,ypos/100] = addObject(xpos, ypos, 3);
 
                 ah.addTrafficLight(xpos + 60, ypos + 60, 1,ampelcnt++);
+                ah.setGreenLight(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++);
+                ah.setRedLight(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++);
+                ah.setGreenLight(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++);
+                ah.setRedLight(ampelcnt - 1);
+                Console.WriteLine(ampelcnt);
+                
+                //trafficlight.setAmpelAnzahl(12);
+                
 
                 addSolution(xpos,ypos);
-
-
             }
 
-            for(int i = 0; i< ampelcnt; i++)
-            {
-                ah.setGreenLight(i);
-                ah.setYellowLight(i);
-                ah.setRedLight(i);
-                ah.setYellowLight(i);
-                ah.setGreenLight(i);
-                ah.setYellowLight(i);
-                ah.setRedLight(i);
-            }
 
 
             fillWithGrass();
@@ -95,7 +94,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                 {
                     if (elems[x, y] == null)
                     {
-                        elems[x, y] = addObject(x * 100, y * 100, 4);
+                        elems[x, y] = addObject(x * 100, y * 100, 4); // correct 4
                     }
 
                 }
@@ -116,7 +115,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                     }
                     else if (elems[i / 100, ypos / 100] == null)
                     {
-                        elems[i / 100, ypos / 100] = addObject(i, ypos, 1);
+                        elems[i / 100, ypos / 100] = addObject(i, ypos, 1); // correct 1
                         ((Streetelem)elems[i / 100, ypos / 100]).elemRotate(null, null);
                     }
 
@@ -135,13 +134,63 @@ namespace Verkehrssimulation.Verkehrsnetz
                     }
                     else if(elems[xpos / 100, i / 100]==null)
                     {
-                        elems[xpos / 100, i / 100] = addObject(xpos, i, 1);
+                        elems[xpos / 100, i / 100] = addObject(xpos, i, 1); // correct 1
                     }
                     
                 }
 
             }
 
+        }
+
+        int alternate = 0;
+        public void alternateLight()
+        {
+            int x = 0;
+            while (x < ampelcnt)
+            {
+                ah.setYellowLight(x);
+
+                if (alternate % 2 == 0)
+                {
+                    if (x % 2 == 0)
+                    {
+                        ah.setGreenLight(x);
+                    }
+                    else
+                    {
+                        ah.setRedLight(x);
+                    }
+                }
+                else
+                {
+                    if (x % 2 == 0)
+                    {
+                        
+                        ah.setRedLight(x);
+                    }
+                    else
+                    {
+                        ah.setGreenLight(x);
+                    }
+                }
+                
+                x++;
+            }
+
+            alternate++;
+            Console.WriteLine(alternate);
+        }
+        public void setAmpeln()
+        {
+            int x = 0;
+            while (x < ampelcnt)
+            {
+                ah.setGreenLight(x);
+                x++;
+            }
+
+            ah.setRedLight(7);
         }
 
         public Streetelem addObject(int x, int y, int type)
@@ -157,5 +206,56 @@ namespace Verkehrssimulation.Verkehrsnetz
             return e;
         }
 
+
+        public void UpdateGUIAmpeln()
+        {
+            // ampelthread abfragen und an gui leiten
+        }
+
+        public void InitAmpelThread()
+        {
+            // ampeln bei wieland initieeren
+        }
+
+        public void GetAmpelInfo(int id)
+        {
+
+
+            //Console.WriteLine("Anzahl: " + trafficlight.getAmpelAnzahl());
+
+            //for(int x = 1; x < trafficlight.getAmpelAnzahl(); x++)
+            //{
+            //    trafficlight.setRotPhase(x, 2);
+
+            //    Console.WriteLine("status von Ampel "+x+": " + trafficlight.getAmpelStatus(x));
+            //}
+            
+
+        }
+
+        public EnvElement.StreetType getStreetType(int x, int y) //geht
+        {
+            //holt den straßentyp und die ausrichtung vom aktuellen feld wo das auto fährt
+            //Console.WriteLine(this.elems[x / 100, y / 100].getStreetType().ToString());
+
+            if (x > 600){x = 600;}
+            else if (x < 0){ x = 0;}
+
+            if (y > 600){y = 600;}
+            else if (y < 0){y = 0;}
+            return this.elems[x / 100, y / 100].getStreetType();
+        }
+
+        public void getRules()
+        {
+            // holt die regeln
+        }
+
+
+
+        public int getNeededEnvironmentRules(int x, int y)
+        {
+            return (int)getStreetType(x,y);
+        }
     }
 }

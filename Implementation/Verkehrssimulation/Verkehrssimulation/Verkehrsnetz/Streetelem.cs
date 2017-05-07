@@ -24,6 +24,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             img.Height = 100;
             img.MouseEnter += enter;
             img.MouseLeave += leave;
+            img.MouseDown += printStreetType;
 
             initImgType();
             addContextMenue();
@@ -108,7 +109,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             bi.BeginInit();
             bi.UriSource = new Uri(@"/Verkehrsnetz/FieldBitmaps/4kreuzung.bmp", UriKind.RelativeOrAbsolute);
             bi.EndInit();
-
+            this.stype = StreetType.FourKreuzung;
             img.Source = bi;
 
         }
@@ -120,7 +121,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             bi.BeginInit();
             bi.UriSource = new Uri(@"/Verkehrsnetz/FieldBitmaps/3kreuzung.bmp", UriKind.RelativeOrAbsolute);
             bi.EndInit();
-
+            this.stype = StreetType.ThreeKreuzung;
             img.Source = bi;
 
         }
@@ -132,7 +133,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             bi.BeginInit();
             bi.UriSource = new Uri(@"/Verkehrsnetz/FieldBitmaps/street.bmp", UriKind.RelativeOrAbsolute);
             bi.EndInit();
-
+            this.stype = StreetType.Street;
             img.Source = bi;
 
         }
@@ -144,7 +145,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             bi.BeginInit();
             bi.UriSource = new Uri(@"/Verkehrsnetz/FieldBitmaps/grass.bmp", UriKind.RelativeOrAbsolute);
             bi.EndInit();
-
+            this.stype = StreetType.Grass;
             img.Source = bi;
 
         }
@@ -153,6 +154,11 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
             return this.stype;
         }
+        public void printStreetType(object sender, EventArgs e)
+        {
+            Console.WriteLine(this.stype.ToString());
+        }
+        
 
         public void elemRotate(object sender, EventArgs e)
         {
