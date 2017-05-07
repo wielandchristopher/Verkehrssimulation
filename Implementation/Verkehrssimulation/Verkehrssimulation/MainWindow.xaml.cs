@@ -84,8 +84,7 @@ namespace Verkehrssimulation
                 Console.WriteLine("Der Server ist nicht gestartet!");
                 enfe.ToString();
             }
-<<<<<<< HEAD
-=======
+
 
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
 
@@ -96,7 +95,7 @@ namespace Verkehrssimulation
             dispatchTimer.Start();
             dpTimer2.Start();
 
->>>>>>> origin/master
+
         }
 
         private void dispatchTimer_Tick(object sender, EventArgs e)
