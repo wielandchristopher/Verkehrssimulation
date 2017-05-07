@@ -57,12 +57,10 @@ namespace Verkehrssimulation
             EnvironmentHandler envhandler = new EnvironmentHandler();
             TrafficHandler traffichandler = new TrafficHandler(ref envhandler, ref oh);
 
-            MainWindow extAH = new MainWindow();
-            extAH.StartAmpelsteuerung();
-
+            StartAmpelsteuerung();
             try
             {
-                extAH.trafficlight.setAmpelAnzahl(5);                  
+                trafficlight.setAmpelAnzahl(5);                  
             }
             catch (NullReferenceException nre)
             {
