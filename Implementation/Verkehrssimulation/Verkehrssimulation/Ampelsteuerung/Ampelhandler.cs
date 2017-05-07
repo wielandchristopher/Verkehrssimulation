@@ -11,14 +11,13 @@ namespace Verkehrssimulation.AmpelHandler
         IAmpelService trafficlight;
         CallbackClient _callback;
         AmpelHandler client;
-        AmpelHandler nobodyneed;
 
         //Diese Funktion muss gestartet werden, damit eine Verbindung zum Server aufgebaut werden kann. 
         public void StartAmpelsteuerung()
         {
             try
             {              
-                _callback = new CallbackClient(nobodyneed);
+                _callback = new CallbackClient(client);
                 DuplexChannelFactory<IAmpelService> factory = new DuplexChannelFactory<IAmpelService>(_callback, new NetNamedPipeBinding(), new EndpointAddress("net.pipe://localhost/Ampelsteuerung"));
                 trafficlight = factory.CreateChannel();
             }
@@ -28,12 +27,7 @@ namespace Verkehrssimulation.AmpelHandler
             }
         }
 
-        public AmpelHandler()
-        {
-            client = new AmpelHandler();
-            client.StartAmpelsteuerung();
-        }
-
+        [STAThread]
         public void functionx()
         {
             try
