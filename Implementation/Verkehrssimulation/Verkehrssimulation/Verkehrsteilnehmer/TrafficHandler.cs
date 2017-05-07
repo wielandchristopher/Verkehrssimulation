@@ -11,14 +11,14 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
     class TrafficHandler
     {
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
-        private EnvironmentHandler eb; // ref auf Environmenthandler zum abfragen der rules
+        private EnvironmentBuilder eb; // ref auf Environmenthandler zum abfragen der rules
         private ObjectHandler oh; //ref zu GUI
         Random rng = new Random(); //random number generator
         int id_number;
 
         public enum StreetRegion { NormalStreet = 0, IntersectionAhead = 1, Intersection = 2};
 
-        public TrafficHandler(ref EnvironmentHandler _eb, ref ObjectHandler _oh)
+        public TrafficHandler(ref EnvironmentBuilder _eb, ref ObjectHandler _oh)
         {
             trafficobjs = new List<TrafficObject>();
             oh = _oh;
@@ -166,6 +166,11 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                 obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                 break;
                         }
+                        break;
+
+                    case (int)EnvElement.StreetType.Grass:
+                        //may drive if road ahead is empty
+                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1); // only this car is around
                         break;
                     default:
                         throw new NotImplementedException();
