@@ -21,16 +21,13 @@ namespace Verkehrssimulation
         private TrafficHandler th;
         AmpelHandler.AmpelHandler extAH = new AmpelHandler.AmpelHandler();
         IAmpelService trafficlight;
-        CallbackClient _callback;
-        MainWindow client;
 
         //Diese Funktion muss gestartet werden, damit eine Verbindung zum Server aufgebaut werden kann. 
         public void StartAmpelsteuerung()
         {
             try
             {
-                _callback = new CallbackClient(client);
-                DuplexChannelFactory<IAmpelService> factory = new DuplexChannelFactory<IAmpelService>(_callback, new NetNamedPipeBinding(), new EndpointAddress("net.pipe://localhost/Ampelsteuerung"));
+                DuplexChannelFactory<IAmpelService> factory = new DuplexChannelFactory<IAmpelService>(new CallbackClient(this), new NetNamedPipeBinding(), new EndpointAddress("net.pipe://localhost/Ampelsteuerung"));
                 trafficlight = factory.CreateChannel();
             }
             catch (Exception ex)
@@ -42,6 +39,7 @@ namespace Verkehrssimulation
         public MainWindow()
         {
             InitializeComponent();
+            StartAmpelsteuerung();
 
             dispatchTimer = new DispatcherTimer();
             dispatchTimer.Tick += dispatchTimer_Tick;
@@ -58,10 +56,23 @@ namespace Verkehrssimulation
             EnvironmentHandler envhandler = new EnvironmentHandler();
             th = new TrafficHandler(ref envhandler, ref oh);
 
-            StartAmpelsteuerung();
+            MainAmpelsteuerung(this);
+
+            EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
+
+            dispatchTimer.Start();
+            dpTimer2.Start();
+        }
+        [STAThread]
+        private void MainAmpelsteuerung(MainWindow mainWindow)
+        {
+            mainWindow.StartAmpelsteuerung();
             try
             {
-                trafficlight.setAmpelAnzahl(5);                  
+                mainWindow.trafficlight.setAmpelAnzahl(5);
+                string j = mainWindow.trafficlight.getAmpelStatus(2);
+                //int i = mainWindow.trafficlight.getAmpelAnzahl();
+                Console.WriteLine(j);
             }
             catch (NullReferenceException nre)
             {
@@ -73,6 +84,8 @@ namespace Verkehrssimulation
                 Console.WriteLine("Der Server ist nicht gestartet!");
                 enfe.ToString();
             }
+<<<<<<< HEAD
+=======
 
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
 
@@ -83,6 +96,7 @@ namespace Verkehrssimulation
             dispatchTimer.Start();
             dpTimer2.Start();
 
+>>>>>>> origin/master
         }
 
         private void dispatchTimer_Tick(object sender, EventArgs e)

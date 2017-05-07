@@ -6,7 +6,6 @@ namespace CallbackCli
 {
     class CallbackClient: IAmpelCallback
     {
-
         CallbackClient _client;
         private TestClient _client1;
 
