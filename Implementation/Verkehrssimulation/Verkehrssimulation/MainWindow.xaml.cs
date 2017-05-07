@@ -47,13 +47,15 @@ namespace Verkehrssimulation
 
             EnvironmentHandler envhandler = new EnvironmentHandler();
             TrafficHandler traffichandler = new TrafficHandler(ref envhandler, ref oh);
-            
-           
-            EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap);
 
+<<<<<<< HEAD
             AmpelHandler.AmpelHandler extAH = new AmpelHandler.AmpelHandler();
             extAH.StartAmpelsteuerung();
 
+=======
+            AmpelHandler.AmpelHandler extAH = null; //new AmpelHandler.AmpelHandler();
+            EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
+>>>>>>> origin/master
 
             dispatchTimer.Start();
             dpTimer2.Start();
