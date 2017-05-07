@@ -60,6 +60,10 @@ namespace Verkehrssimulation
 
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
 
+            th.createNewVerkehrsteilnehmer(155, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+
             dispatchTimer.Start();
             dpTimer2.Start();
         }
@@ -73,6 +77,15 @@ namespace Verkehrssimulation
                 string j = mainWindow.trafficlight.getAmpelStatus(2);
                 //int i = mainWindow.trafficlight.getAmpelAnzahl();
                 Console.WriteLine(j);
+                j = mainWindow.trafficlight.getAmpelStatus(2);
+                //int i = mainWindow.trafficlight.getAmpelAnzahl();
+                Console.WriteLine(j);
+                j = mainWindow.trafficlight.getAmpelStatus(2);
+                //int i = mainWindow.trafficlight.getAmpelAnzahl();
+                Console.WriteLine(j);
+                j = mainWindow.trafficlight.getAmpelStatus(2);
+                //int i = mainWindow.trafficlight.getAmpelAnzahl();
+                Console.WriteLine(j);
             }
             catch (NullReferenceException nre)
             {
@@ -84,19 +97,10 @@ namespace Verkehrssimulation
                 Console.WriteLine("Der Server ist nicht gestartet!");
                 enfe.ToString();
             }
-<<<<<<< HEAD
-=======
 
-            EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
 
-            th.createNewVerkehrsteilnehmer(155, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
-            th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
-            th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
 
-            dispatchTimer.Start();
-            dpTimer2.Start();
 
->>>>>>> origin/master
         }
 
         private void dispatchTimer_Tick(object sender, EventArgs e)
