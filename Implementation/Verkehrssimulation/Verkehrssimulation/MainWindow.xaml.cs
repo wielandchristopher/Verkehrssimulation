@@ -18,6 +18,7 @@ namespace Verkehrssimulation
         private DispatcherTimer dispatchTimer, dpTimer2;
         private ObjectHandler oh;
         private GUI.AmpelHandler ap;
+        private TrafficHandler th;
         AmpelHandler.AmpelHandler extAH = new AmpelHandler.AmpelHandler();
         IAmpelService trafficlight;
 
@@ -53,7 +54,7 @@ namespace Verkehrssimulation
             ap = new GUI.AmpelHandler(myCanvas);
 
             EnvironmentHandler envhandler = new EnvironmentHandler();
-            TrafficHandler traffichandler = new TrafficHandler(ref envhandler, ref oh);
+            th = new TrafficHandler(ref envhandler, ref oh);
 
             MainAmpelsteuerung(this);
 
@@ -83,11 +84,25 @@ namespace Verkehrssimulation
                 Console.WriteLine("Der Server ist nicht gestartet!");
                 enfe.ToString();
             }
+<<<<<<< HEAD
+=======
+
+            EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
+
+            th.createNewVerkehrsteilnehmer(155, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+
+            dispatchTimer.Start();
+            dpTimer2.Start();
+
+>>>>>>> origin/master
         }
 
         private void dispatchTimer_Tick(object sender, EventArgs e)
         {
             //oh.UpdateAll(); //update aller elemente (um 5 verschieben je nach direction)
+            th.updateAll();
         }
 
         private void dpTimer2_Tick(object sender, EventArgs e)
