@@ -55,14 +55,23 @@ namespace Verkehrssimulation.Verkehrsnetz
                 
                 elems[xpos/100,ypos/100] = addObject(xpos, ypos, 3);
 
+
+
                 ah.addTrafficLight(xpos + 60, ypos + 60, 1,ampelcnt++);
-                ah.setGreenLight(ampelcnt - 1);
+                ah.setNext(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++);
-                ah.setRedLight(ampelcnt - 1);
+                ah.setNext(ampelcnt - 1);
+                ah.setNext(ampelcnt - 1);
+                ah.setNext(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++);
-                ah.setGreenLight(ampelcnt - 1);
+                ah.setNext(ampelcnt - 1);
+
                 ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++);
-                ah.setRedLight(ampelcnt - 1);
+                ah.setNext(ampelcnt - 1);
+                ah.setNext(ampelcnt - 1);
+                ah.setNext(ampelcnt - 1);
+
+
                 Console.WriteLine(ampelcnt);
                 
                 //trafficlight.setAmpelAnzahl(12);
@@ -149,17 +158,17 @@ namespace Verkehrssimulation.Verkehrsnetz
             int x = 0;
             while (x < ampelcnt)
             {
-                ah.setYellowLight(x);
+                ah.setNext(x);
 
                 if (alternate % 2 == 0)
                 {
                     if (x % 2 == 0)
                     {
-                        ah.setGreenLight(x);
+                        ah.setNext(x);
                     }
                     else
                     {
-                        ah.setRedLight(x);
+                        ah.setNext(x);
                     }
                 }
                 else
@@ -167,11 +176,11 @@ namespace Verkehrssimulation.Verkehrsnetz
                     if (x % 2 == 0)
                     {
                         
-                        ah.setRedLight(x);
+                        ah.setNext(x);
                     }
                     else
                     {
-                        ah.setGreenLight(x);
+                        ah.setNext(x);
                     }
                 }
                 
@@ -186,11 +195,11 @@ namespace Verkehrssimulation.Verkehrsnetz
             int x = 0;
             while (x < ampelcnt)
             {
-                ah.setGreenLight(x);
+                ah.setNext(x);
                 x++;
             }
 
-            ah.setRedLight(7);
+            ah.setNext(7);
         }
 
         public Streetelem addObject(int x, int y, int type)
