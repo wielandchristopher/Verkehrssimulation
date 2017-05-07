@@ -60,10 +60,6 @@ namespace Verkehrssimulation
 
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
 
-            th.createNewVerkehrsteilnehmer(155, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
-            th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
-            th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
-
             dispatchTimer.Start();
             dpTimer2.Start();
         }
@@ -75,15 +71,6 @@ namespace Verkehrssimulation
             {
                 mainWindow.trafficlight.setAmpelAnzahl(5);
                 string j = mainWindow.trafficlight.getAmpelStatus(2);
-                //int i = mainWindow.trafficlight.getAmpelAnzahl();
-                Console.WriteLine(j);
-                j = mainWindow.trafficlight.getAmpelStatus(2);
-                //int i = mainWindow.trafficlight.getAmpelAnzahl();
-                Console.WriteLine(j);
-                j = mainWindow.trafficlight.getAmpelStatus(2);
-                //int i = mainWindow.trafficlight.getAmpelAnzahl();
-                Console.WriteLine(j);
-                j = mainWindow.trafficlight.getAmpelStatus(2);
                 //int i = mainWindow.trafficlight.getAmpelAnzahl();
                 Console.WriteLine(j);
             }
@@ -99,6 +86,14 @@ namespace Verkehrssimulation
             }
 
 
+            EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap, ref extAH);
+
+            th.createNewVerkehrsteilnehmer(155, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+
+            dispatchTimer.Start();
+            dpTimer2.Start();
 
 
         }
