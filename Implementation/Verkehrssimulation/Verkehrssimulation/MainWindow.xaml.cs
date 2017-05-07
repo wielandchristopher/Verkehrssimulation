@@ -17,6 +17,7 @@ using Verkehrssimulation.GUI;
 using Verkehrssimulation.Verkehrsnetz;
 using Verkehrssimulation.Verkehrsregeln;
 using Verkehrssimulation.Verkehrsteilnehmer;
+using Verkehrssimulation.AmpelHandler;
 
 namespace Verkehrssimulation
 {
@@ -27,7 +28,7 @@ namespace Verkehrssimulation
     {
         private DispatcherTimer dispatchTimer, dpTimer2;
         private ObjectHandler oh;
-        private AmpelHandler ap;
+        private GUI.AmpelHandler ap;
         public MainWindow()
         {
             InitializeComponent();
@@ -42,13 +43,15 @@ namespace Verkehrssimulation
             dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 1000);
 
             oh = new ObjectHandler(myCanvas);
-            ap = new AmpelHandler(myCanvas);
+            ap = new GUI.AmpelHandler(myCanvas);
 
             EnvironmentHandler envhandler = new EnvironmentHandler();
             TrafficHandler traffichandler = new TrafficHandler(ref envhandler, ref oh);
             
            
             EnvironmentBuilder builder = new EnvironmentBuilder(myCanvas, ref ap);
+
+            //AmpelHandler.AmpelHandler extAH = new AmpelHandler.AmpelHandler();
 
             dispatchTimer.Start();
             dpTimer2.Start();

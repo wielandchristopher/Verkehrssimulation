@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -62,8 +63,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Ampelsteuerung\Ampelhandler.cs" />
-    <Compile Include="Ampelsteuerung\IF_Ampel.cs" />
+    <Compile Include="Ampelsteuerung\CallbackClient.cs" />
+    <Compile Include="Ampelsteuerung\IAmpelCallback.cs" />
+    <Compile Include="Ampelsteuerung\IAmpelService.cs" />
+    <Compile Include="Ampelsteuerung\AmpelHandler.cs" />
     <Compile Include="GUI\Ampel.cs" />
     <Compile Include="GUI\AmpelHandler.cs" />
     <Compile Include="GUI\AmpelInterface.cs" />

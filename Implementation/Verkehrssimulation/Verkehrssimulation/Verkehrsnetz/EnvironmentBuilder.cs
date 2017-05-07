@@ -16,24 +16,20 @@ namespace Verkehrssimulation.Verkehrsnetz
     {
         JObject obj; // für json -> Projekt-> nu-getpakete verwalten -> json linq irgendwas
         private Canvas canvas;
-        List<EnvElement> elem;
-        AmpelHandler ah;
-        EnvElement[,] elems = new EnvElement[7, 7];
+        List<Streetelem> elem;
+        GUI.AmpelHandler ah;
+        Streetelem[,] elems = new Streetelem[7, 7];
         int ampelcnt = 0;
 
-
-
-        public EnvironmentBuilder(Canvas mycanvas, ref AmpelHandler _ah)
+        public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah)
         {
             ah = _ah;
             canvas = mycanvas;
             Console.WriteLine("Buidler loaded");
-            elem = new List<EnvElement>();
+            elem = new List<Streetelem>();
             LoadJson();
             LoadEnvironment();
-            
-           
-            
+      
         }
 
         public void LoadJson()
@@ -150,11 +146,11 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
-        public EnvElement addObject(int x, int y, int type)
+        public Streetelem addObject(int x, int y, int type)
         {
 
             //StreetType { Street = 1, ThreeKreuzung = 2, FourKreuzung = 3, Grass = 4 };
-            EnvElement e = new Streetelem(x, y, 1, type);
+            Streetelem e = new Streetelem(x, y, 1, type);
             elem.Add(e);
 
             canvas.Children.Add(e.getImage());
@@ -163,13 +159,5 @@ namespace Verkehrssimulation.Verkehrsnetz
             return e;
         }
 
-        public void addAmpel(int x, int y, int dir)
-        {
-            GUI.Ampel a = new GUI.Ampel(x, y, dir, 1);
-            canvas.Children.Add(a.getShape());
-            canvas.Children.Add(a.getCircleGreen());
-            canvas.Children.Add(a.getCircleYellow());
-            canvas.Children.Add(a.getCircleRed());
-        }
     }
 }
