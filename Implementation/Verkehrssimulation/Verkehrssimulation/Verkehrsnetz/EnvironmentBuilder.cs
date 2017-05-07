@@ -64,13 +64,11 @@ namespace Verkehrssimulation.Verkehrsnetz
 
             for(int i = 0; i< ampelcnt; i++)
             {
-                ah.setGreenLight(i);
-                ah.setYellowLight(i);
-                ah.setRedLight(i);
-                ah.setYellowLight(i);
-                ah.setGreenLight(i);
-                ah.setYellowLight(i);
-                ah.setRedLight(i);
+                ah.setNext(i);
+                ah.setNext(i);
+                ah.setNext(i);
+                ah.setNext(i);
+                ah.setNext(i);
             }
 
 
