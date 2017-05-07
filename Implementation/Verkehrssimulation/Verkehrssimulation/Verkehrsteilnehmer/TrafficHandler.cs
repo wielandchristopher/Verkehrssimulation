@@ -42,7 +42,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 {
                     case (int)EnvElement.StreetType.Street:
                         //may drive if road ahead is empty
-                        obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1); // only this car is around
                         break;
                         //TODO get more detailed information where I can go.
                         //TODO get information if traffic light or not.
@@ -53,17 +53,17 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         switch (streetRegion)
                         {
                             case (int) StreetRegion.NormalStreet:
-                                obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                 break;
                             case (int)StreetRegion.IntersectionAhead:
-                                obj.MayDrive = checkIfCanDrive4WayWithoutTrafficLight(obj) && checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                obj.MayDrive = checkIfCanDrive4WayWithoutTrafficLight(obj) && (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                 break;
                             //TODO find Solution for "zugestaute Kreuzungen"
                             case (int)StreetRegion.Intersection:
                                 switch ((obj.NextDirection - obj.Direction) % 4)
                                 {
                                     case 0: //contues to drive in same direction
-                                        obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                         break;
                                     default: //biegt wo ab.
                                         switch (obj.NextDirection)
@@ -103,7 +103,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         }
                                         break;
                                 }
-                                obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                 break;
                         }
                         break;
@@ -113,17 +113,17 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         switch (streetRegion2)
                         {
                             case (int)StreetRegion.NormalStreet:
-                                obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                 break;
                             case (int)StreetRegion.IntersectionAhead:
-                                obj.MayDrive = checkIfCanDriveWithTrafficLight(obj) && checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                obj.MayDrive = checkIfCanDriveWithTrafficLight(obj) && (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                 break;
                             //TODO find Solution for "zugestaute Kreuzungen"
                             case (int)StreetRegion.Intersection:
                                 switch ((obj.NextDirection - obj.Direction) % 4)
                                 {
                                     case 0: //contues to drive in same direction
-                                        obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                         break;
                                     default: //biegt wo ab.
                                         switch (obj.NextDirection)
@@ -163,7 +163,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         }
                                         break;
                                 }
-                                obj.MayDrive = checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY);
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1);
                                 break;
                         }
                         break;
@@ -270,7 +270,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     obj.X = nextRoadXY.Item1;
                     obj.Y = nextRoadXY.Item2;//move the car to its new position
                     //send update to UI
-                    oh.updateCarWithID(obj.X, obj.Y, obj.Id);
+                    oh.updateCarWithID(obj.Y, obj.X, obj.Id); //xy and y are in ui the other way around;
                 }
             }
         }
@@ -306,8 +306,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             //TODO call UI to remove car
         }
 
-        private Boolean checkIfTilesAreEmpty(int startX, int startY, int destX, int destY)
+        private int checkIfTilesAreEmpty(int startX, int startY, int destX, int destY)
         {
+            int count = 0;
             foreach (TrafficObject obj in trafficobjs)
             {
                 int xIncrement = 1;
@@ -324,21 +325,21 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     for (int y = startY; y != (destY + yIncrement); y = y + yIncrement)
                         if (obj.X == x && obj.Y == y)
                         {
-                            return false;
+                            count++;
                         }
             }
-            return true;
+            return count;
         }
 
         private Boolean checkIfCanDrive4WayWithoutTrafficLight (TrafficObject obj)
         {
-            switch ((obj.NextDirection - obj.Direction) % 4) //calculates the Abbiegerichtung: 1= nach rechts, 2= nach geradeaus, 3 =nach links
+            switch ((obj.NextDirection - obj.Direction + 4) % 4) //calculates the Abbiegerichtung: 1= nach rechts, 2= nach geradeaus, 3 =nach links
             {
-                case 1: //rechts abbiegen
+                case 3: //rechts abbiegen
                     return true;
-                case 2: //geradeaus
+                case 0: //geradeaus
                     return checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 1) % 4); //schau ob rechts nichts kommt
-                case 3://links abbiegen
+                case 1://links abbiegen
                     return checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 1) % 4) && checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);//schau ob rechts und vorne nichts kommt
                 default:
                     return false;
@@ -355,7 +356,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
             else
             {
-                if ((obj.NextDirection - obj.Direction) % 4 == 3) //links abiegen{
+                if ((obj.NextDirection - obj.Direction) % 4 == 1) //links abiegen{
                 {
                     return checkIfIntersectionEntryIsEmpty(obj.X, obj.Y, (obj.Direction + 2) % 4);//schau vorne nichts kommt
 
@@ -372,13 +373,13 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             switch (obj.Direction)
             {
                 case (int)TrafficObject.Dir.Up:
-                    return new Tuple<int, int>(obj.X - obj.Speed, obj.Y);
-                case (int)TrafficObject.Dir.Down:
-                    return new Tuple<int, int>(obj.X + obj.Speed, obj.Y);
-                case (int)TrafficObject.Dir.Left:
                     return new Tuple<int, int>(obj.X, obj.Y - obj.Speed);
-                case (int)TrafficObject.Dir.Right:
+                case (int)TrafficObject.Dir.Down:
                     return new Tuple<int, int>(obj.X, obj.Y + obj.Speed);
+                case (int)TrafficObject.Dir.Left:
+                    return new Tuple<int, int>(obj.X - obj.Speed, obj.Y);
+                case (int)TrafficObject.Dir.Right:
+                    return new Tuple<int, int>(obj.X + obj.Speed, obj.Y);
                 default:
                     throw new NotImplementedException();
             }
@@ -394,13 +395,13 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             switch (direction)
             {
                 case (int)TrafficObject.Dir.Down:
-                    return checkIfTilesAreEmpty(x + 40, x + 50, y + 0, y + 40);
+                    return (checkIfTilesAreEmpty(x + 40, y + 0, x + 50, y + 40) <= 0);
                 case (int)TrafficObject.Dir.Right:
-                    return checkIfTilesAreEmpty(x + 0, x + 40, y + 50, y + 60);
+                    return (checkIfTilesAreEmpty(x + 0, y + 50, x + 40, y + 60) <= 0);
                 case (int)TrafficObject.Dir.Up:
-                    return checkIfTilesAreEmpty(x + 50, x + 60, y + 60, y + 100);
+                    return (checkIfTilesAreEmpty(x + 50, y + 60, x + 60, y + 100) <= 0);
                 case (int)TrafficObject.Dir.Left:
-                    return checkIfTilesAreEmpty(x + 60, x + 100, y + 40, y + 50);
+                    return (checkIfTilesAreEmpty(x + 60, y + 40, x + 100, y + 50) <= 0);
                 default:
                     return false;
             }

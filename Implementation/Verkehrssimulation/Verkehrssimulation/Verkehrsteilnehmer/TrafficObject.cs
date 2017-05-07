@@ -26,13 +26,13 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         public TrafficObject(int id, int x, int y, int speed, int direction, int nextDirection)
         {
-            this.id = id;
-            this.x = x;
-            this.y = y;
-            this.speed = speed;
-            this.direction = direction;
-            this.nextDirection = nextDirection;
-            this.mayDrive = false;
+            this.Id = id;
+            this.X = x;
+            this.Y = y;
+            this.Speed = speed;
+            this.Direction = direction;
+            this.NextDirection = nextDirection;
+            this.MayDrive = false;
         }
 
         public enum Dir{Up  =0, Left = 1, Down = 2, Right = 3 };// numbers are selceted that way so that are 90° ratation can be made by adding 1; !! do not change those, it will break the module!!

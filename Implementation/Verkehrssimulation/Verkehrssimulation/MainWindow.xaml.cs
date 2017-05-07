@@ -18,6 +18,7 @@ namespace Verkehrssimulation
         private DispatcherTimer dispatchTimer, dpTimer2;
         private ObjectHandler oh;
         private GUI.AmpelHandler ap;
+        private TrafficHandler th;
         AmpelHandler.AmpelHandler extAH = new AmpelHandler.AmpelHandler();
         IAmpelService trafficlight;
         CallbackClient _callback;
@@ -55,8 +56,11 @@ namespace Verkehrssimulation
             ap = new GUI.AmpelHandler(myCanvas);
 
             EnvironmentHandler envhandler = new EnvironmentHandler();
-            TrafficHandler traffichandler = new TrafficHandler(ref envhandler, ref oh);
+            th = new TrafficHandler(ref envhandler, ref oh);
 
+            th.createNewVerkehrsteilnehmer(155, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             StartAmpelsteuerung();
             try
             {
@@ -83,6 +87,7 @@ namespace Verkehrssimulation
         private void dispatchTimer_Tick(object sender, EventArgs e)
         {
             //oh.UpdateAll(); //update aller elemente (um 5 verschieben je nach direction)
+            th.updateAll();
         }
 
         private void dpTimer2_Tick(object sender, EventArgs e)
