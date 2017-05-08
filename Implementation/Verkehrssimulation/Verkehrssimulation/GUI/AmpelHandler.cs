@@ -100,6 +100,42 @@ namespace Verkehrssimulation.GUI
             }
         }
 
+        public void yellowBlinky(int id)
+        {
+            foreach (Ampel a in ampellist)
+            {
+
+                if (a.objid == id)
+                {
+                    Shape yellow = a.getCircleYellow();
+                    Shape red = a.getCircleRed();
+                    red.Fill = new SolidColorBrush(Colors.White);
+
+                    Shape green = a.getCircleGreen();
+                    green.Fill = new SolidColorBrush(Colors.White);
+
+                    a.green = false;
+                    a.red = false;
+
+                    if (a.yellow == true)
+                    {
+                        yellow.Fill = new SolidColorBrush(Colors.White);
+                        a.yellow = false;
+                    }
+                    else if(a.yellow == false)
+                    {
+                        yellow.Fill = new SolidColorBrush(Colors.Yellow);
+                        a.yellow = true;
+
+                    }
+                }
+                else
+                {
+                    new Exception("Die Ampel mit der ID:" + id + "wurde nicht gefunden");
+                }
+            }
+        }
+
         //private void initialize()
         //{
         //    int j = 0;

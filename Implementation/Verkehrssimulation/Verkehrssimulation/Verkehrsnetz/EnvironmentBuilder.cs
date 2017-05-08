@@ -158,7 +158,8 @@ namespace Verkehrssimulation.Verkehrsnetz
             int x = 0;
             while (x < ampelcnt)
             {
-                ah.setNext(x);
+                ah.yellowBlinky(x);
+                /*ah.setNext(x);
 
                 if (alternate % 2 == 0)
                 {
@@ -182,7 +183,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                     {
                         ah.setNext(x);
                     }
-                }
+                }*/
                 
                 x++;
             }

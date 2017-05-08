@@ -48,7 +48,7 @@ namespace Verkehrssimulation
             // Test mit blinkender Ampel
             dpTimer2 = new DispatcherTimer();
             dpTimer2.Tick += dpTimer2_Tick;
-            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 3000);
+            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 150);
 
             oh = new ObjectHandler(myCanvas);
             ap = new GUI.AmpelHandler(myCanvas);
