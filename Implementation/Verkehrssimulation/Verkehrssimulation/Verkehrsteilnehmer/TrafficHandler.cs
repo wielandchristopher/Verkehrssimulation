@@ -34,7 +34,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 int nextRoadX;
                 int nextRoadY;
             
-                thisRoadInfo= getEnvRules(obj.X, obj.Y);
+                thisRoadInfo= getEnvRules(obj.Y, obj.X);
                 Tuple<int,int> nextRoadTileXY = getNextRoadTileXY(obj);
                 nextRoadX = nextRoadTileXY.Item1;
                 nextRoadY = nextRoadTileXY.Item2;
@@ -109,7 +109,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         break;
                     case 0: //traffic Light
                         //TODO reduce duplicate code with no traffic light
-                        int streetRegion2 = getStreetRegion(obj.X, obj.Y);
+                        int streetRegion2 = getStreetRegion(obj.Y, obj.X);
                         switch (streetRegion2)
                         {
                             case (int)StreetRegion.NormalStreet:
@@ -183,7 +183,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     //decide where to go next (only) when leaving (100x100) roadTile
                     if ((Math.Abs(obj.X % 100 - nextRoadX % 100) > (obj.Speed + 1)) || (Math.Abs(obj.Y % 100 - nextRoadY % 100) > (obj.Speed + 1)))
                     {
-                        int nextRoadInfo = getEnvRules(nextRoadX, nextRoadY); 
+                        int nextRoadInfo = getEnvRules(nextRoadY, nextRoadX); 
                         switch (nextRoadInfo)
                         {
                             case (int)EnvElement.StreetType.Street:
@@ -326,7 +326,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         {
       
             trafficobjs.Add(new TrafficObject(id_number,x, y, speed, direction, nextDirection));
-            oh.addCarObject(x, y, id_number);
+            oh.addCarObject(y, x, id_number);
             id_number++;
         }
 

@@ -48,7 +48,7 @@ namespace Verkehrssimulation
             // Test mit blinkender Ampel
             dpTimer2 = new DispatcherTimer();
             dpTimer2.Tick += dpTimer2_Tick;
-            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 300);
+            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 3000);
 
             oh = new ObjectHandler(myCanvas);
             ap = new GUI.AmpelHandler(myCanvas);
@@ -62,7 +62,7 @@ namespace Verkehrssimulation
 
             
 
-            th.createNewVerkehrsteilnehmer(155, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(210, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
 
