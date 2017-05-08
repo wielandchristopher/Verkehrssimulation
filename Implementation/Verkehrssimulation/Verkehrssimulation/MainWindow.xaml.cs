@@ -65,6 +65,10 @@ namespace Verkehrssimulation
             th.createNewVerkehrsteilnehmer(210, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(280, 145, 4, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Down);
+            th.createNewVerkehrsteilnehmer(255, 655, 5, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+            th.createNewVerkehrsteilnehmer(255, 645, 3, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+
 
             dispatchTimer.Start();
             dpTimer2.Start();
