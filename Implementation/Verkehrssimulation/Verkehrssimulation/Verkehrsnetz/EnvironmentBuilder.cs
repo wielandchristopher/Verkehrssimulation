@@ -48,6 +48,24 @@ namespace Verkehrssimulation.Verkehrsnetz
             JArray geregelte_kreuzungen = (JArray)obj.GetValue("geregelte_kreuzungen");
             int xpos, ypos = 0;
 
+            Console.WriteLine("geregelte_kreuzungen.Count: " + geregelte_kreuzungen.Count);
+            trafficlight.setAmpelAnzahl(12);
+
+            Console.WriteLine("trafficlight.getAmpelAnzahl(): " + trafficlight.getAmpelAnzahl());
+
+
+            for(int tmp = 1; tmp <= trafficlight.getAmpelAnzahl(); tmp++)
+            {
+
+                trafficlight.setGelbPhase(tmp, 1);
+                trafficlight.setGruenPhase(tmp, 1);
+                trafficlight.setRotPhase(tmp, 1);
+                //trafficlight.setAmpelOn(tmp);
+
+                Console.WriteLine("trafficlight.getAmpelStatus("+tmp+"): " + trafficlight.getAmpelStatus(tmp));
+            }
+            
+
             foreach (JObject obj in geregelte_kreuzungen)
             {
                 xpos = obj.GetValue("xpos").Value<int>();
@@ -58,24 +76,21 @@ namespace Verkehrssimulation.Verkehrsnetz
 
 
                 ah.addTrafficLight(xpos + 60, ypos + 60, 1,ampelcnt++);
-                ah.setNext(ampelcnt - 1);
+                //ah.setNext(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++);
-                ah.setNext(ampelcnt - 1);
-                ah.setNext(ampelcnt - 1);
-                ah.setNext(ampelcnt - 1);
+                //ah.setNext(ampelcnt - 1);
+                //ah.setNext(ampelcnt - 1);
+                //ah.setNext(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++);
-                ah.setNext(ampelcnt - 1);
+                //ah.setNext(ampelcnt - 1);
 
                 ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++);
-                ah.setNext(ampelcnt - 1);
-                ah.setNext(ampelcnt - 1);
-                ah.setNext(ampelcnt - 1);
+                //ah.setNext(ampelcnt - 1);
+                //ah.setNext(ampelcnt - 1);
+                //ah.setNext(ampelcnt - 1);
 
 
-                Console.WriteLine(ampelcnt);
-                
-                //trafficlight.setAmpelAnzahl(12);
-                
+                //Console.WriteLine(ampelcnt);
 
                 addSolution(xpos,ypos);
             }
@@ -159,6 +174,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             while (x < ampelcnt)
             {
                 ah.yellowBlinky(x);
+                
                 /*ah.setNext(x);
 
                 if (alternate % 2 == 0)
@@ -220,6 +236,30 @@ namespace Verkehrssimulation.Verkehrsnetz
         public void UpdateGUIAmpeln()
         {
             // ampelthread abfragen und an gui leiten
+
+            for (int tmp = 1; tmp <= trafficlight.getAmpelAnzahl(); tmp++)
+            {
+
+                switch (trafficlight.getAmpelStatus(tmp))
+                {
+                    case 0:
+                        ah.setRed(tmp-1);
+                        break;
+                    case 1:
+                        ah.setYellow(tmp - 1);
+                        break;
+                    case 2:
+                        ah.setGreen(tmp - 1);
+                        break;
+                    case 3:
+                        Console.WriteLine("ausfall oder ausgeschaltet");
+                        break;
+                    default:
+                        Console.WriteLine("nicht gehandelter status");
+                        break;
+                }
+                Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
+            }
         }
 
         public void InitAmpelThread()

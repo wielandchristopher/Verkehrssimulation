@@ -48,7 +48,7 @@ namespace Verkehrssimulation
             // Test mit blinkender Ampel
             dpTimer2 = new DispatcherTimer();
             dpTimer2.Tick += dpTimer2_Tick;
-            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 150);
+            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 500);
 
             oh = new ObjectHandler(myCanvas);
             ap = new GUI.AmpelHandler(myCanvas);
@@ -79,10 +79,10 @@ namespace Verkehrssimulation
             mainWindow.StartAmpelsteuerung();
             try
             {
-                mainWindow.trafficlight.setAmpelAnzahl(5);
-                string j = mainWindow.trafficlight.getAmpelStatus(2);
+                //mainWindow.trafficlight.setAmpelAnzahl(5);
+                //string j = mainWindow.trafficlight.getAmpelStatus(2);
                 //int i = mainWindow.trafficlight.getAmpelAnzahl();
-                Console.WriteLine(j);
+               // Console.WriteLine(j);
             }
             catch (NullReferenceException nre)
             {
@@ -108,15 +108,23 @@ namespace Verkehrssimulation
 
         private void dpTimer2_Tick(object sender, EventArgs e)
         {
-            a++;
+            //a++;
 
-            if(a%5 == 0)
-            {
-                this.builder.alternateLight();
-            }
+            //if(a%5 == 0)
+            //{
+            //    this.builder.alternateLight();
+            //}
 
-            Console.WriteLine(a);
-            this.builder.GetAmpelInfo(4);
+            //Console.WriteLine("trafficlight.getAmpelAnzahl(): " + trafficlight.getAmpelAnzahl());
+
+
+            //for (int tmp = 0; tmp < trafficlight.getAmpelAnzahl(); tmp++)
+            //{
+            //    Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
+            //}
+            builder.UpdateGUIAmpeln();
+            //Console.WriteLine(a);
+            //this.builder.GetAmpelInfo(4);
 
             //builder.getStreetType(400, 600);
             //builder.getStreetType(100, 100);

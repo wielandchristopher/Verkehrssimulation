@@ -14,7 +14,7 @@ namespace Ampelsteuerung
         //Erster integer gibt ampelID zurück
         //Zweiter integer gibt Status der Ampel zurück 
         [OperationContract]
-        string getAmpelStatus(int ampelid);
+        int getAmpelStatus(int ampelid);
 
         //Gibt integer und boolean zurück: 
         //integer ist die AmpelID

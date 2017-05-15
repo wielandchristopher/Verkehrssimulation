@@ -61,9 +61,9 @@ namespace Ampelsteuerung
         int Status; // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
         int ID;
         bool defect = false;
-        int rotphase = 7; //in sekunden
-        int gelbphase = 3; //in sekunden
-        int gruenphase = 7; //in sekunden
+        int rotphase = 1; //in sekunden
+        int gelbphase = 1; //in sekunden
+        int gruenphase = 1; //in sekunden
     }
 
     [ServiceBehavior(Name = "Ampelsteuerung", InstanceContextMode = InstanceContextMode.Single)]
@@ -144,7 +144,7 @@ namespace Ampelsteuerung
         //Gibt 2 Integer zurück: 
         //Erster integer gibt ampelID zurück
         //Zweiter integer gibt Status der Ampel zurück 
-        public string getAmpelStatus(int ampelid)
+        public int getAmpelStatus(int ampelid)
         {
             int AmpelStatus;
 
@@ -153,15 +153,15 @@ namespace Ampelsteuerung
                 for (int i = 0; i < Trafficlights.Count; i++)
                 {
                     AmpelStatus = Trafficlights.ElementAt(i).getStatus();
-                    return Trafficlights.ElementAt(i).getID() + " " + AmpelStatus.ToString();
+                    return AmpelStatus;
                 }
             }
             else
             {
                 AmpelStatus = Trafficlights.ElementAt(ampelid - 1).getStatus();
-                return Trafficlights.ElementAt(ampelid - 1).getID() + " " + AmpelStatus.ToString();
+                return  AmpelStatus; //Trafficlights.ElementAt(ampelid - 1).getID() + " " +
             }
-            return "";
+            return -1;
         }
         //Gibt integer und boolean zurück: 
         //integer ist die AmpelID

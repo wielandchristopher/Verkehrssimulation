@@ -29,6 +29,77 @@ namespace Verkehrssimulation.GUI
             return true;
         }
 
+        public void setRed(int id)
+        {
+            foreach (Ampel a in ampellist)
+            {
+                if (a.objid == id)
+                {
+
+                    Shape yellow = a.getCircleYellow();
+                    yellow.Fill = new SolidColorBrush(Colors.White);
+
+                    Shape green = a.getCircleGreen();
+                    green.Fill = new SolidColorBrush(Colors.White);
+
+                    Shape red = a.getCircleRed();
+                    red.Fill = new SolidColorBrush(Colors.Red);
+
+                    a.green = false;
+                    a.yellow = false;
+                    a.red = true;
+
+                }
+            }
+        }
+        public void setGreen(int id)
+        {
+            foreach (Ampel a in ampellist)
+            {
+                if (a.objid == id)
+                {
+
+                    Shape yellow = a.getCircleYellow();
+                    yellow.Fill = new SolidColorBrush(Colors.White);
+
+                    Shape green = a.getCircleGreen();
+                    green.Fill = new SolidColorBrush(Colors.Green);
+
+                    Shape red = a.getCircleRed();
+                    red.Fill = new SolidColorBrush(Colors.White);
+
+                    a.green = true;
+                    a.yellow = false;
+                    a.red = false;
+
+                }
+            }
+        }
+        public void setYellow(int id)
+        {
+            foreach (Ampel a in ampellist)
+            {
+                if (a.objid == id)
+                {
+
+                    Shape yellow = a.getCircleYellow();
+                    yellow.Fill = new SolidColorBrush(Colors.Yellow);
+
+                    Shape green = a.getCircleGreen();
+                    green.Fill = new SolidColorBrush(Colors.White);
+
+                    Shape red = a.getCircleRed();
+                    red.Fill = new SolidColorBrush(Colors.White);
+
+                    a.green = false;
+                    a.yellow = true;
+                    a.red = false;
+
+                }
+            }
+        }
+
+
         public void setNext(int id)
         {
             foreach (Ampel a in ampellist)
