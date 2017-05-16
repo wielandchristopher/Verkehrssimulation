@@ -46,10 +46,10 @@ namespace Verkehrssimulation
          * Methoden/Klassen gehören noch ausgelagert
          * 
          * */
-        static void Send(RemoteTransaction transaction)
+        static void Send(RemoteTransaction transaction, String group)
         {
             var factory = new ConnectionFactory();
-            factory.Uri = "amqp://user2:affe123456@rabbit.binna.eu/";  //Insert your own user and password
+            factory.Uri = "amqp://user3:bQx3TzjSUFxLakHr@rabbit.binna.eu/";  //Insert your own user and password
 
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
@@ -60,7 +60,7 @@ namespace Verkehrssimulation
                 properties.Persistent = true;
 
                 channel.BasicPublish(exchange: "car.production",  //Choose between bank.development and bank.production depending of the queue (e.g. 70 is production, 71 is development)
-                                    routingKey: "group2",   //This relates to the queue name of the receiver bank
+                                    routingKey: group,   //This relates to the queue name of the receiver bank
                                     basicProperties: properties,    //Set the properties to persistent, otherwise the messages will get lost if the server restarts
                                     body: GetBytes(transactionString));
 
@@ -71,13 +71,13 @@ namespace Verkehrssimulation
         static void Receive()
         {
             var factory = new ConnectionFactory();
-            factory.Uri = "amqp://user2:affe123456@rabbit.binna.eu/";
+            factory.Uri = "amqp://user3:bQx3TzjSUFxLakHr@rabbit.binna.eu/";
 
             using (var connection = factory.CreateConnection())
             {
                 using (var channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "group2",
+                    channel.QueueDeclare(queue: "group3",
                                  durable: true, //Always use durable: true, because the queue on the server is configured this way. Otherwise you'll not be able to connect
                                  exclusive: false,
                                  autoDelete: false,
@@ -96,7 +96,7 @@ namespace Verkehrssimulation
                         PrintTransaction(transaction);
                     };
 
-                    channel.BasicConsume(queue: "group2",
+                    channel.BasicConsume(queue: "group3",
                                          noAck: false,  //If noAck: false the command channel.BasicAck (see above) has to be implemented. Don't set it true, or the message will not get resubmitted, if the bank was offline
                                          consumer: consumer);
 
@@ -181,10 +181,10 @@ namespace Verkehrssimulation
             InitializeComponent();
             StartAmpelsteuerung();
 
-            var remoteTransaction = new RemoteTransaction(10.1, "PKW");
 
-      
-            Send(remoteTransaction);
+            // RabbitMQ
+            var remoteTransaction = new RemoteTransaction(10.1, "PKW");
+            Send(remoteTransaction, "group3");
             Receive();
             
 
