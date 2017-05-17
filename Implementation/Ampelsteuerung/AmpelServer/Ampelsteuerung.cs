@@ -4,7 +4,6 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace Ampelsteuerung
 {
     class Ampeln
@@ -101,7 +100,7 @@ namespace Ampelsteuerung
                         int Status = 0;
                         for (int i = 0; i < Trafficlights.Count; i++)
                         {
-                            Trafficlights.ElementAt(i).getStatus();
+                            //Trafficlights.ElementAt(i).getStatus();
                             if (Trafficlights.ElementAt(i).getStatus() >= 2)
                             {
                                 if (Trafficlights.ElementAt(i).getDefect() == false)
@@ -117,6 +116,13 @@ namespace Ampelsteuerung
                             }
                             if (Status == 0)
                             {
+                                //Timer test;
+                                
+                                //int timer = 0;                             
+                                //while(timer != (Trafficlights.ElementAt(i).getRotPhase() * 1000))
+                                //{
+                                    
+                                //}
                                 Thread.Sleep(Trafficlights.ElementAt(i).getRotPhase() * 1000);
                             }
                             else if (Status == 1)
