@@ -17,6 +17,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         IAmpelService trafficlight;
         Streetelem[,] elems = new Streetelem[7, 7];
         int ampelcnt = 0;
+        List<EntryPoint> entrypoints;
 
         public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref IAmpelService _trafficlight)
         {
@@ -25,7 +26,8 @@ namespace Verkehrssimulation.Verkehrsnetz
             
             canvas = mycanvas;
             Console.WriteLine("Buidler loaded");
-            
+
+            entrypoints = new List<EntryPoint>();
             elem = new List<Streetelem>();
             LoadJson();
             LoadEnvironment();
@@ -125,8 +127,30 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
         }
 
+
+        public void printEntryPoints()
+        {
+            foreach(EntryPoint e in this.entrypoints)
+            {
+                Console.WriteLine("Entrypoint:" + e.TileX + "/" + e.TileY);
+            }
+        }
+
+        private void addEntryPoints(int xpos, int ypos)
+        {
+            int MAX = 600;
+            int MIN = 0;
+
+            this.entrypoints.Add(new EntryPoint(xpos, MAX));
+            this.entrypoints.Add(new EntryPoint(xpos, MIN));
+            this.entrypoints.Add(new EntryPoint(MAX, ypos));
+            this.entrypoints.Add(new EntryPoint(MIN, ypos));
+        }
         private void addSolution(int xpos, int ypos)
         {
+
+            addEntryPoints(ypos, xpos);
+
             for (int i = 0; i < 700; i += 100)
             {
                 if (i != xpos) {
@@ -262,26 +286,6 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
         }
 
-        public void InitAmpelThread()
-        {
-            // ampeln bei wieland initieeren
-        }
-
-        public void GetAmpelInfo(int id)
-        {
-
-
-            //Console.WriteLine("Anzahl: " + trafficlight.getAmpelAnzahl());
-
-            //for(int x = 1; x < trafficlight.getAmpelAnzahl(); x++)
-            //{
-            //    trafficlight.setRotPhase(x, 2);
-
-            //    Console.WriteLine("status von Ampel "+x+": " + trafficlight.getAmpelStatus(x));
-            //}
-            
-
-        }
 
         public EnvElement.StreetType getStreetType(int x, int y) //geht
         {
@@ -296,6 +300,11 @@ namespace Verkehrssimulation.Verkehrsnetz
             return this.elems[x / 100, y / 100].getStreetType();
         }
 
+        public List<EntryPoint> getEnvironmentEntries()
+        {
+            return this.entrypoints;
+        }
+
         public void getRules()
         {
             // holt die regeln
@@ -306,6 +315,18 @@ namespace Verkehrssimulation.Verkehrsnetz
         public int getNeededEnvironmentRules(int x, int y)
         {
             return (int)getStreetType(x,y);
+        }
+    }
+
+    public class EntryPoint
+    {
+        public int TileX { get; set; }
+        public int TileY { get; set; }
+
+        public EntryPoint(int xtile, int ytile)
+        {
+            this.TileX = xtile;
+            this.TileY = ytile;
         }
     }
 }

@@ -195,7 +195,7 @@ namespace Verkehrssimulation
             // Test mit blinkender Ampel
             dpTimer2 = new DispatcherTimer();
             dpTimer2.Tick += dpTimer2_Tick;
-            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 500);
+            dpTimer2.Interval = new TimeSpan(0, 0, 0, 10, 500);
 
             oh = new ObjectHandler(myCanvas);
             ap = new GUI.AmpelHandler(myCanvas);
@@ -219,6 +219,7 @@ namespace Verkehrssimulation
 
             dispatchTimer.Start();
             dpTimer2.Start();
+            builder.printEntryPoints();
         }
         [STAThread]
         private void MainAmpelsteuerung(MainWindow mainWindow)
@@ -269,7 +270,8 @@ namespace Verkehrssimulation
             //{
             //    Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
             //}
-            builder.UpdateGUIAmpeln();
+            //builder.UpdateGUIAmpeln();
+            //builder.printEntryPoints();
             //Console.WriteLine(a);
             //this.builder.GetAmpelInfo(4);
 

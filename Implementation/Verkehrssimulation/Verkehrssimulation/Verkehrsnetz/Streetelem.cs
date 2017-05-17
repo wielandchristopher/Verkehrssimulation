@@ -156,6 +156,8 @@ namespace Verkehrssimulation.Verkehrsnetz
         }
         public void printStreetType(object sender, EventArgs e)
         {
+
+            Console.WriteLine("Position (X/Y) " + this.x + this.y);
             Console.WriteLine(this.stype.ToString());
         }
         
