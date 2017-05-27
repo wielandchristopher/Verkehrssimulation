@@ -10,6 +10,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 {
     class TrafficHandler
     {
+        readonly private int targetNumberOfCars = 20;
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
         private EnvironmentBuilder eb; // ref auf Environmenthandler zum abfragen der rules
         private ObjectHandler oh; //ref zu GUI
@@ -173,6 +174,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 }
             }
 
+            List<int> removeIds = new List<int>();
             foreach (TrafficObject obj in trafficobjs) //update cars if they may drive
             {
                 if (obj.MayDrive)
@@ -313,7 +315,53 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     obj.Y = nextRoadY;//move the car to its new position
                     //send update to UI
                     oh.updateCarWithID(obj.Y, obj.X, obj.Id); //x and y are in ui the other way around
+
+                    //destroy car if the left simulation, TODO send eventually to other group
+                    if (obj.X <0 || obj.X > 700 || obj.Y < 0 || obj.Y > 700)
+                    {
+                        removeIds.Add(obj.Id);
+                    }
                 }
+            }
+
+            //remove cars that left the grid
+            if (removeIds.Any())
+            {
+                foreach (int id in removeIds)
+                {
+                    removeVerkehrsteilnehmer(id);
+                }
+            }
+
+            //add cars
+            if (trafficobjs.Count < targetNumberOfCars)
+            {
+                double proberbility = 1 - Math.Pow((double)trafficobjs.Count / (double)targetNumberOfCars, 2);
+                if (proberbility < rng.NextDouble())
+                {
+                    List<EntryPoint> entrypoints = eb.getEnvironmentEntries();
+                    int entrypointIndex = rng.Next(0, entrypoints.Count);
+                    EntryPoint entrypoint = entrypoints.ElementAt(entrypointIndex);
+                    //TODO if entry point is at the corner of the grid find out if road is vertical or horizontal
+                    //TODO adjust NextRoad Direction when Martin gives me layout of 3-way roads
+                    if(entrypoint.TileX == 0)
+                    {
+                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 4, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
+                    }
+                    else if(entrypoint.TileX == 600)
+                    {
+                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 4, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
+                    }
+                    else if(entrypoint.TileY == 0)
+                    {
+                        createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 4, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                    }
+                    else if (entrypoint.TileY == 600)
+                    {
+                        createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 4, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+                    }
+                }
+                
             }
         }
 
@@ -330,7 +378,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             id_number++;
         }
 
-        public void removeVerkehrteilnehmer(int id)
+        public void removeVerkehrsteilnehmer(int id)
         {
             TrafficObject removeObject = null;
             foreach (TrafficObject obj in trafficobjs)
