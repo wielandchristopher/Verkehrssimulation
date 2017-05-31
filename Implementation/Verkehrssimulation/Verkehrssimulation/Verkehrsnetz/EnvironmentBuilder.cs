@@ -18,6 +18,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         Streetelem[,] elems = new Streetelem[7, 7];
         int ampelcnt = 0;
         List<EntryPoint> entrypoints;
+        List<Obstacle> obstacles;
 
         public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref IAmpelService _trafficlight)
         {
@@ -31,7 +32,9 @@ namespace Verkehrssimulation.Verkehrsnetz
             elem = new List<Streetelem>();
             LoadJson();
             LoadEnvironment();
-       
+
+            obstacles = new List<Obstacle>();
+            obstacles.Add(new Obstacle(240, 240, 250, 250));
         }
 
 
@@ -305,6 +308,11 @@ namespace Verkehrssimulation.Verkehrsnetz
             return this.entrypoints;
         }
 
+        public List<Obstacle> getObstacles()
+        {
+            return this.obstacles;
+        }
+
         public void getRules()
         {
             // holt die regeln
@@ -327,6 +335,22 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
             this.TileX = xtile;
             this.TileY = ytile;
+        }
+    }
+
+    public class Obstacle
+    {
+        public int StartX { get; set; }
+        public int StartY { get; set; }
+        public int EndX { get; set; }
+        public int EndY { get; set; }
+
+        public Obstacle(int startx, int starty, int endx, int endy)
+        {
+            this.StartX = startx;
+            this.StartY = starty;
+            this.EndX = endx;
+            this.EndY = endy;
         }
     }
 }

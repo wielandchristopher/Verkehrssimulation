@@ -23,6 +23,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         public int Direction{ get; set; }
         public int NextDirection { get; set; }
         public Boolean MayDrive { get; set; }
+        public int PassingObstacleStatus { get; set; }
 
         public TrafficObject(int id, int x, int y, int speed, int direction, int nextDirection)
         {
@@ -33,10 +34,12 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             this.Direction = direction;
             this.NextDirection = nextDirection;
             this.MayDrive = false;
+            this.PassingObstacleStatus = (int) PassingObstStatus.RightSide;
         }
 
         public enum Dir{Up  =0, Left = 1, Down = 2, Right = 3 };// numbers are selceted that way so that are 90° ratation can be made by adding 1; !! do not change those, it will break the module!!
         public enum Fahrzeugtyp { Car = 0, Truck = 1};
+        public enum PassingObstStatus { RightSide = 0, GoingWrongSide = 1, WrongSide = 2, GoingRightSide = 3};
         //public abstract void Update();
 
     }
