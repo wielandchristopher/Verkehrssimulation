@@ -129,9 +129,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         }
 
                         else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide) {
-                            if (checkIfObstacleAhead(obj.X, obj.Y,((int) obj.Direction+3)%4,obj.Speed))
+                            if (checkIfObstacleAhead(obj.X, obj.Y,((int) obj.Direction + 1) % 4, 10))
                             {
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1) && checkIfObstacleAhead(obj.X, obj.Y, obj.Direction , obj.Speed);
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, nextRoadX, nextRoadY) <= 1) && !checkIfObstacleAhead(obj.X, obj.Y, obj.Direction , obj.Speed);
                             }
                             else
                             {
@@ -506,19 +506,19 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     //TODO adjust NextRoad Direction when Martin gives me layout of 3-way roads
                     if(entrypoint.TileX == 0)
                     {
-                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 4, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
+                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 5, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
                     }
                     else if(entrypoint.TileX == 600)
                     {
-                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 4, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
+                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 5, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
                     }
                     else if(entrypoint.TileY == 0)
                     {
-                        createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 4, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                        createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 5, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
                     }
                     else if (entrypoint.TileY == 600)
                     {
-                        createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 4, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+                        createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 5, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
                     }
                 } 
             }
