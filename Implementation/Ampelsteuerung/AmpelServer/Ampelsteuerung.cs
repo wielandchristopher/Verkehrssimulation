@@ -57,12 +57,55 @@ namespace Ampelsteuerung
             return ID = value;
         }
 
+        public void startTimer(int status)
+        {
+            System.Windows.Forms.Timer AmpelTimer = new System.Windows.Forms.Timer();
+            int time = 0;
+
+            while (status == 0)
+            {
+                AmpelTimer.Interval = time = rotphase;
+                AmpelTimer.Start();
+
+                while (time > 0)
+                {
+                    Thread.Sleep(1000);
+                    time--;
+                }
+                status = setStatus(1);
+            }
+            while (status == 1)
+            {
+                AmpelTimer.Interval = time = gelbphase;
+                AmpelTimer.Start();
+
+                while (time > 0)
+                {
+                    Thread.Sleep(1000);
+                    time--;
+                }
+                status = setStatus(2);
+            }
+            while (status == 2)
+            {
+                AmpelTimer.Interval = time = gruenphase;
+                AmpelTimer.Start();
+
+                while (time > 0)
+                {
+                    Thread.Sleep(1000);
+                    time--; 
+                }
+                status = setStatus(0);
+            }            
+        }
+
         int Status; // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
         int ID;
         bool defect = false;
-        int rotphase = 1; //in sekunden
+        int rotphase = 3; //in sekunden
         int gelbphase = 1; //in sekunden
-        int gruenphase = 1; //in sekunden
+        int gruenphase = 3; //in sekunden
     }
 
     [ServiceBehavior(Name = "Ampelsteuerung", InstanceContextMode = InstanceContextMode.Single)]
@@ -72,6 +115,7 @@ namespace Ampelsteuerung
         bool _serverRunning = false;
         public static List<Ampeln> Trafficlights = new List<Ampeln>();
         public static int Anzahl = 0;
+        public static int Flag = 1;
 
         private void StartServer()
         {
@@ -89,52 +133,20 @@ namespace Ampelsteuerung
 
                     Ampelsteuerung Ampel = new Ampelsteuerung();
 
-                    while (getAmpelAnzahl() == 0)
-                    {
-                    }
-
-                    Trafficlights = Ampel.factory(getAmpelAnzahl());
-
+                                       
                     while (true)
                     {
-                        int Status = 0;
-                        for (int i = 0; i < Trafficlights.Count; i++)
+                        if (Anzahl != 0 && Flag == 1)
                         {
-                            //Trafficlights.ElementAt(i).getStatus();
-                            if (Trafficlights.ElementAt(i).getStatus() >= 2)
+                            Trafficlights = Ampel.factory(getAmpelAnzahl());
+                            for (int i = 0; i < Trafficlights.Count; i++)
                             {
-                                if (Trafficlights.ElementAt(i).getDefect() == false)
-                                {
-                                    Status = Trafficlights.ElementAt(i).setStatus(0);
-                                }
-                                else
-                                    Status = Trafficlights.ElementAt(i).setStatus(3);
+                                Trafficlights.ElementAt(i).startTimer(Trafficlights.ElementAt(i).getStatus());
                             }
-                            else
-                            {
-                                Status = Trafficlights.ElementAt(i).setStatus(Trafficlights.ElementAt(i).getStatus() + 1);
-                            }
-                            if (Status == 0)
-                            {
-                                //Timer test;
-                                
-                                //int timer = 0;                             
-                                //while(timer != (Trafficlights.ElementAt(i).getRotPhase() * 1000))
-                                //{
-                                    
-                                //}
-                                Thread.Sleep(Trafficlights.ElementAt(i).getRotPhase() * 1000);
-                            }
-                            else if (Status == 1)
-                            {
-                                Thread.Sleep(Trafficlights.ElementAt(i).getGelbPhase() * 1000);
-                            }
-                            else if (Status == 2 || Status == 3)
-                            {
-                                Thread.Sleep(Trafficlights.ElementAt(i).getGruenPhase() * 1000);
-                            }
+                            Flag = 0;
                         }
-                    }
+                        
+                    }                   
                 }
                 else
                 {
@@ -152,7 +164,7 @@ namespace Ampelsteuerung
         //Zweiter integer gibt Status der Ampel zurück 
         public int getAmpelStatus(int ampelid)
         {
-            int AmpelStatus;
+            int AmpelStatus = 0;
 
             if (ampelid == 0)
             {
@@ -269,7 +281,7 @@ namespace Ampelsteuerung
             {
                 Ampeln Ampel = new Ampeln();
                 Ampel.setID(i + 1);
-                Ampel.setStatus(2);
+                Ampel.setStatus(2);      
                 Trafficlights.Add(Ampel);
             }
             return Trafficlights;

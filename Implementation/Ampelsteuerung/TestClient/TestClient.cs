@@ -39,10 +39,10 @@ namespace Client
                 //Setzt die Anzahl der Ampeln. Sind keine Ampeln gesetzt, kann man logischerweise auch keinen Status abfragen. 
 
                 //Diese Funktion muss immer zuerst ausgeführt werden. 
-                /*test.trafficlight.setAmpelAnzahl(5);*/
+                test.trafficlight.setAmpelAnzahl(5);
 
                 //Gibt man der Funktion getAmpelStatus den integer 0 mit, so erhält man den Status aller Ampeln. Ansonsten erhält man den Status der Spezifischen ID 
-                /*test.trafficlight.getAmpelStatus (0);*/
+                /*test.trafficlight.getAmpelStatus(0);*/
 
                 //Hier noch einige Beispiele von Funktionen: 
 
@@ -60,6 +60,8 @@ namespace Client
 
                 //Testet alle Ampeln durch und prüft, welöche Ampel ausgefallen ist, und gibt diese Zurück. 0 Fragt alle Ampeln ab. Spezifische ID die spezifische Ampel. 
                 /*test.trafficlight.getAmpelAusfall(0);*/
+
+                Console.WriteLine(test.trafficlight.getAmpelStatus(0));
 
             }
             catch (NullReferenceException nre)
