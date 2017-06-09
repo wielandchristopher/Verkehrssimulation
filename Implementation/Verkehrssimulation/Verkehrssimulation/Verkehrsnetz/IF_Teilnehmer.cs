@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
-    interface IF_Teilnehmer
+    interface ITeilnehmer
     {
         int getNeededEnvironmentRules(int x, int y);
 

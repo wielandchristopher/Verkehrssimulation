@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
-    class EnvironmentBuilder : IF_Teilnehmer
+    class EnvironmentBuilder : ITeilnehmer
     {
         JObject obj; // für json -> Projekt-> nu-getpakete verwalten -> json linq irgendwas
         private Canvas canvas;
