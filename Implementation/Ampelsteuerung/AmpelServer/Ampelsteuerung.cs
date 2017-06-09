@@ -56,7 +56,6 @@ namespace Ampelsteuerung
         {
             return ID = value;
         }
-
         public void startTimer(int status)
         {
             System.Windows.Forms.Timer AmpelTimer = new System.Windows.Forms.Timer();
