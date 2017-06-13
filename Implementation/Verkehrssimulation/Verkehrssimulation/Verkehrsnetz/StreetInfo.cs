@@ -7,7 +7,7 @@ using Verkehrssimulation.Verkehrsregeln;
 
 
 namespace Verkehrssimulation.Verkehrsnetz
-{
+{/*
     class StreetInfo
     {
         enum Orientation
@@ -33,5 +33,5 @@ namespace Verkehrssimulation.Verkehrsnetz
     class Ampel
     {
 
-    }
+    }*/
 }
