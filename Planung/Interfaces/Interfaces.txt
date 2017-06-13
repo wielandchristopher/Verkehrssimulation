@@ -1,0 +1,35 @@
+
+__________Interface_________________GUI <--> Verkehrsnetz_________________________________________
+
+Von GUI zu Verkehrsnetz:
+- erstellen eines hindernisses ( information von x/y und x1/y1 koordinaten an das verkehrsnetz )
+- information über pause der ampeln (toggle - checkbox - true/false information)
+
+Vom Verkehrsnetz zur GUI
+- informationen & update für die Ampeln
+- information zum aufbau des CANVAS & der Ampeln
+__________________________________________________________________________________________________
+
+
+
+
+__________Interface_________________Verkehrsnetz <--> Verkehrsteilnehmer__________________________
+
+Vom Verkehrsnetz zum Verkehrsteilnehmer:
+- interface mit Verkehrsnetz (klasse mit andreas sharen (hinternisse,ampeln,ausfahrt,regeln))
+- neues angemeldetes auto bei verkehrsnetz anmelden (spawnen lassen)
+__________________________________________________________________________________________________
+
+
+
+
+__________Interface_________________Verkehrsteilnehmer <--> GUI___________________________________
+
+Von GUI zu Verkehrsteilnehmer:
+- Anzahl der Maximalen Fahrzeuge
+- Anteil an LKW's (bsp: Verkehrsteilnehmer spawnt zu 60% ein auto und zu 40% einen lkw)
+
+Von Verkehrsteilnehmer zu GUI:
+- Updates der Fahrzeuge (der position)
+__________________________________________________________________________________________________
+
