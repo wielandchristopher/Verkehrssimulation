@@ -7,27 +7,9 @@ using System.Windows.Shapes;
 
 namespace Verkehrssimulation.GUI
 {
-    // 
+    
     interface IObject
     {
-        Shape objshp
-        {
-            get;
-            set;
-        }
-
-        int xpos
-        {
-            get;
-            set;
-        }
-
-        int ypos
-        {
-            get;
-            set;
-        }
-
-
+        bool addCarObject(int x, int y, int id);
     }
 }

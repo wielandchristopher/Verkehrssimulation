@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Controls;
-
+using Verkehrssimulation.Verkehrsteilnehmer;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {

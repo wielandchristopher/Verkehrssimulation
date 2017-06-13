@@ -280,6 +280,26 @@ namespace Verkehrssimulation
             //builder.getStreetType(200, 100);
             //builder.getStreetType(100, 200);
             //ap.blinky();
-        } 
+        }
+
+        private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
+        }
+
+        private void SliderSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void SliderLKW_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void SliderNum_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
     }
 }

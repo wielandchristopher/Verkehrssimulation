@@ -29,7 +29,7 @@ namespace Verkehrssimulation.GUI
 
             shp.Width = 5;
             shp.Height = 5;
-            shp.Fill = new SolidColorBrush(Colors.Black);
+            shp.Fill = new SolidColorBrush(Colors.DarkBlue);
             
             id = newid;
             Canvas.SetTop(shp, x);
@@ -48,7 +48,7 @@ namespace Verkehrssimulation.GUI
 
             shp.Width = 5;
             shp.Height = 10;
-            shp.Fill = new SolidColorBrush(Colors.Black);
+            shp.Fill = new SolidColorBrush(Colors.Purple);
 
             id = newid;
             Canvas.SetTop(shp, x);

@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace Verkehrssimulation.GUI
 {
-    class ObjectHandler
+    class ObjectHandler:IObject
     {
         List<Verkehrsteilnehmer> objlist;
         Canvas canvas;
@@ -17,7 +17,15 @@ namespace Verkehrssimulation.GUI
         {
             objlist = new List<Verkehrsteilnehmer>();
             canvas = mycanvas;
+            canvas.MouseLeftButtonDown += addobstacle;
+
+        }
+
+        public void addobstacle(object sender, EventArgs e)
+        {
+            Console.WriteLine("add obstacle");
             
+
         }
 
         public bool addCarObject(int x, int y, int id)
