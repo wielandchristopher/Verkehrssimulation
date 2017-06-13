@@ -9,6 +9,8 @@ namespace Verkehrssimulation.Verkehrsnetz
     interface ITeilnehmer
     {
         int getNeededEnvironmentRules(int x, int y);
-
+        StreetInfo getNeededStreetRules(int x, int y);
+        List<Obstacle> getObstacles();
+        List<EntryPoint> getEnvironmentEntries();
     }
 }
