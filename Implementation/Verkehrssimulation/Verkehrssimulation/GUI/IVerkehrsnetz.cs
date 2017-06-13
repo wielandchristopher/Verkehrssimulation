@@ -2,7 +2,7 @@
 
 namespace Verkehrssimulation.GUI
 {
-    interface AmpelInterface
+    interface IVerkehrsnetz
     {
         Shape objshp
         {

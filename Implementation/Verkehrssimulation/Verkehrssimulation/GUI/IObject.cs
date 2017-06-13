@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 
 namespace Verkehrssimulation.GUI
 {
-    interface ObjectInterface
+    interface IObject
     {
         Shape objshp
         {

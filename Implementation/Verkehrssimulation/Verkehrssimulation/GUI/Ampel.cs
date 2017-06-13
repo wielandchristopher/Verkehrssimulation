@@ -4,7 +4,7 @@ using System.Windows.Shapes;
 
 namespace Verkehrssimulation.GUI
 {
-    class Ampel : AmpelInterface
+    class Ampel : IVerkehrsnetz
     {
         int id;
         Shape shp;
