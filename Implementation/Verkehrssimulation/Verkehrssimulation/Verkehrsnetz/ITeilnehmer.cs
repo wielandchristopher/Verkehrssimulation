@@ -10,5 +10,6 @@ namespace Verkehrssimulation.Verkehrsnetz
     {
         int getNeededEnvironmentRules(int x, int y);
 
+        StreetInfo getNeededStreetRules(int x, int y);
     }
 }

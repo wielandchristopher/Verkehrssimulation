@@ -24,7 +24,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
             ah = _ah;
             trafficlight = _trafficlight;
-            
+
             canvas = mycanvas;
             Console.WriteLine("Buidler loaded");
 
@@ -40,9 +40,9 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         public void LoadJson()
         {
-            
+
             using (StreamReader r = new StreamReader("../../Verkehrsnetz/env_config.json"))
-            {                
+            {
                 string json = r.ReadToEnd();
                 obj = JObject.Parse(json);
             }
@@ -59,7 +59,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             Console.WriteLine("trafficlight.getAmpelAnzahl(): " + trafficlight.getAmpelAnzahl());
 
 
-            for(int tmp = 1; tmp <= trafficlight.getAmpelAnzahl(); tmp++)
+            for (int tmp = 1; tmp <= trafficlight.getAmpelAnzahl(); tmp++)
             {
 
                 trafficlight.setGelbPhase(tmp, 1);
@@ -67,20 +67,20 @@ namespace Verkehrssimulation.Verkehrsnetz
                 trafficlight.setRotPhase(tmp, 1);
                 //trafficlight.setAmpelOn(tmp);
 
-                Console.WriteLine("trafficlight.getAmpelStatus("+tmp+"): " + trafficlight.getAmpelStatus(tmp));
+                Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
             }
-            
+
 
             foreach (JObject obj in geregelte_kreuzungen)
             {
                 xpos = obj.GetValue("xpos").Value<int>();
                 ypos = obj.GetValue("ypos").Value<int>();
-                
-                elems[xpos/100,ypos/100] = addObject(xpos, ypos, 3);
+
+                elems[xpos / 100, ypos / 100] = addObject(xpos, ypos, 3);
 
 
 
-                ah.addTrafficLight(xpos + 60, ypos + 60, 1,ampelcnt++);
+                ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++);
                 //ah.setNext(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++);
                 //ah.setNext(ampelcnt - 1);
@@ -97,7 +97,7 @@ namespace Verkehrssimulation.Verkehrsnetz
 
                 //Console.WriteLine(ampelcnt);
 
-                addSolution(xpos,ypos);
+                addSolution(xpos, ypos);
             }
 
 
@@ -133,7 +133,7 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         public void printEntryPoints()
         {
-            foreach(EntryPoint e in this.entrypoints)
+            foreach (EntryPoint e in this.entrypoints)
             {
                 Console.WriteLine("Entrypoint:" + e.TileX + "/" + e.TileY);
             }
@@ -156,7 +156,8 @@ namespace Verkehrssimulation.Verkehrsnetz
 
             for (int i = 0; i < 700; i += 100)
             {
-                if (i != xpos) {
+                if (i != xpos)
+                {
 
 
                     if (elems[i / 100, ypos / 100] != null && ((Streetelem)elems[i / 100, ypos / 100]).getStreetType() == EnvElement.StreetType.Street)
@@ -176,18 +177,19 @@ namespace Verkehrssimulation.Verkehrsnetz
 
             for (int i = 0; i < 700; i += 100)
             {
-                if (i != ypos) {                   
+                if (i != ypos)
+                {
 
                     if (elems[xpos / 100, i / 100] != null && ((Streetelem)elems[xpos / 100, i / 100]).getStreetType() == EnvElement.StreetType.Street)
                     {
                         ((Streetelem)elems[xpos / 100, i / 100]).updateType(EnvElement.StreetType.FourKreuzung);
 
                     }
-                    else if(elems[xpos / 100, i / 100]==null)
+                    else if (elems[xpos / 100, i / 100] == null)
                     {
                         elems[xpos / 100, i / 100] = addObject(xpos, i, 1); // correct 1
                     }
-                    
+
                 }
 
             }
@@ -201,7 +203,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             while (x < ampelcnt)
             {
                 ah.yellowBlinky(x);
-                
+
                 /*ah.setNext(x);
 
                 if (alternate % 2 == 0)
@@ -227,7 +229,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                         ah.setNext(x);
                     }
                 }*/
-                
+
                 x++;
             }
 
@@ -270,7 +272,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                 switch (trafficlight.getAmpelStatus(tmp))
                 {
                     case 0:
-                        ah.setRed(tmp-1);
+                        ah.setRed(tmp - 1);
                         break;
                     case 1:
                         ah.setYellow(tmp - 1);
@@ -295,11 +297,11 @@ namespace Verkehrssimulation.Verkehrsnetz
             //holt den straßentyp und die ausrichtung vom aktuellen feld wo das auto fährt
             //Console.WriteLine(this.elems[x / 100, y / 100].getStreetType().ToString());
 
-            if (x > 600){x = 600;}
-            else if (x < 0){ x = 0;}
+            if (x > 600) { x = 600; }
+            else if (x < 0) { x = 0; }
 
-            if (y > 600){y = 600;}
-            else if (y < 0){y = 0;}
+            if (y > 600) { y = 600; }
+            else if (y < 0) { y = 0; }
             return this.elems[x / 100, y / 100].getStreetType();
         }
 
@@ -322,7 +324,12 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         public int getNeededEnvironmentRules(int x, int y)
         {
-            return (int)getStreetType(x,y);
+            return (int)getStreetType(x, y);
+        }
+
+        public StreetInfo getNeededStreetRules(int x, int y)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -352,5 +359,19 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.EndX = endx;
             this.EndY = endy;
         }
+    }
+
+    public class StreetInfo
+    {
+        int type;
+        int layout; //only 3 Kreuzung, set null else
+        int ampelstatusUp; // 1 -> rot, 2-> gelb, 3 -> rot //TODO please make an enum null -> no ampel,
+        int ampelstatusDown;
+        int ampelstatusLeft;
+        int ampelstatusRight;
+        double steigungHorizontal; //----->
+        double steigungVertical; // ^
+
+        //TODO getter und setter
     }
 }
