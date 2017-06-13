@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Verkehrssimulation.Verkehrsteilnehmer
 {
-    interface Interface1
+    interface ITrafficHandler
     {
+        void updateAll();
+        void createNewVerkehrsteilnehmer(int x, int y, int speed, int direction, int nextDirection);
+        void removeVerkehrsteilnehmer(int id);
     }
 }

@@ -8,7 +8,7 @@ using Verkehrssimulation.GUI;
 
 namespace Verkehrssimulation.Verkehrsteilnehmer
 {
-    class TrafficHandler
+    class TrafficHandler : ITrafficHandler
     {
         readonly private int targetNumberOfCars = 20;
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
