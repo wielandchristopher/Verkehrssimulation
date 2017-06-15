@@ -70,7 +70,6 @@
     <Compile Include="Ampelsteuerung\CallbackClient.cs" />
     <Compile Include="Ampelsteuerung\IAmpelCallback.cs" />
     <Compile Include="Ampelsteuerung\IAmpelService.cs" />
-    <Compile Include="Ampelsteuerung\AmpelHandler.cs" />
     <Compile Include="GUI\Ampel.cs" />
     <Compile Include="GUI\AmpelHandler.cs" />
     <Compile Include="GUI\IVerkehrsnetz.cs" />
