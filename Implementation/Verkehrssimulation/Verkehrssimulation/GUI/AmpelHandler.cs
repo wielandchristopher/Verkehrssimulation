@@ -16,6 +16,7 @@ namespace Verkehrssimulation.GUI
             ampellist = new List<Ampel>();
             canvas = mycanvas;
         }
+        
 
         public bool addTrafficLight(int posx, int posy, int dir, int id)
         {
@@ -29,6 +30,23 @@ namespace Verkehrssimulation.GUI
             return true;
         }
 
+        public void setStatus(int status, int id)
+        {
+            // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
+
+            if (status == 0)
+            {
+                setRed(id);
+            }
+            else if(status == 1)
+            {
+                setYellow(id);
+            }
+            else if(status == 2)
+            {
+                setGreen(id);
+            }
+        }
         public void setRed(int id)
         {
             foreach (Ampel a in ampellist)

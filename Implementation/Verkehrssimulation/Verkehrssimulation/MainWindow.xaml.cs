@@ -23,7 +23,7 @@ namespace Verkehrssimulation
         private GUI.AmpelHandler ap;
         private TrafficHandler th;
         EnvironmentBuilder builder;
-        IAmpelService trafficlight;
+        public static IAmpelService trafficlight;
 
         //Diese Funktion muss gestartet werden, damit eine Verbindung zum Server aufgebaut werden kann. 
         public void StartAmpelsteuerung()
@@ -195,7 +195,7 @@ namespace Verkehrssimulation
             // Test mit blinkender Ampel
             dpTimer2 = new DispatcherTimer();
             dpTimer2.Tick += dpTimer2_Tick;
-            dpTimer2.Interval = new TimeSpan(0, 0, 0, 10, 500);
+            dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 150);
 
             oh = new ObjectHandler(myCanvas);
             ap = new GUI.AmpelHandler(myCanvas);
@@ -256,6 +256,22 @@ namespace Verkehrssimulation
 
         private void dpTimer2_Tick(object sender, EventArgs e)
         {
+            // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
+            //ap.setStatus(builder.env_ah.getKreuzung(1).n_status, 0);
+            //ap.setStatus(builder.env_ah.getKreuzung(1).e_status, 1);
+            //ap.setStatus(builder.env_ah.getKreuzung(1).s_status, 2);
+            //ap.setStatus(builder.env_ah.getKreuzung(1).w_status, 3);
+
+            //ap.setStatus(builder.env_ah.getKreuzung(2).n_status, 4);
+            //ap.setStatus(builder.env_ah.getKreuzung(2).e_status, 5);
+            //ap.setStatus(builder.env_ah.getKreuzung(2).s_status, 6);
+            //ap.setStatus(builder.env_ah.getKreuzung(2).w_status, 7);
+
+            //ap.setStatus(builder.env_ah.getKreuzung(3).n_status, 8);
+            //ap.setStatus(builder.env_ah.getKreuzung(3).e_status, 9);
+            //ap.setStatus(builder.env_ah.getKreuzung(3).s_status, 10);
+            //ap.setStatus(builder.env_ah.getKreuzung(3).w_status, 11);
+
             //a++;
 
             //if(a%5 == 0)
@@ -270,7 +286,7 @@ namespace Verkehrssimulation
             //{
             //    Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
             //}
-            //builder.UpdateGUIAmpeln();
+            builder.UpdateGUIAmpeln();
             //builder.printEntryPoints();
             //Console.WriteLine(a);
             //this.builder.GetAmpelInfo(4);

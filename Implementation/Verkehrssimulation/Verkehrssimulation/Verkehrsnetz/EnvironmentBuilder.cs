@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Controls;
 using Verkehrssimulation.Verkehrsteilnehmer;
+using Verkehrssimulation;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
@@ -14,6 +15,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         private Canvas canvas;
         List<Streetelem> elem;
         GUI.AmpelHandler ah;
+        public Env_Ampelhandler env_ah;
         IAmpelService trafficlight;
         Streetelem[,] elems = new Streetelem[7, 7];
         int ampelcnt = 0;
@@ -22,6 +24,7 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref IAmpelService _trafficlight)
         {
+
             ah = _ah;
             trafficlight = _trafficlight;
 
@@ -54,21 +57,22 @@ namespace Verkehrssimulation.Verkehrsnetz
             int xpos, ypos = 0;
 
             Console.WriteLine("geregelte_kreuzungen.Count: " + geregelte_kreuzungen.Count);
-            trafficlight.setAmpelAnzahl(12);
+            env_ah = new Env_Ampelhandler(geregelte_kreuzungen.Count*4);
+            //trafficlight.setAmpelAnzahl(12);
 
             Console.WriteLine("trafficlight.getAmpelAnzahl(): " + trafficlight.getAmpelAnzahl());
 
 
-            for (int tmp = 1; tmp <= trafficlight.getAmpelAnzahl(); tmp++)
-            {
+            //for (int tmp = 1; tmp <= trafficlight.getAmpelAnzahl(); tmp++)
+            //{
 
-                trafficlight.setGelbPhase(tmp, 1);
-                trafficlight.setGruenPhase(tmp, 1);
-                trafficlight.setRotPhase(tmp, 1);
-                //trafficlight.setAmpelOn(tmp);
+            //    trafficlight.setGelbPhase(tmp, 1);
+            //    trafficlight.setGruenPhase(tmp, 1);
+            //    trafficlight.setRotPhase(tmp, 1);
+            //    //trafficlight.setAmpelOn(tmp);
 
-                Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
-            }
+            //    Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
+            //}
 
 
             foreach (JObject obj in geregelte_kreuzungen)
@@ -78,41 +82,14 @@ namespace Verkehrssimulation.Verkehrsnetz
 
                 elems[xpos / 100, ypos / 100] = addObject(xpos, ypos, 3);
 
-
-
                 ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++);
-                //ah.setNext(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++);
-                //ah.setNext(ampelcnt - 1);
-                //ah.setNext(ampelcnt - 1);
-                //ah.setNext(ampelcnt - 1);
                 ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++);
-                //ah.setNext(ampelcnt - 1);
-
                 ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++);
-                //ah.setNext(ampelcnt - 1);
-                //ah.setNext(ampelcnt - 1);
-                //ah.setNext(ampelcnt - 1);
-
-
-                //Console.WriteLine(ampelcnt);
 
                 addSolution(xpos, ypos);
             }
-
-
-
             fillWithGrass();
-
-            /*for (int i = 0; i<700; i+=100)
-            {
-                for(int y = 0; y<700; y+=100)
-                {
-                    addObject(i, y);
-                }
-            }*/
-
-
         }
 
         private void fillWithGrass()
@@ -373,5 +350,95 @@ namespace Verkehrssimulation.Verkehrsnetz
         double steigungVertical; // ^
 
         //TODO getter und setter
+    }
+
+    public class FKreuzung
+    {
+        private int id { get; set; }
+        public int n_status { get; set; }
+        public int s_status { get; set; }
+        public int w_status { get; set; }
+        public int e_status { get; set; }
+
+        private int idn, ids, idw, ide;
+
+        public int getID()
+        {
+            return this.id;
+        }
+
+        public FKreuzung(int id , int idn, int ids, int idw, int ide)
+        {
+            this.id = id;
+            this.idn = idn;
+            this.ids = ids;
+            this.idw = idw;
+            this.ide = ide;
+        }
+
+        public void Update()
+        {
+            n_status = MainWindow.trafficlight.getAmpelStatus(idn);
+            s_status = MainWindow.trafficlight.getAmpelStatus(ids);
+            w_status = MainWindow.trafficlight.getAmpelStatus(idw);
+            e_status = MainWindow.trafficlight.getAmpelStatus(ide);
+        }
+
+
+    }
+
+    public class Env_Ampelhandler
+    {
+
+        private List<FKreuzung> kreuzungen;
+        private int cnt = 0;
+
+        public Env_Ampelhandler(int ampelcnt)
+        {
+            
+            
+            kreuzungen = new List<FKreuzung>();
+            cnt = ampelcnt;
+
+            MainWindow.trafficlight.setAmpelAnzahl(cnt);
+
+            int x = 1;
+            int newID = 0;
+            while (x < cnt+1)
+            {
+                kreuzungen.Add(new FKreuzung(newID, x, x + 1, x + 2, x + 3));
+                x = x + 4;
+                newID++;
+            }
+        }
+
+        public FKreuzung getKreuzung(int id)
+        {
+            foreach(FKreuzung k in kreuzungen)
+            {
+                if (k.getID() == id)
+                {
+                    k.Update();
+                    
+                    return k; // wenn gefunden
+                }
+            }
+            return null; // wenn nicht vorhanden
+        }
+    }
+
+    public class ObstacleHandler
+    {
+        private List<Obstacle> obstacles;
+
+        public ObstacleHandler()
+        {
+            obstacles = new List<Obstacle>();
+        }
+
+        public void addObstacle(Obstacle obs)
+        {
+            obstacles.Add(obs);
+        }
     }
 }
