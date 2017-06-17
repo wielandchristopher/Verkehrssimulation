@@ -39,10 +39,17 @@ namespace Client
                 //Setzt die Anzahl der Ampeln. Sind keine Ampeln gesetzt, kann man logischerweise auch keinen Status abfragen. 
 
                 //Diese Funktion muss immer zuerst ausgeführt werden. 
+<<<<<<< HEAD
+                //test.trafficlight.setAmpelAnzahl(10);
+
+                //Gibt man der Funktion getAmpelStatus den integer 0 mit, so erhält man den Status aller Ampeln. Ansonsten erhält man den Status der Spezifischen ID 
+                test.trafficlight.getAmpelStatus(2);
+=======
                 test.trafficlight.setAmpelAnzahl(5);
 
                 //Gibt man der Funktion getAmpelStatus den integer 0 mit, so erhält man den Status aller Ampeln. Ansonsten erhält man den Status der Spezifischen ID 
                 /*test.trafficlight.getAmpelStatus(0);*/
+>>>>>>> origin/master
 
                 //Hier noch einige Beispiele von Funktionen: 
 

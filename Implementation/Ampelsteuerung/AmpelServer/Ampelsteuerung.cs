@@ -1,8 +1,12 @@
 ﻿using System;
 using System.ServiceModel;
-using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
+<<<<<<< HEAD
+using System.Threading.Tasks;
+using System.Timers;
+=======
+>>>>>>> origin/master
 
 namespace Ampelsteuerung
 {
@@ -31,6 +35,14 @@ namespace Ampelsteuerung
         public int getID()
         {
             return ID;
+        }
+        public int getSekundenzähler()
+        {
+            return sekundenzähler;
+        }
+        public int setSekundenzähler(int value)
+        {
+            return sekundenzähler = value;
         }
         public int setRotPhase(int value)
         {
@@ -99,6 +111,7 @@ namespace Ampelsteuerung
             }            
         }
 
+        int sekundenzähler = 0;
         int Status; // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
         int ID;
         bool defect = false;
@@ -112,26 +125,41 @@ namespace Ampelsteuerung
     {
         ServiceHost host;
         bool _serverRunning = false;
+        bool run = false;
         public static List<Ampeln> Trafficlights = new List<Ampeln>();
         public static int Anzahl = 0;
+<<<<<<< HEAD
+        static Timer Ampeltimer;       
+=======
         public static int Flag = 1;
+>>>>>>> origin/master
 
         private void StartServer()
         {
             try
             {
                 _serverRunning = !_serverRunning;
-
                 if (_serverRunning)
                 {
                     host = new ServiceHost(new Ampelsteuerung(), new Uri[] { new Uri("net.pipe://localhost") });
                     host.AddServiceEndpoint(typeof(IAmpelService), new NetNamedPipeBinding(), "Ampelsteuerung");
                     host.Open();
-
-                    Console.WriteLine("Server ist gestartet!!");
-
                     Ampelsteuerung Ampel = new Ampelsteuerung();
 
+<<<<<<< HEAD
+                    while (getAmpelAnzahl() == 0){}
+                    if (getAmpelAnzahl() != 0)
+                    {
+                        Trafficlights = Ampel.factory(getAmpelAnzahl());
+                        run = true;
+                        Ampeltimer = new Timer(1000);
+                        Ampeltimer.Elapsed += (sender, e) => HandleTimer();
+                        Ampeltimer.Enabled = true;
+                    }
+                    while (run) {
+                        
+                    }
+=======
                                        
                     while (true)
                     {
@@ -146,6 +174,7 @@ namespace Ampelsteuerung
                         }
                         
                     }                   
+>>>>>>> origin/master
                 }
                 else
                 {
@@ -157,7 +186,56 @@ namespace Ampelsteuerung
             {
                 ex.ToString();
             }
+
         }
+
+        private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
+        }
+
+        //Tickt jede Sekunde in diese Funktion herein und Prüft bzw. setzt den Ampelstatus
+        private Task HandleTimer()
+        {            
+            int i;
+            for (i = 0; i < Trafficlights.Count; i++)
+            {
+                int test = Trafficlights.ElementAt(i).getID();
+
+                if (Trafficlights.ElementAt(i).getSekundenzähler() == 0 && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getRotPhase())
+                {
+                    //Ampel Rot
+                    Trafficlights.ElementAt(i).setStatus(0);
+                }
+
+                if (Trafficlights.ElementAt(i).getSekundenzähler() == Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase())
+                {
+                    //Ampel Gelb
+                    Trafficlights.ElementAt(i).setStatus(1);
+                }
+                if (Trafficlights.ElementAt(i).getSekundenzähler() == Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase())
+                {
+                    //Ampel Gruen
+                    Trafficlights.ElementAt(i).setStatus(2);
+                }
+                if (Trafficlights.ElementAt(i).getSekundenzähler() == Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
+                {
+                    //Ampel Gelb
+                    Trafficlights.ElementAt(i).setStatus(1);
+                }
+                if (Trafficlights.ElementAt(i).getSekundenzähler() > Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
+                {
+                    Trafficlights.ElementAt(i).setSekundenzähler(0);
+                }
+                if (Trafficlights.ElementAt(i).getDefect() == true)
+                {
+                    Trafficlights.ElementAt(i).setStatus(3);
+                }
+                Trafficlights.ElementAt(i).setSekundenzähler(Trafficlights.ElementAt(i).getSekundenzähler() + 1);
+            }
+            return null;
+        }
+
         //Gibt 2 Integer zurück: 
         //Erster integer gibt ampelID zurück
         //Zweiter integer gibt Status der Ampel zurück 
@@ -167,13 +245,19 @@ namespace Ampelsteuerung
 
             if (ampelid == 0)
             {
-                for (int i = 0; i < Trafficlights.Count; i++)
+                int i;
+
+                for (i = 0; i < Trafficlights.Count; i++)
                 {
                     AmpelStatus = Trafficlights.ElementAt(i).getStatus();
+<<<<<<< HEAD
+                    //return Trafficlights.ElementAt(i).getID() + " " + AmpelStatus.ToString();
+=======
                     return AmpelStatus;
+>>>>>>> origin/master
                 }
             }
-            else
+            else if(ampelid != 0)
             {
                 AmpelStatus = Trafficlights.ElementAt(ampelid - 1).getStatus();
                 return  AmpelStatus; //Trafficlights.ElementAt(ampelid - 1).getID() + " " +
@@ -238,6 +322,7 @@ namespace Ampelsteuerung
         {
             return ampelid + " " + Trafficlights.ElementAt(ampelid - 1).getRotPhase();
         }
+        
         //Gibt 2 Integer zurück: 
         //Erster integer gibt ampelID zurück
         //Zweiter integer gibt die Sekunden der Gelbphase zurück
@@ -274,22 +359,28 @@ namespace Ampelsteuerung
             return Anzahl;
         }
 
+        //Generiert die Ampeln 
         public List<Ampeln> factory(int anzahl)
         {
             for (int i = 0; i < anzahl; i++)
             {
                 Ampeln Ampel = new Ampeln();
                 Ampel.setID(i + 1);
+<<<<<<< HEAD
+                Ampel.setStatus(2);              
+=======
                 Ampel.setStatus(2);      
+>>>>>>> origin/master
                 Trafficlights.Add(Ampel);
             }
             return Trafficlights;
         }
+
         [STAThread]
         static void Main()
         {
             Ampelsteuerung test = new Ampelsteuerung();
-            test.StartServer();
+            test.StartServer();   
         }
     }
 }
