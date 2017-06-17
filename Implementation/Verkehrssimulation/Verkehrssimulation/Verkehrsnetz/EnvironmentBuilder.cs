@@ -37,7 +37,8 @@ namespace Verkehrssimulation.Verkehrsnetz
             LoadEnvironment();
 
             obstacles = new List<Obstacle>();
-            obstacles.Add(new Obstacle(240, 240, 250, 250));
+            obstacles.Add(new Obstacle(250, 250, 260, 260));
+            obstacles.Add(new Obstacle(350, 350, 360, 360));
         }
 
 

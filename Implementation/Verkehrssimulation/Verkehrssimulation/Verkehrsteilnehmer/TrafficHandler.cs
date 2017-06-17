@@ -206,7 +206,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if ((obj.Y - obj.Speed) % 100 < 45)
                                     {
                                         decimal d = obj.NextY / 100;
-                                        obj.NextY = ((int)Math.Floor(d) * 100) + 455;
+                                        obj.NextY = ((int)Math.Floor(d) * 100) + 45;
                                     }
                                     if (obj.Y%100 == 45)
                                     {
@@ -652,16 +652,16 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide)
                         return new Tuple<int, int>(obj.X - obj.Speed, obj.Y);
                     else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
-                        return new Tuple<int, int>(obj.X, obj.Y - obj.Speed);
-                    else 
                         return new Tuple<int, int>(obj.X, obj.Y + obj.Speed);
+                    else 
+                        return new Tuple<int, int>(obj.X, obj.Y - obj.Speed);
                 case (int)TrafficObject.Dir.Right:
                     if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide)
                         return new Tuple<int, int>(obj.X + obj.Speed, obj.Y);
                     else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
-                        return new Tuple<int, int>(obj.X, obj.Y + obj.Speed);
-                    else 
                         return new Tuple<int, int>(obj.X, obj.Y - obj.Speed);
+                    else 
+                        return new Tuple<int, int>(obj.X, obj.Y + obj.Speed);
                 default:
                     throw new NotImplementedException();
             }
