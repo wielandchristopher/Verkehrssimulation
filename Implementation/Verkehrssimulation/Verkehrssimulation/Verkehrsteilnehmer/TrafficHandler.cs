@@ -80,6 +80,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if (obj.X%100 == 45)
                                     {
                                         obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
+                                        nextRoadTileXY = getNextRoadTileXY(obj);
+                                        obj.NextX = nextRoadTileXY.Item1;
+                                        obj.NextY = nextRoadTileXY.Item2;
                                     }
                                     obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
                                 }
@@ -94,6 +97,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if (obj.X%100 == 55)
                                     {
                                         obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
+                                        nextRoadTileXY = getNextRoadTileXY(obj);
+                                        obj.NextX = nextRoadTileXY.Item1;
+                                        obj.NextY = nextRoadTileXY.Item2;
                                     }
                                     obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
                                 }
@@ -108,6 +114,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if (obj.Y%100 == 55)
                                     {
                                         obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
+                                        nextRoadTileXY = getNextRoadTileXY(obj);
+                                        obj.NextX = nextRoadTileXY.Item1;
+                                        obj.NextY = nextRoadTileXY.Item2;
                                     }
                                     obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
                                 }
@@ -122,14 +131,18 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if (obj.Y%100 == 45)
                                     {
                                         obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
+                                        nextRoadTileXY = getNextRoadTileXY(obj);
+                                        obj.NextX = nextRoadTileXY.Item1;
+                                        obj.NextY = nextRoadTileXY.Item2;
                                     }
                                     obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
                                 }
+                  
                             }
                         }
 
                         else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide) {
-                            if (checkIfObstacleAhead(obj.X, obj.Y,((int) obj.Direction + 1) % 4, 10))
+                            if (checkIfObstacleAhead(obj.X, obj.Y,((int) obj.Direction + 3) % 4, 10))
                             {
                                 obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1) && !checkIfObstacleAhead(obj.X, obj.Y, obj.Direction , obj.Speed);
                             }
@@ -725,7 +738,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     }
                     break;
                 case (int)TrafficObject.Dir.Up:
-                    for (int y2 = y; y2 <= y - speed; y2--)
+                    for (int y2 = y; y2 >= y - speed; y2--)
                     {
                         foreach (Obstacle obst in obstacles)
                         {
@@ -737,7 +750,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     }
                     break;
                 case (int)TrafficObject.Dir.Left:
-                    for (int x2 = x; x2 <= x - speed; x2--)
+                    for (int x2 = x; x2 >= x - speed; x2--)
                     {
                         foreach (Obstacle obst in obstacles)
                         {
