@@ -10,15 +10,18 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
     {
         private int id;
         private int x, y;
+        private int nextX, nextY;
         private int speed;
         private int direction;
         private int nextDirection;
         private Boolean mayDrive; //default false, should be set to false if car moved
         private int typ;
-
+       
         public int Id { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
+        public int NextX { get; set; }
+        public int NextY { get; set; }
         public int Speed { get; set; }
         public int Direction{ get; set; }
         public int NextDirection { get; set; }
