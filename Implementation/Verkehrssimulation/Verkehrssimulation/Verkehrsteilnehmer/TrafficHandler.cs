@@ -734,13 +734,13 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         private Boolean checkIfObstacleAhead(int x, int y, int direction, int speed)
         {
-            List<Obstacle> obstacles = eb.getObstacles();
+            List<Verkehrsnetz.Obstacle> obstacles = eb.getObstacles();
             switch (direction)
             {
                 case (int)TrafficObject.Dir.Down:
                     for (int y2 = y; y2 <= y + speed; y2++)
                     {
-                        foreach (Obstacle obst in obstacles)
+                        foreach (Verkehrsnetz.Obstacle obst in obstacles)
                         {
                             if (obst.StartX <= y2 && y2 <= obst.EndX && obst.StartY <= x && x <= obst.EndY)
                             {
@@ -752,7 +752,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 case (int)TrafficObject.Dir.Up:
                     for (int y2 = y; y2 >= y - speed; y2--)
                     {
-                        foreach (Obstacle obst in obstacles)
+                        foreach (Verkehrsnetz.Obstacle obst in obstacles)
                         {
                             if (obst.StartX <= y2 && y2 <= obst.EndX && obst.StartY <= x && x <= obst.EndY)
                             {
@@ -764,7 +764,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 case (int)TrafficObject.Dir.Left:
                     for (int x2 = x; x2 >= x - speed; x2--)
                     {
-                        foreach (Obstacle obst in obstacles)
+                        foreach (Verkehrsnetz.Obstacle obst in obstacles)
                         {
                             if (obst.StartX <= y && y <= obst.EndX && obst.StartY <= x2 && x2 <= obst.EndY)
                             {
@@ -776,7 +776,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 case (int)TrafficObject.Dir.Right:
                     for (int x2 = x; x2 <= x + speed; x2++)
                     {
-                        foreach (Obstacle obst in obstacles)
+                        foreach (Verkehrsnetz.Obstacle obst in obstacles)
                         {
                             if (obst.StartX <= y && y <= obst.EndX && obst.StartY <= x2 && x2 <= obst.EndY)
                             {
@@ -791,14 +791,14 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         private Boolean checkIfCanPassObstacle(int x, int y, int direction)
         {
-            List<Obstacle> obstacles = eb.getObstacles();
+            List<Verkehrsnetz.Obstacle> obstacles = eb.getObstacles();
             int speed = 50; //TODO cleanup
             switch (direction)
             {
                 case (int)TrafficObject.Dir.Down:
                     for (int y2 = y; y2 <= y + speed; y2++)
                     {
-                        foreach (Obstacle obst in obstacles)
+                        foreach (Verkehrsnetz.Obstacle obst in obstacles)
                         {
                             if (obst.StartX <= y2 && y2 <= obst.EndX && obst.StartY <= x+10 && x+10 <= obst.StartY)
                             {
@@ -810,7 +810,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 case (int)TrafficObject.Dir.Up:
                     for (int y2 = y; y2 <= y - speed; y2++)
                     {
-                        foreach (Obstacle obst in obstacles)
+                        foreach (Verkehrsnetz.Obstacle obst in obstacles)
                         {
                             if (obst.StartX <= y2 && y2 <= obst.EndX && obst.StartY <= x-10 && x-10 <= obst.StartY)
                             {
@@ -822,7 +822,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 case (int)TrafficObject.Dir.Left:
                     for (int x2 = x; x2 <= x - speed; x2++)
                     {
-                        foreach (Obstacle obst in obstacles)
+                        foreach (Verkehrsnetz.Obstacle obst in obstacles)
                         {
                             if (obst.StartX <= y+10 && y+10 <= obst.EndX && obst.StartY <= x2 && x2 <= obst.StartY)
                             {
@@ -835,7 +835,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 case (int)TrafficObject.Dir.Right:
                     for (int x2 = x; x2 <= x + speed; x2++)
                     {
-                        foreach (Obstacle obst in obstacles)
+                        foreach (Verkehrsnetz.Obstacle obst in obstacles)
                         {
                             if (obst.StartX <= y-10 && y-10 <= obst.EndX && obst.StartY <= x2 && x2 <= obst.StartY)
                             {
