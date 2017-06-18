@@ -2,11 +2,8 @@
 using System.ServiceModel;
 using System.Collections.Generic;
 using System.Linq;
-<<<<<<< HEAD
 using System.Threading.Tasks;
 using System.Timers;
-=======
->>>>>>> origin/master
 
 namespace Ampelsteuerung
 {
@@ -80,7 +77,7 @@ namespace Ampelsteuerung
 
                 while (time > 0)
                 {
-                    Thread.Sleep(1000);
+                    //Thread.Sleep(1000);
                     time--;
                 }
                 status = setStatus(1);
@@ -92,7 +89,7 @@ namespace Ampelsteuerung
 
                 while (time > 0)
                 {
-                    Thread.Sleep(1000);
+                    //Thread.Sleep(1000);
                     time--;
                 }
                 status = setStatus(2);
@@ -104,7 +101,7 @@ namespace Ampelsteuerung
 
                 while (time > 0)
                 {
-                    Thread.Sleep(1000);
+                    //Thread.Sleep(1000);
                     time--; 
                 }
                 status = setStatus(0);
@@ -128,11 +125,10 @@ namespace Ampelsteuerung
         bool run = false;
         public static List<Ampeln> Trafficlights = new List<Ampeln>();
         public static int Anzahl = 0;
-<<<<<<< HEAD
+
         static Timer Ampeltimer;       
-=======
+
         public static int Flag = 1;
->>>>>>> origin/master
 
         private void StartServer()
         {
@@ -146,7 +142,7 @@ namespace Ampelsteuerung
                     host.Open();
                     Ampelsteuerung Ampel = new Ampelsteuerung();
 
-<<<<<<< HEAD
+
                     while (getAmpelAnzahl() == 0){}
                     if (getAmpelAnzahl() != 0)
                     {
@@ -159,7 +155,7 @@ namespace Ampelsteuerung
                     while (run) {
                         
                     }
-=======
+
                                        
                     while (true)
                     {
@@ -174,7 +170,7 @@ namespace Ampelsteuerung
                         }
                         
                     }                   
->>>>>>> origin/master
+
                 }
                 else
                 {
@@ -250,11 +246,11 @@ namespace Ampelsteuerung
                 for (i = 0; i < Trafficlights.Count; i++)
                 {
                     AmpelStatus = Trafficlights.ElementAt(i).getStatus();
-<<<<<<< HEAD
+
                     //return Trafficlights.ElementAt(i).getID() + " " + AmpelStatus.ToString();
-=======
+
                     return AmpelStatus;
->>>>>>> origin/master
+
                 }
             }
             else if(ampelid != 0)
@@ -366,11 +362,11 @@ namespace Ampelsteuerung
             {
                 Ampeln Ampel = new Ampeln();
                 Ampel.setID(i + 1);
-<<<<<<< HEAD
+
                 Ampel.setStatus(2);              
-=======
+
                 Ampel.setStatus(2);      
->>>>>>> origin/master
+
                 Trafficlights.Add(Ampel);
             }
             return Trafficlights;

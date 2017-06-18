@@ -370,11 +370,15 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         public FKreuzung(int id , int idn, int ids, int idw, int ide)
         {
+
+            // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
             this.id = id;
             this.idn = idn;
             this.ids = ids;
             this.idw = idw;
             this.ide = ide;
+
+
         }
 
         public void Update()
@@ -402,6 +406,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             cnt = ampelcnt;
 
             MainWindow.trafficlight.setAmpelAnzahl(cnt);
+            
 
             int x = 1;
             int newID = 0;
