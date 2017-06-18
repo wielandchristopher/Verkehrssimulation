@@ -308,17 +308,22 @@ namespace Verkehrssimulation
         private void SliderSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int speed = (int)SliderSpeed.Value;
-            //Console.WriteLine("Slider Speed: " + speed);
         }
 
         private void SliderLKW_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int lkw = (int)SliderLKW.Value;
+            IGUI myInterface = th;
+            myInterface.updateTruckRatio(lkw);
+            Console.WriteLine("Slider LKWs: " + lkw);
         }
 
         private void SliderNum_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int num = (int)SliderNum.Value;
+            IGUI myInterface = th;
+            myInterface.updateCarAmount(num);
+            Console.WriteLine("Slider Anzahl: " + num);
         }
     }
 }

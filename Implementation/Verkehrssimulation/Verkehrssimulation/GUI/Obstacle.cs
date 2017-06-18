@@ -23,8 +23,8 @@ namespace Verkehrssimulation.GUI
             shp.Fill = new SolidColorBrush(Colors.Red);
 
             id = newId;
-            Canvas.SetTop(shp, x);
-            Canvas.SetLeft(shp, y);
+            Canvas.SetTop(shp, y);
+            Canvas.SetLeft(shp, x);
         }
 
         public Shape getShape()
