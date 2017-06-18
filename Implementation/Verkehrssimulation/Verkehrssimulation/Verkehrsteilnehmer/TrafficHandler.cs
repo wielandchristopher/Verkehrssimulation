@@ -530,6 +530,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     EntryPoint entrypoint = entrypoints.ElementAt(entrypointIndex);
                     //TODO if entry point is at the corner of the grid find out if road is vertical or horizontal
                     //TODO adjust NextRoad Direction when Martin gives me layout of 3-way roads
+                    int tr = getCurrentTruckRatio(); //For debug only pls delete
                     int typ = getCurrentTruckRatio() < truckratio ? (int) TrafficObject.Fahrzeugtyp.Truck : (int) TrafficObject.Fahrzeugtyp.Car;
                     if(entrypoint.TileX == 0)
                     {

@@ -37,6 +37,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             this.X = x;
             this.Y = y;
             this.Speed = speed;
+            this.Typ = typ;
             this.Direction = direction;
             this.NextDirection = nextDirection;
             this.MayDrive = false;
