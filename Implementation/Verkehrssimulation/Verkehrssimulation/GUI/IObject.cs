@@ -17,16 +17,14 @@ namespace Verkehrssimulation.GUI
 
 
         // Configurationseinstellungen der GUI
-
         /* 
-         * Gibt Anteil der LKWs in Prozent zurück (0 - 100)
+         * Fügt ein LKW der GUI hinzu
          */
-         
-        //int getLKWFraction();
+        bool addLKWObject(int x, int y, int dir, int id);
 
         /* 
-         * Gibt Anzahl der Fahrzeuge zurück die "gespawnt" werden sollen (0 - 100)
+         * Aktualisiert die Position eines Autos in der GUI anhand seiner ID
         */
-        //int getVehicleNumber();
-    }
+        bool updateCarWithID(int x, int y, int id, int typ);
+        }
 }
