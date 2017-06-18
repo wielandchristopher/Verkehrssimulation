@@ -45,7 +45,7 @@ namespace Verkehrssimulation.GUI
             return true;
         }
 
-        public bool updateCarWithID(int x, int y, int id)
+        public bool updateCarWithID(int x, int y, int id, int typ)
         {
 
             foreach(Verkehrsteilnehmer obj in this.objlist)

@@ -209,14 +209,14 @@ namespace Verkehrssimulation
 
             
 
-            th.createNewVerkehrsteilnehmer(210, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
-            th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
-            th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
-            th.createNewVerkehrsteilnehmer(280, 145, 4, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Down);
-            th.createNewVerkehrsteilnehmer(255, 285, 4, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
-            th.createNewVerkehrsteilnehmer(320, 355, 4, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right); // Test for Obstacle 2
-            th.createNewVerkehrsteilnehmer(255, 655, 4, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
-            th.createNewVerkehrsteilnehmer(255, 645, 4, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+            th.createNewVerkehrsteilnehmer(210, 155, 4, (int) TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+            th.createNewVerkehrsteilnehmer(280, 145, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Down);
+            th.createNewVerkehrsteilnehmer(255, 285, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+            th.createNewVerkehrsteilnehmer(320, 355, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right); // Test for Obstacle 2
+            th.createNewVerkehrsteilnehmer(255, 655, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+            th.createNewVerkehrsteilnehmer(255, 645, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
 
 
             dispatchTimer.Start();

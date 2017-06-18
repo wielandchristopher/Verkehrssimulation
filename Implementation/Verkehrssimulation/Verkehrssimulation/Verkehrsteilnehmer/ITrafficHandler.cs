@@ -9,7 +9,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
     interface ITrafficHandler
     {
         void updateAll();
-        void createNewVerkehrsteilnehmer(int x, int y, int speed, int direction, int nextDirection);
+        void createNewVerkehrsteilnehmer(int x, int y, int speed, int typ, int direction, int nextDirection);
         void removeVerkehrsteilnehmer(int id);
     }
 }

@@ -8,9 +8,10 @@ using Verkehrssimulation.GUI;
 
 namespace Verkehrssimulation.Verkehrsteilnehmer
 {
-    class TrafficHandler : ITrafficHandler
+    class TrafficHandler : ITrafficHandler,IGUI
     {
-        readonly private int targetNumberOfCars = 20;
+        private int targetNumberOfCars = 20;
+        int truckratio = 0; //in percent TODO: not integrated yet!!
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
         private EnvironmentBuilder eb; // ref auf Environmenthandler zum abfragen der rules
         private ObjectHandler oh; //ref zu GUI
@@ -499,7 +500,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     obj.X = obj.NextX;
                     obj.Y = obj.NextY;//move the car to its new position
                     //send update to UI
-                    oh.updateCarWithID(obj.Y, obj.X, obj.Id); //x and y are in ui the other way around
+                    oh.updateCarWithID(obj.Y, obj.X, obj.Id,obj.Typ); //x and y are in ui the other way around
 
                     //destroy car if the left simulation, TODO send eventually to other group
                     if (obj.X <0 || obj.X > 700 || obj.Y < 0 || obj.Y > 700)
@@ -529,21 +530,22 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     EntryPoint entrypoint = entrypoints.ElementAt(entrypointIndex);
                     //TODO if entry point is at the corner of the grid find out if road is vertical or horizontal
                     //TODO adjust NextRoad Direction when Martin gives me layout of 3-way roads
+                    //TODO decide if Car of Truck
                     if(entrypoint.TileX == 0)
                     {
-                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 5, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
+                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 5, (int) TrafficObject.Fahrzeugtyp.Car, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
                     }
                     else if(entrypoint.TileX == 600)
                     {
-                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 5, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
+                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 5, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
                     }
                     else if(entrypoint.TileY == 0)
                     {
-                        createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 5, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                        createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 5, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
                     }
                     else if (entrypoint.TileY == 600)
                     {
-                        createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 5, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+                        createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 5, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
                     }
                 } 
             }
@@ -554,10 +556,10 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             return eb.getNeededEnvironmentRules(x, y);
         }
 
-        public void createNewVerkehrsteilnehmer(int x, int y, int speed, int direction, int nextDirection)
+        public void createNewVerkehrsteilnehmer(int x, int y, int speed, int typ, int direction, int nextDirection)
         {
       
-            trafficobjs.Add(new TrafficObject(id_number,x, y, speed, direction, nextDirection));
+            trafficobjs.Add(new TrafficObject(id_number,x, y, speed, typ, direction, nextDirection));
             oh.addCarObject(y, x, id_number);
             id_number++;
         }
@@ -846,6 +848,16 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     return checkIfTilesAreEmpty(x, y - 10, x + 50, y - 10) == 0;
             }
             return false;
+        }
+
+        public void updateCarAmount(int cars)
+        {
+            targetNumberOfCars = cars;
+        }
+
+        public void updateTruckRatio(int percent)
+        {
+            truckratio = percent;
         }
     }
 }

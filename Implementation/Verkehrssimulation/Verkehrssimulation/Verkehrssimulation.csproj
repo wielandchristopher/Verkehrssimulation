@@ -86,6 +86,7 @@
     <Compile Include="Verkehrsregeln\AllgemeineVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\IVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\Schilder.cs" />
+    <Compile Include="Verkehrsteilnehmer\IGUI.cs" />
     <Compile Include="Verkehrsteilnehmer\ITrafficHandler.cs" />
     <Compile Include="Verkehrsteilnehmer\TrafficHandler.cs" />
     <Compile Include="Verkehrsteilnehmer\TrafficObject.cs" />
