@@ -61,7 +61,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             env_ah = new Env_Ampelhandler(geregelte_kreuzungen.Count*4);
             //trafficlight.setAmpelAnzahl(12);
 
-            Console.WriteLine("trafficlight.getAmpelAnzahl(): " + trafficlight.getAmpelAnzahl());
+            //Console.WriteLine("trafficlight.getAmpelAnzahl(): " + trafficlight.getAmpelAnzahl());
 
 
             //for (int tmp = 1; tmp <= trafficlight.getAmpelAnzahl(); tmp++)
@@ -265,7 +265,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                         Console.WriteLine("nicht gehandelter status");
                         break;
                 }
-                Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
+                //Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
             }
         }
 

@@ -72,6 +72,7 @@
     <Compile Include="Ampelsteuerung\IAmpelService.cs" />
     <Compile Include="GUI\Ampel.cs" />
     <Compile Include="GUI\AmpelHandler.cs" />
+    <Compile Include="GUI\Obstacle.cs" />
     <Compile Include="GUI\IVerkehrsnetz.cs" />
     <Compile Include="GUI\ObjectHandler.cs" />
     <Compile Include="GUI\IObject.cs" />

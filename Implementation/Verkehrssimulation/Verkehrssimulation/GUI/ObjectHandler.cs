@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Verkehrssimulation.GUI
@@ -17,15 +19,15 @@ namespace Verkehrssimulation.GUI
         {
             objlist = new List<Verkehrsteilnehmer>();
             canvas = mycanvas;
-            canvas.MouseLeftButtonDown += addobstacle;
+            canvas.MouseLeftButtonDown += addObstacle;
 
         }
 
-        public void addobstacle(object sender, EventArgs e)
+        public void addObstacle(object sender, EventArgs e)
         {
-            Console.WriteLine("add obstacle");
-            
-
+            Point p = Mouse.GetPosition(canvas);
+            Obstacle obs = new Obstacle(p.X, p.Y, 1);
+            canvas.Children.Add(obs.getShape());
         }
 
         public bool addCarObject(int x, int y, int id)
