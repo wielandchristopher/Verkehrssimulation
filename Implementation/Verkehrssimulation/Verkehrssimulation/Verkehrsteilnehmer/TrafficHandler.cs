@@ -169,6 +169,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if (obj.X%100 == 45)
                                     {
                                         obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                        nextRoadTileXY = getNextRoadTileXY(obj);
+                                        obj.NextX = nextRoadTileXY.Item1;
+                                        obj.NextY = nextRoadTileXY.Item2;
                                     }
                                     obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
                                 }
@@ -183,6 +186,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if (obj.X%100 == 55)
                                     {
                                         obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                        nextRoadTileXY = getNextRoadTileXY(obj);
+                                        obj.NextX = nextRoadTileXY.Item1;
+                                        obj.NextY = nextRoadTileXY.Item2;
                                     }
                                     obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
                                 }
@@ -197,6 +203,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if (obj.Y%100 == 55)
                                     {
                                         obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                        nextRoadTileXY = getNextRoadTileXY(obj);
+                                        obj.NextX = nextRoadTileXY.Item1;
+                                        obj.NextY = nextRoadTileXY.Item2;
                                     }
                                     obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
                                 }
@@ -211,6 +220,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     if (obj.Y%100 == 45)
                                     {
                                         obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                        nextRoadTileXY = getNextRoadTileXY(obj);
+                                        obj.NextX = nextRoadTileXY.Item1;
+                                        obj.NextY = nextRoadTileXY.Item2;
                                     }
                                     obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
                                 }
