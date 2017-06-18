@@ -560,7 +560,11 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         {
       
             trafficobjs.Add(new TrafficObject(id_number,x, y, speed, typ, direction, nextDirection));
-            oh.addCarObject(y, x, id_number);
+            //add cars to GUI
+            if (typ == (int) TrafficObject.Fahrzeugtyp.Car)
+                oh.addCarObject(y, x, id_number);
+            else
+                oh.addLKWObject(y, x, direction, id_number);
             id_number++;
         }
 
