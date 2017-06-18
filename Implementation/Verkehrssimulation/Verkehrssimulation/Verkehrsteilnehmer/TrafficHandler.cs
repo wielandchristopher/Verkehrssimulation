@@ -530,22 +530,22 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     EntryPoint entrypoint = entrypoints.ElementAt(entrypointIndex);
                     //TODO if entry point is at the corner of the grid find out if road is vertical or horizontal
                     //TODO adjust NextRoad Direction when Martin gives me layout of 3-way roads
-                    //TODO decide if Car of Truck
+                    int typ = getCurrentTruckRatio() < truckratio ? (int) TrafficObject.Fahrzeugtyp.Truck : (int) TrafficObject.Fahrzeugtyp.Car;
                     if(entrypoint.TileX == 0)
                     {
-                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 5, (int) TrafficObject.Fahrzeugtyp.Car, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
+                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 5, typ, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
                     }
                     else if(entrypoint.TileX == 600)
                     {
-                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 5, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
+                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 5, typ, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
                     }
                     else if(entrypoint.TileY == 0)
                     {
-                        createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 5, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                        createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 5, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
                     }
                     else if (entrypoint.TileY == 600)
                     {
-                        createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 5, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+                        createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 5, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
                     }
                 } 
             }
@@ -858,6 +858,25 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         public void updateTruckRatio(int percent)
         {
             truckratio = percent;
+        }
+
+        private int getCurrentTruckRatio() {
+            int trucks = 0;
+            foreach (TrafficObject obj in trafficobjs)
+            {
+                if (obj.Typ == (int) TrafficObject.Fahrzeugtyp.Truck)
+                {
+                    trucks++;
+                }
+            }
+            if (trafficobjs.Count != 0)
+            {
+                return 100 * trucks / trafficobjs.Count;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
