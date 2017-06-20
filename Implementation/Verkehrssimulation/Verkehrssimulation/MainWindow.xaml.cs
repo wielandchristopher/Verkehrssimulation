@@ -264,15 +264,7 @@ namespace Verkehrssimulation
             //ap.setStatus(builder.env_ah.getKreuzung(1).s_status, 2);
             //ap.setStatus(builder.env_ah.getKreuzung(1).w_status, 3);
 
-            //ap.setStatus(builder.env_ah.getKreuzung(2).n_status, 4);
-            //ap.setStatus(builder.env_ah.getKreuzung(2).e_status, 5);
-            //ap.setStatus(builder.env_ah.getKreuzung(2).s_status, 6);
-            //ap.setStatus(builder.env_ah.getKreuzung(2).w_status, 7);
 
-            //ap.setStatus(builder.env_ah.getKreuzung(3).n_status, 8);
-            //ap.setStatus(builder.env_ah.getKreuzung(3).e_status, 9);
-            //ap.setStatus(builder.env_ah.getKreuzung(3).s_status, 10);
-            //ap.setStatus(builder.env_ah.getKreuzung(3).w_status, 11);
 
             //a++;
 

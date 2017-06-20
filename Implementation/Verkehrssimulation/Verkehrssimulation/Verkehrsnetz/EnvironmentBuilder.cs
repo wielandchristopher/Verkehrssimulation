@@ -272,7 +272,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                         Console.WriteLine("nicht gehandelter status");
                         break;
                 }
-                //Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
+                Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
             }
         }
 
@@ -422,6 +422,13 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.idw = idw;
             this.ide = ide;
 
+            Console.WriteLine("North: " + idn +" South: "+ ids + " West: " + idw + " East: " +  ide);
+
+            MainWindow.trafficlight.setAmpelStatus(idn,0);
+            MainWindow.trafficlight.setAmpelStatus(ids,0);
+            MainWindow.trafficlight.setAmpelStatus(idw,2);
+            MainWindow.trafficlight.setAmpelStatus(ide,2);
+
 
         }
 
@@ -452,9 +459,9 @@ namespace Verkehrssimulation.Verkehrsnetz
             MainWindow.trafficlight.setAmpelAnzahl(cnt);
             
 
-            int x = 1;
+            int x = 0;
             int newID = 0;
-            while (x < cnt+1)
+            while (x < cnt)
             {
                 kreuzungen.Add(new FKreuzung(newID, x, x + 1, x + 2, x + 3));
                 x = x + 4;
