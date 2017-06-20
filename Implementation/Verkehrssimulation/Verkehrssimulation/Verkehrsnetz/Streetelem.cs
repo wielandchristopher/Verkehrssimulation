@@ -11,9 +11,11 @@ namespace Verkehrssimulation.Verkehrsnetz
 {
     class Streetelem : EnvElement
     {
-        public Streetelem(int _x, int _y, int _dir, int _type)
-        {
+        private int ampelid = 0;
 
+        public Streetelem(int _x, int _y, int _dir, int _type, int ampelid)
+        {
+            this.ampelid = ampelid;
             x = _x;
             y = _y;
             dir = _dir;
@@ -29,6 +31,11 @@ namespace Verkehrssimulation.Verkehrsnetz
             initImgType();
             addContextMenue();
 
+        }
+
+        public int getAmpelID()
+        {
+            return ampelid;
         }
 
 
@@ -156,10 +163,12 @@ namespace Verkehrssimulation.Verkehrsnetz
         }
         public void printStreetType(object sender, EventArgs e)
         {
-
+            Console.WriteLine("Ampelid: " + this.ampelid);
             Console.WriteLine("Position (X/Y) " + this.x + this.y);
             Console.WriteLine(this.stype.ToString());
         }
+
+        
         
 
         public void elemRotate(object sender, EventArgs e)

@@ -175,6 +175,8 @@ namespace Verkehrssimulation.Verkehrsnetz
         }
 
         int alternate = 0;
+        private int ampelidconnector = 0;
+
         public void alternateLight()
         {
             int x = 0;
@@ -230,7 +232,12 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
 
             //StreetType { Street = 1, ThreeKreuzung = 2, FourKreuzung = 3, Grass = 4 };
-            Streetelem e = new Streetelem(x, y, 1, type);
+            int ampelid = -1;
+            if (type == 3)
+            {
+                ampelid = ampelidconnector++;
+            }
+            Streetelem e = new Streetelem(x, y, 1, type,ampelid);
             elem.Add(e);
 
             canvas.Children.Add(e.getImage());
@@ -283,6 +290,19 @@ namespace Verkehrssimulation.Verkehrsnetz
             return this.elems[x / 100, y / 100].getStreetType();
         }
 
+        public int getAmpelID(int x, int y) //geht
+        {
+            //holt den straßentyp und die ausrichtung vom aktuellen feld wo das auto fährt
+            //Console.WriteLine(this.elems[x / 100, y / 100].getStreetType().ToString());
+
+            if (x > 600) { x = 600; }
+            else if (x < 0) { x = 0; }
+
+            if (y > 600) { y = 600; }
+            else if (y < 0) { y = 0; }
+            return this.elems[x / 100, y / 100].getAmpelID();
+        }
+
         public List<EntryPoint> getEnvironmentEntries()
         {
             return this.entrypoints;
@@ -305,9 +325,33 @@ namespace Verkehrssimulation.Verkehrsnetz
             return (int)getStreetType(x, y);
         }
 
-        public StreetInfo getNeededStreetRules(int x, int y)
+
+        /// <summary>
+        /// Funktion zum ahbolen der Streetinfo für das Modul Verkehrsteilnehmer (Andras)
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public StreetInfo getNeededStreetRules(int x, int y) 
         {
-            throw new NotImplementedException();
+            StreetInfo info = new StreetInfo();
+       
+            info.type = (int)getStreetType(x, y);
+            info.layout = -1; // NI
+            info.steigungHorizontal = -1; // NI
+            info.steigungVertical = -1; // NI
+            
+            FKreuzung kreuzung = null;
+            if (this.getAmpelID(x, y) > -1)
+            {
+                kreuzung = this.env_ah.getKreuzung(this.getAmpelID(x, y));
+                info.ampelstatusDown = kreuzung.s_status;
+                info.ampelstatusLeft = kreuzung.w_status;
+                info.ampelstatusRight = kreuzung.e_status;
+                info.ampelstatusUp = kreuzung.n_status;
+            }
+
+            return info;
         }
     }
 
@@ -341,14 +385,14 @@ namespace Verkehrssimulation.Verkehrsnetz
 
     public class StreetInfo
     {
-        int type;
-        int layout; //only 3 Kreuzung, set null else
-        int ampelstatusUp; // 1 -> rot, 2-> gelb, 3 -> rot //TODO please make an enum null -> no ampel,
-        int ampelstatusDown;
-        int ampelstatusLeft;
-        int ampelstatusRight;
-        double steigungHorizontal; //----->
-        double steigungVertical; // ^
+        public int type { get; set; }
+        public int layout { get; set; } //only 3 Kreuzung, set null else
+        public int ampelstatusUp { get; set; } // 1 -> rot, 2-> gelb, 3 -> rot //TODO please make an enum null -> no ampel,
+        public int ampelstatusDown { get; set; }
+        public int ampelstatusLeft { get; set; }
+        public int ampelstatusRight { get; set; }
+        public double steigungHorizontal { get; set; } //----->
+        public double steigungVertical { get; set; } // ^
 
         //TODO getter und setter
     }
@@ -446,5 +490,23 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
             obstacles.Add(obs);
         }
+
+        public bool inArea(int x, int y)
+        {
+            return false;
+        }
+
+        public bool checkObstacles(int x, int y)
+        {
+            foreach(Obstacle obs in obstacles)
+            {
+                if(inArea(x, y))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
     }
 }
