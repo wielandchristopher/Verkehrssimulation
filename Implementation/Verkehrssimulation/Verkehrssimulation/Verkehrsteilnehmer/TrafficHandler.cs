@@ -11,7 +11,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
     class TrafficHandler : ITrafficHandler,IGUI
     {
         private int targetNumberOfCars = 20;
-        int truckratio = 0; //in percent TODO: not integrated yet!!
+        int truckratio = 0; 
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
         private EnvironmentBuilder eb; // ref auf Environmenthandler zum abfragen der rules
         private ObjectHandler oh; //ref zu GUI
@@ -232,7 +232,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
                         break;
                         //TODO get more detailed information where I can go.
-                        //TODO get information if traffic light or not.
+                        
 
                     case (int)EnvElement.StreetType.ThreeKreuzung:
                     case (int)EnvElement.StreetType.FourKreuzung:
@@ -245,7 +245,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             case (int)StreetRegion.IntersectionAhead:
                                 obj.MayDrive = checkIfCanDrive4Way(obj,thisRoadInfo) && (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
                                 break;
-                            //TODO find Solution for "zugestaute Kreuzungen"
                             case (int)StreetRegion.Intersection:
                                 switch ((obj.NextDirection - obj.Direction +4) % 4)
                                 {
@@ -482,7 +481,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     EntryPoint entrypoint = entrypoints.ElementAt(entrypointIndex);
                     //TODO if entry point is at the corner of the grid find out if road is vertical or horizontal
                     //TODO adjust NextRoad Direction when Martin gives me layout of 3-way roads
-                    int tr = getCurrentTruckRatio(); //For debug only pls delete
                     int typ = getCurrentTruckRatio() < truckratio ? (int) TrafficObject.Fahrzeugtyp.Truck : (int) TrafficObject.Fahrzeugtyp.Car;
                     if(entrypoint.TileX == 0)
                     {
@@ -593,8 +591,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
             else
             {
-                //return checkIfCanDriveWithTrafficLight(obj, ampelstatus);
-                return checkIfCanDrive4WayWithoutTrafficLight(obj); //Debug only, undo before Push
+                return checkIfCanDriveWithTrafficLight(obj, ampelstatus);
             }
         }
 
@@ -615,7 +612,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         private Boolean checkIfCanDriveWithTrafficLight(TrafficObject obj, int trafficLightColour)
         {
-            //TODO get trafficlightstatus from Verkehrsnetz
             Boolean isGreen = (trafficLightColour == 2);
             if (!isGreen)
             {
@@ -785,7 +781,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         private Boolean checkIfCanPassObstacle(int x, int y, int direction)
         {
             List<Verkehrsnetz.Obstacle> obstacles = eb.getObstacles();
-            int speed = 50; //TODO cleanup
+            int speed = 50;
             switch (direction)
             {
                 case (int)TrafficObject.Dir.Down:
@@ -811,7 +807,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             }
                         }
                     }
-                    return checkIfTilesAreEmpty(x - 10, y, x - 10, y + 50, -1, false) == 0; //TODO solve problem only one car can pass obstacle at once, may argue the driver behind cannot see if save passing behind a passing car is possible so they only pass one at a time
+                    return checkIfTilesAreEmpty(x - 10, y, x - 10, y + 50, -1, false) == 0;
                 case (int)TrafficObject.Dir.Left:
                     for (int x2 = x; x2 <= x - speed; x2++)
                     {
