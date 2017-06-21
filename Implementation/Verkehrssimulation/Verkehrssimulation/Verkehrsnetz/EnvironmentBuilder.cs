@@ -350,6 +350,13 @@ namespace Verkehrssimulation.Verkehrsnetz
                 info.ampelstatusRight = kreuzung.e_status;
                 info.ampelstatusUp = kreuzung.n_status;
             }
+            else
+            {
+                info.ampelstatusDown = 3;
+                info.ampelstatusLeft = 3;
+                info.ampelstatusRight = 3;
+                info.ampelstatusUp = 3;
+            }
 
             return info;
         }

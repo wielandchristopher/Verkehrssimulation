@@ -35,7 +35,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 StreetInfo thisRoadInfo; 
                 //int nextRoadX;
                 //int nextRoadY;
-            
+                
                 thisRoadInfo= getEnvRules(obj.Y, obj.X);
                 Tuple<int,int> nextRoadTileXY = getNextRoadTileXY(obj);
                 obj.NextX = nextRoadTileXY.Item1;
