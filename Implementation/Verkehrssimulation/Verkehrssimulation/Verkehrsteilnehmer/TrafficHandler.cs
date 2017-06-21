@@ -46,7 +46,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide)
                         {
                             //may drive if road ahead is empty
-                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY,obj.Id,false) == 0); // only this car is around
                             if (obj.MayDrive)
                             {
                                 if (checkIfObstacleAhead(obj.X, obj.Y, obj.Direction, obj.Speed))
@@ -57,7 +57,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         nextRoadTileXY = getNextRoadTileXY(obj);
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
-                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                     }
                                     else
                                     {
@@ -68,7 +68,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         }
                         else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
                         {
-                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                             if (obj.MayDrive)
                             {
                                 if (obj.Direction == (int)TrafficObject.Dir.Up)
@@ -85,7 +85,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
                                     }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
 
                                 if (obj.Direction == (int)TrafficObject.Dir.Down)
@@ -102,7 +102,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
                                     }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
 
                                 if (obj.Direction == (int)TrafficObject.Dir.Left)
@@ -119,7 +119,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
                                     }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
 
                                 if (obj.Direction == (int)TrafficObject.Dir.Right)
@@ -136,7 +136,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
                                     }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
                   
                             }
@@ -145,19 +145,19 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide) {
                             if (checkIfObstacleAhead(obj.X, obj.Y,((int) obj.Direction + 3) % 4, 10))
                             {
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1) && !checkIfObstacleAhead(obj.X, obj.Y, obj.Direction , obj.Speed);
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0) && !checkIfObstacleAhead(obj.X, obj.Y, obj.Direction , obj.Speed);
                             }
                             else
                             {
                                 obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.GoingRightSide;
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
 
                             }
                         }
 
                         else
                         {
-                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                             if (obj.MayDrive)
                             {
                                 if (obj.Direction == (int)TrafficObject.Dir.Down)
@@ -174,7 +174,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
                                     }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
 
                                 if (obj.Direction == (int)TrafficObject.Dir.Up)
@@ -191,7 +191,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
                                     }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
 
                                 if (obj.Direction == (int)TrafficObject.Dir.Right)
@@ -208,7 +208,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
                                     }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
 
                                 if (obj.Direction == (int)TrafficObject.Dir.Left)
@@ -225,7 +225,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         obj.NextX = nextRoadTileXY.Item1;
                                         obj.NextY = nextRoadTileXY.Item2;
                                     }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
                             }
                         }
@@ -240,17 +240,17 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         switch (streetRegion)
                         {
                             case (int) StreetRegion.NormalStreet:
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
                                 break;
                             case (int)StreetRegion.IntersectionAhead:
-                                obj.MayDrive = checkIfCanDrive4Way(obj,thisRoadInfo) && (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
+                                obj.MayDrive = checkIfCanDrive4Way(obj,thisRoadInfo) && (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
                                 break;
                             //TODO find Solution for "zugestaute Kreuzungen"
                             case (int)StreetRegion.Intersection:
                                 switch ((obj.NextDirection - obj.Direction +4) % 4)
                                 {
                                     case 0: //contues to drive in same direction
-                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
                                         break;
                                     default: //biegt wo ab.
                                         switch (obj.NextDirection)
@@ -290,13 +290,13 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         }
                                         break;
                                 }
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
                                 break;
                         }
                         break;
                     case (int)EnvElement.StreetType.Grass:
                         //may drive if road ahead is empty
-                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
+                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                         break;
                     default:
                         throw new NotImplementedException();
@@ -306,8 +306,15 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             List<int> removeIds = new List<int>();
             foreach (TrafficObject obj in trafficobjs) //update cars if they may drive
             {
+                if (obj.WaitingCounter >= 10 && obj.MayDrive)
+                {
+                    decimal dx = obj.NextX / 100;
+                    decimal dy = obj.NextY / 100;
+                    obj.MayDrive = checkIfTilesAreEmpty(((int)Math.Floor(dx) * 100) + 40, ((int)Math.Floor(dy) * 100) + 40, ((int)Math.Floor(dx) * 100) + 60, ((int)Math.Floor(dy) * 100) + 60, obj.Id, false) == 0;
+                }
                 if (obj.MayDrive)
-                { 
+                {
+                    obj.WaitingCounter = 0;
                     Tuple<int, int> nextRoadXY = getNextRoadTileXY(obj);
                     //int nextRoadX = nextRoadXY.Item1;
                     //int nextRoadY = nextRoadXY.Item2;
@@ -396,7 +403,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                 break;
                         }
                     }
-
                     obj.MayDrive = false;
 
                     //fix position when taking a turn
@@ -439,7 +445,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         }
 
                     }
-
                     obj.X = obj.NextX;
                     obj.Y = obj.NextY;//move the car to its new position
                     //send update to UI
@@ -450,6 +455,10 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     {
                         removeIds.Add(obj.Id);
                     }
+                }
+                else
+                {
+                    obj.WaitingCounter++;
                 }
             }
 
@@ -530,27 +539,32 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             //TODO call UI to remove car
         }
 
-        private int checkIfTilesAreEmpty(int startX, int startY, int destX, int destY)
+        private int checkIfTilesAreEmpty(int startX, int startY, int destX, int destY, int requesterId, Boolean ignoreStandingCars)
         {
             int count = 0;
             foreach (TrafficObject obj in trafficobjs)
             {
-                int xIncrement = 1;
-                int yIncrement = 1;
-                if (startX > destX)
+                if (obj.Id != requesterId)
                 {
-                    xIncrement = -1;
+                    if (ignoreStandingCars && (obj.WaitingCounter >= 30))
+                        return 0;
+                    int xIncrement = 1;
+                    int yIncrement = 1;
+                    if (startX > destX)
+                    {
+                        xIncrement = -1;
+                    }
+                    if (startY > destY)
+                    {
+                        yIncrement = -1;
+                    }
+                    for (int x = startX; x != (destX + xIncrement); x = x + xIncrement)
+                        for (int y = startY; y != (destY + yIncrement); y = y + yIncrement)
+                            if (obj.X == x && obj.Y == y)
+                            {
+                                count++;
+                            }
                 }
-                if (startY > destY)
-                {
-                    yIncrement = -1;
-                }
-                for(int x = startX; x!=(destX+xIncrement); x=x+xIncrement)
-                    for (int y = startY; y != (destY + yIncrement); y = y + yIncrement)
-                        if (obj.X == x && obj.Y == y)
-                        {
-                            count++;
-                        }
             }
             return count;
         }
@@ -579,7 +593,8 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
             else
             {
-                return checkIfCanDriveWithTrafficLight(obj, ampelstatus);
+                //return checkIfCanDriveWithTrafficLight(obj, ampelstatus);
+                return checkIfCanDrive4WayWithoutTrafficLight(obj); //Debug only, undo before Push
             }
         }
 
@@ -667,13 +682,13 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             switch (direction)
             {
                 case (int)TrafficObject.Dir.Down:
-                    return (checkIfTilesAreEmpty(x + 40, y + 0, x + 50, y + 40) <= 0);
+                    return (checkIfTilesAreEmpty(x + 40, y + 0, x + 50, y + 40, -1, true) <= 0); //stehende Autos werden ignoriert weil Vorfahrsverzicht.
                 case (int)TrafficObject.Dir.Right:
-                    return (checkIfTilesAreEmpty(x + 0, y + 50, x + 40, y + 60) <= 0);
+                    return (checkIfTilesAreEmpty(x + 0, y + 50, x + 40, y + 60, - 1, true) <= 0);
                 case (int)TrafficObject.Dir.Up:
-                    return (checkIfTilesAreEmpty(x + 50, y + 60, x + 60, y + 100) <= 0);
+                    return (checkIfTilesAreEmpty(x + 50, y + 60, x + 60, y + 100, -1, true) <= 0);
                 case (int)TrafficObject.Dir.Left:
-                    return (checkIfTilesAreEmpty(x + 60, y + 40, x + 100, y + 50) <= 0);
+                    return (checkIfTilesAreEmpty(x + 60, y + 40, x + 100, y + 50, -1, true) <= 0);
                 default:
                     return false;
             }
@@ -784,7 +799,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             }
                         }
                     }
-                    return checkIfTilesAreEmpty(x + 10, y, x + 10, y + 50) == 0;
+                    return checkIfTilesAreEmpty(x + 10, y, x + 10, y + 50, -1, false) == 0;
                 case (int)TrafficObject.Dir.Up:
                     for (int y2 = y; y2 <= y - speed; y2++)
                     {
@@ -796,7 +811,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             }
                         }
                     }
-                    return checkIfTilesAreEmpty(x - 10, y, x - 10, y + 50) == 0; //TODO solve problem only one car can pass obstacle at once, may argue the driver behind cannot see if save passing behind a passing car is possible so they only pass one at a time
+                    return checkIfTilesAreEmpty(x - 10, y, x - 10, y + 50, -1, false) == 0; //TODO solve problem only one car can pass obstacle at once, may argue the driver behind cannot see if save passing behind a passing car is possible so they only pass one at a time
                 case (int)TrafficObject.Dir.Left:
                     for (int x2 = x; x2 <= x - speed; x2++)
                     {
@@ -809,7 +824,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         }
 
                     }
-                    return checkIfTilesAreEmpty(x, y + 10, x + 50, y + 10) == 0;
+                    return checkIfTilesAreEmpty(x, y + 10, x + 50, y + 10, -1, false) == 0;
                 case (int)TrafficObject.Dir.Right:
                     for (int x2 = x; x2 <= x + speed; x2++)
                     {
@@ -821,7 +836,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             }
                         }
                     }
-                    return checkIfTilesAreEmpty(x, y - 10, x + 50, y - 10) == 0;
+                    return checkIfTilesAreEmpty(x, y - 10, x + 50, y - 10, -1, false) == 0;
             }
             return false;
         }
