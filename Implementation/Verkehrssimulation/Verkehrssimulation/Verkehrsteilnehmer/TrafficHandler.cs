@@ -32,7 +32,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         {
             foreach(TrafficObject obj in trafficobjs)  //check how can move forward and flag them if they can do so
             {
-                int thisRoadInfo; 
+                StreetInfo thisRoadInfo; 
                 //int nextRoadX;
                 //int nextRoadY;
             
@@ -40,7 +40,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 Tuple<int,int> nextRoadTileXY = getNextRoadTileXY(obj);
                 obj.NextX = nextRoadTileXY.Item1;
                 obj.NextY = nextRoadTileXY.Item2;
-                switch (thisRoadInfo)
+                switch (thisRoadInfo.type)
                 {
                     case (int)EnvElement.StreetType.Street:
                         if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide)
@@ -243,7 +243,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                 obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
                                 break;
                             case (int)StreetRegion.IntersectionAhead:
-                                obj.MayDrive = checkIfCanDrive4WayWithoutTrafficLight(obj) && (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
+                                obj.MayDrive = checkIfCanDrive4Way(obj,thisRoadInfo) && (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
                                 break;
                             //TODO find Solution for "zugestaute Kreuzungen"
                             case (int)StreetRegion.Intersection:
@@ -294,63 +294,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                 break;
                         }
                         break;
-                    case 0: //traffic Light
-                        //TODO reduce duplicate code with no traffic light
-                        int streetRegion2 = getStreetRegion(obj.Y, obj.X);
-                        switch (streetRegion2)
-                        {
-                            case (int)StreetRegion.NormalStreet:
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
-                                break;
-                            case (int)StreetRegion.IntersectionAhead:
-                                obj.MayDrive = checkIfCanDriveWithTrafficLight(obj) && (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
-                                break;
-                            //TODO find Solution for "zugestaute Kreuzungen"
-                            case (int)StreetRegion.Intersection:
-                                switch ((obj.NextDirection - obj.Direction) % 4)
-                                {
-                                    case 0: //contues to drive in same direction
-                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1);
-                                        break;
-                                    default: //biegt wo ab.
-                                        switch (obj.NextDirection)
-                                        {
-                                            case (int)TrafficObject.Dir.Up:
-                                                if ((obj.X % 100 <= 55 && obj.NextX % 100 >= 55) || (obj.X % 100 >= 55 && obj.NextX % 100 <= 55))
-                                                {
-                                                    decimal d = obj.NextX / 100;
-                                                    obj.NextX = ((int)Math.Floor(d) * 100) + 55; 
-                                                }
-                                                break;
-                                            case (int)TrafficObject.Dir.Down:
-                                                if ((obj.X % 100 <= 45 && obj.NextX % 100 >= 45) || (obj.X % 100 >= 45 && obj.NextX % 100 <= 45))
-                                                {
-                                                    decimal d = obj.NextX / 100;
-                                                    obj.NextX = ((int)Math.Floor(d) * 100) + 45;
-                                                }
-                                                break;
-                                            case (int)TrafficObject.Dir.Right:
-                                                if ((obj.Y % 100 <= 55 && obj.NextY % 100 >= 55) || (obj.Y % 100 >= 55 && obj.NextY % 100 <= 55))
-                                                {
-                                                    decimal d = obj.NextY / 100;
-                                                    obj.NextY = ((int)Math.Floor(d) * 100) + 55;
-                                                }
-                                                break;
-                                            case (int)TrafficObject.Dir.Left:
-                                                if ((obj.Y % 100 <= 45 && obj.NextY % 100 >= 45) || (obj.Y % 100 >= 45 && obj.NextY % 100 <= 45))
-                                                {
-                                                    decimal d = obj.NextY / 100;
-                                                    obj.NextY = ((int)Math.Floor(d) * 100) + 45;
-                                                }
-                                                break;
-                                        }
-                                        break;
-                                }
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextY, obj.NextY) <= 1);
-                                break;
-                        }
-                        break;
-
                     case (int)EnvElement.StreetType.Grass:
                         //may drive if road ahead is empty
                         obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY) <= 1); // only this car is around
@@ -371,7 +314,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     //decide where to go next (only) when leaving (100x100) roadTile
                     if ((Math.Abs(obj.X % 100 - obj.NextX % 100) > (obj.Speed + 1)) || (Math.Abs(obj.Y % 100 - obj.NextY % 100) > (obj.Speed + 1)))
                     {
-                        int nextRoadInfo = getEnvRules(obj.NextY, obj.NextX); 
+                        int nextRoadInfo = getEnvRules(obj.NextY, obj.NextX).type; 
                         switch (nextRoadInfo)
                         {
                             case (int)EnvElement.StreetType.Street:
@@ -552,9 +495,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
         }
 
-        public int getEnvRules(int x, int y)
+        public StreetInfo getEnvRules(int x, int y)
         {
-            return eb.getNeededEnvironmentRules(x, y);
+            return eb.getNeededStreetRules(x, y);
         }
 
         public void createNewVerkehrsteilnehmer(int x, int y, int speed, int typ, int direction, int nextDirection)
@@ -612,6 +555,34 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             return count;
         }
 
+        private Boolean checkIfCanDrive4Way(TrafficObject obj, StreetInfo info)
+        {
+            int ampelstatus = 0;
+            switch (obj.Direction)
+            {
+                case (int) TrafficObject.Dir.Down:
+                    ampelstatus = info.ampelstatusUp;
+                    break;
+                case (int) TrafficObject.Dir.Up:
+                    ampelstatus = info.ampelstatusDown;
+                    break;
+                case (int)TrafficObject.Dir.Right:
+                    ampelstatus = info.ampelstatusLeft;
+                    break;
+                case (int)TrafficObject.Dir.Left:
+                    ampelstatus = info.ampelstatusRight;
+                    break;
+            }
+            if (ampelstatus != 0 && ampelstatus != 1 && ampelstatus != 2)
+            {
+                return checkIfCanDrive4WayWithoutTrafficLight(obj);
+            }
+            else
+            {
+                return checkIfCanDriveWithTrafficLight(obj, ampelstatus);
+            }
+        }
+
         private Boolean checkIfCanDrive4WayWithoutTrafficLight (TrafficObject obj)
         {
             switch ((obj.NextDirection - obj.Direction + 4) % 4) //calculates the Abbiegerichtung: 1= nach rechts, 2= nach geradeaus, 3 =nach links
@@ -627,10 +598,10 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
         }
 
-        private Boolean checkIfCanDriveWithTrafficLight(TrafficObject obj)
+        private Boolean checkIfCanDriveWithTrafficLight(TrafficObject obj, int trafficLightColour)
         {
             //TODO get trafficlightstatus from Verkehrsnetz
-            Boolean isGreen = true;
+            Boolean isGreen = (trafficLightColour == 2);
             if (!isGreen)
             {
                 return false;
