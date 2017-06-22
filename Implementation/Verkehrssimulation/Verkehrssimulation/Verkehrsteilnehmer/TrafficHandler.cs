@@ -11,7 +11,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
     class TrafficHandler : ITrafficHandler,IGUI
     {
         private int targetNumberOfCars = 20;
-        int truckratio = 0; 
+        private int truckratio = 0; 
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
         private EnvironmentBuilder eb; // ref auf Environmenthandler zum abfragen der rules
         private ObjectHandler oh; //ref zu GUI
@@ -606,7 +606,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
         }
 
-        public StreetInfo getEnvRules(int x, int y)
+        private StreetInfo getEnvRules(int x, int y)
         {
             return eb.getNeededStreetRules(x, y);
         }
