@@ -393,15 +393,38 @@ namespace Verkehrssimulation.Verkehrsnetz
     public class StreetInfo
     {
         public int type { get; set; }
-        public int layout { get; set; } //only 3 Kreuzung, set null else
-        public int ampelstatusUp { get; set; } // 1 -> rot, 2-> gelb, 3 -> rot //TODO please make an enum null -> no ampel,
+        public int layout { get; set; } //only 3 Kreuzung, gerade Straße, set -1 else
+        public int ampelstatusUp { get; set; }
         public int ampelstatusDown { get; set; }
         public int ampelstatusLeft { get; set; }
         public int ampelstatusRight { get; set; }
         public double steigungHorizontal { get; set; } //----->
         public double steigungVertical { get; set; } // ^
 
-        //TODO getter und setter
+        //Erklärung Layout: (muss so sein!!)
+        //gerade Straße:
+        //1: ===========
+        //2: ||
+        //   ||
+        //   ||
+        //   ||
+        //   ||
+        //   ||
+        //3er Kreuzung:
+        //1:
+        //    ||
+        // ===
+        //    ||
+        //2:
+        // ===  ===
+        //    ||
+        //3:
+        // ||
+        //   ===
+        // ||
+        //4:
+        //    ||
+        // ===  ===
     }
 
     public class FKreuzung
