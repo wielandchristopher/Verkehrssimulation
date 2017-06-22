@@ -12,6 +12,7 @@ namespace Verkehrssimulation.Verkehrsnetz
     class Streetelem : EnvElement
     {
         private int ampelid = 0;
+        private int rotation = 1;
 
         public Streetelem(int _x, int _y, int _dir, int _type, int ampelid)
         {
@@ -75,6 +76,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             
             bi.EndInit();
             img.Source = bi;
+
         }
 
         private void addContextMenue()
@@ -199,7 +201,13 @@ namespace Verkehrssimulation.Verkehrsnetz
             bi.EndInit();
 
             img.Source = bi;
+            this.rotation = 2;
 
+        }
+
+        public int getRotation()
+        {
+            return this.rotation;
         }
 
       

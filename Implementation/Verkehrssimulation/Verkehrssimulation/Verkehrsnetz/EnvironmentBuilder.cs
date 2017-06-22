@@ -49,13 +49,26 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
         }
 
+        private int calcAmpelCnt()
+        {
+            int cnt = 0;
+            JArray geregelte_kreuzungen = (JArray)obj.GetValue("geregelte_kreuzungen");
+
+            foreach(JObject obj in geregelte_kreuzungen)
+            {
+                cnt += obj.GetValue("type").Value<int>();
+            }
+            //Console.WriteLine(cnt); // ist richtig berechnet 
+            return cnt;
+        }
+
         private void LoadEnvironment()
         {
             JArray geregelte_kreuzungen = (JArray)obj.GetValue("geregelte_kreuzungen");
             int xpos, ypos = 0;
-
+            
             Console.WriteLine("geregelte_kreuzungen.Count: " + geregelte_kreuzungen.Count);
-            env_ah = new Env_Ampelhandler(geregelte_kreuzungen.Count*4, obj);
+            env_ah = new Env_Ampelhandler(calcAmpelCnt(), obj);
             //trafficlight.setAmpelAnzahl(12);
 
             //Console.WriteLine("trafficlight.getAmpelAnzahl(): " + trafficlight.getAmpelAnzahl());
@@ -75,19 +88,101 @@ namespace Verkehrssimulation.Verkehrsnetz
 
             foreach (JObject obj in geregelte_kreuzungen)
             {
-                xpos = obj.GetValue("xpos").Value<int>();
-                ypos = obj.GetValue("ypos").Value<int>();
 
-                elems[xpos / 100, ypos / 100] = addObject(xpos, ypos, 3);
+                if (obj.GetValue("type").Value<int>() == 4)
+                {
+                    xpos = obj.GetValue("xpos").Value<int>();
+                    ypos = obj.GetValue("ypos").Value<int>();
 
-                ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++);
-                ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++);
-                ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++);
-                ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++);
+                    elems[xpos / 100, ypos / 100] = addObject(xpos, ypos, 3);
 
-                addSolution(xpos, ypos);
+                    ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++);
+                    ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++);
+                    ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++);
+                    ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++);
+
+                    addSolution(xpos, ypos);
+                }
+                else if(obj.GetValue("type").Value<int>() == 3)
+                {
+                    xpos = obj.GetValue("xpos").Value<int>();
+                    ypos = obj.GetValue("ypos").Value<int>();
+                    int nopath = obj.GetValue("nopath").Value<int>();
+
+                    elems[xpos / 100, ypos / 100] = addObject(xpos, ypos, 2, nopath);
+
+                    //rotateElement(3, xpos, ypos);
+
+                    switch (nopath)
+                    {
+                        case 1:
+                            rotateElement(2, xpos, ypos);
+                            break;
+                        case 2:
+                            rotateElement(3, xpos, ypos);
+                            break;
+                        case 3: // nicht drehen
+                            break;
+                        case 4:
+                            rotateElement(1, xpos, ypos);
+                            break;
+                        default:
+                            break;
+                    }
+
+
+                    addThreeGuiLights(nopath,xpos,ypos);
+
+
+                    addSolution(xpos, ypos, nopath);
+                }
+                else
+                {
+                    Console.WriteLine("Type not implemented - ignored in the Environment");
+                }
+
+
             }
             fillWithGrass();
+        }
+
+        private void addThreeGuiLights(int nopath,int xpos,int ypos)
+        {
+
+            switch (nopath)
+            {
+                case 1: // kein norden -> keine ampel bei links oben
+                    ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++); // links unten
+                    ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++); // rechts oben
+                    ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++); // rechts unten
+                    break;
+                case 2: 
+                    ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++); // rechts unten
+                    ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++); // links oben
+                    ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++); // rechts oben
+                    break;
+                case 3:
+                    ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++); // links unten
+                    ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++); // links oben
+                    ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++); // rechts oben
+                    break;
+                case 4:
+
+                    ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++); // rechts unten
+                    ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++); // links unten
+                    ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++); // links oben
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void rotateElement(int cnt, int xpos, int ypos)
+        {
+            for(int i = 0; i < cnt; i++)
+            {
+                ((Streetelem)elems[xpos / 100, ypos / 100]).elemRotate(null, null);
+            }
         }
 
         private void fillWithGrass()
@@ -121,6 +216,26 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.entrypoints.Add(new EntryPoint(xpos, MAX));
             this.entrypoints.Add(new EntryPoint(xpos, MIN));
             this.entrypoints.Add(new EntryPoint(MAX, ypos));
+            this.entrypoints.Add(new EntryPoint(MIN, ypos));
+        }
+
+        private void addEntryPoints(int xpos, int ypos, int nopath)
+        {
+            int MAX = 600;
+            int MIN = 0;
+            
+            // v ausschließen des entrypoints bei dem die 3er kreuzung nicht weitergeführt wird
+
+            if (nopath != 1)
+            this.entrypoints.Add(new EntryPoint(xpos, MIN));
+
+            if (nopath != 2)
+            this.entrypoints.Add(new EntryPoint(MAX, ypos));
+
+            if (nopath != 3)
+            this.entrypoints.Add(new EntryPoint(xpos, MAX));
+
+            if (nopath != 4)
             this.entrypoints.Add(new EntryPoint(MIN, ypos));
         }
 
@@ -171,6 +286,77 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
+        private void addSolution(int xpos, int ypos, int nopath)
+        {
+
+            addEntryPoints(ypos, xpos, nopath);
+
+            int initxval = 0;
+            int inityval = 0;
+            int maxxval = 700;
+            int maxyval = 700;
+
+            //Console.WriteLine("nopath" + nopath);
+
+            switch (nopath)
+            {
+                case 1:
+                    initxval = xpos;
+                    break;
+                case 2:
+                    maxyval = ypos;
+                    break;
+                case 3:
+                    maxxval = xpos;
+                    break;
+                case 4:
+                    inityval = ypos;
+                    break;
+                default:
+                    break;
+            }
+
+            for (int i = initxval; i < maxxval; i += 100)
+            {
+                if (i != xpos)
+                {
+                    
+                    if (elems[i / 100, ypos / 100] != null && ((Streetelem)elems[i / 100, ypos / 100]).getStreetType() == EnvElement.StreetType.Street)
+                    {
+                        ((Streetelem)elems[i / 100, ypos / 100]).updateType(EnvElement.StreetType.FourKreuzung);
+
+                    }
+                    else if (elems[i / 100, ypos / 100] == null)
+                    {
+                        elems[i / 100, ypos / 100] = addObject(i, ypos, 1); // correct 1
+                        ((Streetelem)elems[i / 100, ypos / 100]).elemRotate(null, null);
+                    }
+
+                }
+
+            }
+
+            for (int i = inityval; i < maxyval; i += 100)
+            {
+                if (i != ypos)
+                {
+
+                    if (elems[xpos / 100, i / 100] != null && ((Streetelem)elems[xpos / 100, i / 100]).getStreetType() == EnvElement.StreetType.Street)
+                    {
+                        ((Streetelem)elems[xpos / 100, i / 100]).updateType(EnvElement.StreetType.FourKreuzung);
+
+                    }
+                    else if (elems[xpos / 100, i / 100] == null)
+                    {
+                        elems[xpos / 100, i / 100] = addObject(xpos, i, 1); // correct 1
+                    }
+
+                }
+
+            }
+
+        }
+
         public void setAmpeln()
         {
             int x = 0;
@@ -193,6 +379,24 @@ namespace Verkehrssimulation.Verkehrsnetz
                 ampelid = ampelidconnector++;
             }
             Streetelem e = new Streetelem(x, y, 1, type,ampelid);
+            elem.Add(e);
+
+            canvas.Children.Add(e.getImage());
+            Canvas.SetTop(e.getImage(), x);
+            Canvas.SetLeft(e.getImage(), y);
+            return e;
+        }
+
+        public Streetelem addObject(int x, int y, int type,int off)
+        {
+
+            //StreetType { Street = 1, ThreeKreuzung = 2, FourKreuzung = 3, Grass = 4 };
+            int ampelid = -1;
+            if (type == 3)
+            {
+                ampelid = ampelidconnector++;
+            }
+            Streetelem e = new Streetelem(x, y, 1, type, ampelid);
             elem.Add(e);
 
             canvas.Children.Add(e.getImage());
@@ -246,6 +450,16 @@ namespace Verkehrssimulation.Verkehrsnetz
             if (y > 600) { y = 600; }
             else if (y < 0) { y = 0; }
             return this.elems[x / 100, y / 100].getStreetType();
+        }
+
+        public Streetelem getStreetElement(int x, int y)
+        {
+            if (x > 600) { x = 600; }
+            else if (x < 0) { x = 0; }
+
+            if (y > 600) { y = 600; }
+            else if (y < 0) { y = 0; }
+            return this.elems[x / 100, y / 100];
         }
 
         public int getAmpelID(int x, int y) //geht
@@ -330,7 +544,16 @@ namespace Verkehrssimulation.Verkehrsnetz
             StreetInfo info = new StreetInfo();
        
             info.type = (int)getStreetType(x, y);
-            info.layout = -1; // NI
+
+            if ((int)getStreetElement(x, y).getStreetType() == 1)
+            {
+                info.layout = getStreetElement(x, y).getRotation();
+            }
+            else
+            {
+                info.layout = -1; // keine straße. kreuzungen werden weiter unten behandelt
+            }
+
             info.steigungHorizontal = -1; // NI
             info.steigungVertical = -1; // NI
             
@@ -338,6 +561,24 @@ namespace Verkehrssimulation.Verkehrsnetz
             if (this.getAmpelID(x, y) > -1)
             {
                 kreuzung = this.env_ah.getKreuzung(this.getAmpelID(x, y));
+
+                if (kreuzung.s_status == -1)
+                {
+                    info.layout = 4;
+                }
+                if (kreuzung.n_status == -1)
+                {
+                    info.layout = 2;
+                }
+                if (kreuzung.w_status == -1)
+                {
+                    info.layout = 3;
+                }
+                if (kreuzung.e_status == -1)
+                {
+                    info.layout = 1;
+                }
+
                 info.ampelstatusDown = kreuzung.s_status;
                 info.ampelstatusLeft = kreuzung.w_status;
                 info.ampelstatusRight = kreuzung.e_status;
@@ -456,8 +697,7 @@ namespace Verkehrssimulation.Verkehrsnetz
     public class TKreuzung : Kreuzung, IKreuzung
     {
 
-
-        public TKreuzung(int id, int idn, int ids, int idw, int ide)
+        public TKreuzung(int id, int idn, int ide, int ids, int idw)
         {
 
             // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
@@ -569,10 +809,47 @@ namespace Verkehrssimulation.Verkehrsnetz
             cnt = ampelcnt;
 
             MainWindow.trafficlight.setAmpelAnzahl(cnt);
-            
-
-            int x = 0;
             int newID = 0;
+            int x = 0;
+            JArray geregelte_kreuzungen = (JArray)obj.GetValue("geregelte_kreuzungen");
+
+            foreach (JObject k in geregelte_kreuzungen)
+            {
+
+                if (k.GetValue("type").Value<int>() == 4)
+                {
+                    kreuzungen.Add(new FKreuzung(newID, x, x + 1, x + 2, x + 3));
+                    x = x + 4;
+                    newID++;
+                }
+                else if (k.GetValue("type").Value<int>() == 3)
+                {
+
+                    switch (k.GetValue("nopath").Value<int>())
+                    {
+                        case 1:
+                            kreuzungen.Add(new TKreuzung(newID, -1,x,x+1,x+2));
+                            break;
+                        case 2:
+                            kreuzungen.Add(new TKreuzung(newID, x, -1, x + 1, x + 2));
+                            break;
+                        case 3:
+                            kreuzungen.Add(new TKreuzung(newID, x, x + 1, -1, x + 2));
+                            break;
+                        case 4:
+                            kreuzungen.Add(new TKreuzung(newID, x, x + 1, x + 2, -1));
+                            break;
+                        default:
+                            break;
+                    }
+                    x = x + 3;
+                    newID++;
+                }
+            }
+
+
+
+
             while (x < cnt)
             {
                 kreuzungen.Add(new FKreuzung(newID, x, x + 1, x + 2, x + 3));
