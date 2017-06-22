@@ -226,7 +226,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                         Console.WriteLine("nicht gehandelter status");
                         break;
                 }
-                Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
+                //Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
             }
         }
 
@@ -266,8 +266,16 @@ namespace Verkehrssimulation.Verkehrsnetz
             return this.entrypoints;
         }
 
+        /// <summary>
+        /// Methode für Hannes zum hinzufügen der Obstacles zu meiner liste
+        /// </summary>
+        /// <param name="startx"></param>
+        /// <param name="starty"></param>
+        /// <param name="endx"></param>
+        /// <param name="endy"></param>
         public void addObstacle(int startx, int starty, int endx, int endy)
         {
+            Console.WriteLine("obstacle hinzugefügt bei: X=" + startx + " / Y=" + starty);
             this.oh.addObstacle(new Obstacle(startx, starty, endx, endy));
         }
 
@@ -276,6 +284,12 @@ namespace Verkehrssimulation.Verkehrsnetz
             // holt die regeln
         }
 
+        /// <summary>
+        /// gibt zurück ob die position x,y ausserhalb des spielfeldes ist ( für das ummelden der Fahrzeuge auf ein neues environment)
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public bool isOutside(int x, int y)
         {
             int MAX = 600;
@@ -292,6 +306,13 @@ namespace Verkehrssimulation.Verkehrsnetz
             
             return false;
         }
+
+        /// <summary>
+        /// Gibt den Staßentyp zurück
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public int getNeededEnvironmentRules(int x, int y)
         {
             return (int)getStreetType(x, y);
@@ -333,6 +354,10 @@ namespace Verkehrssimulation.Verkehrsnetz
             return info;
         }
 
+        /// <summary>
+        /// Gibt die liste der obstacles zurück
+        /// </summary>
+        /// <returns></returns>
         public List<Obstacle> getObstacles()
         {
             return oh.getObstacles();

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Verkehrssimulation.Verkehrsnetz;
 
 namespace Verkehrssimulation.GUI
 {
@@ -14,20 +15,26 @@ namespace Verkehrssimulation.GUI
     {
         List<Verkehrsteilnehmer> objlist;
         Canvas canvas;
+        private EnvironmentBuilder builder;
 
-        public ObjectHandler(Canvas mycanvas)
+        public ObjectHandler(Canvas mycanvas, ref EnvironmentBuilder builder)
         {
             objlist = new List<Verkehrsteilnehmer>();
+            this.builder = builder;
             canvas = mycanvas;
             canvas.MouseLeftButtonDown += addObstacle;
 
         }
 
+
         public void addObstacle(object sender, EventArgs e)
         {
             Point p = Mouse.GetPosition(canvas);
-            Obstacle obs = new Obstacle(p.X, p.Y, 1);
+            Obstacle obs = new Obstacle((int)p.X, (int)p.Y, 1);
             canvas.Children.Add(obs.getShape());
+            builder.addObstacle((int)p.X, (int)p.Y, (int)p.X + 1, (int)p.Y + 1);
+
+
         }
 
         public bool addCarObject(int x, int y, int id)

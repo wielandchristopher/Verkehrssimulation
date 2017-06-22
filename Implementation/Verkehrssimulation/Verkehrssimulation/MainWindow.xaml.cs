@@ -197,12 +197,12 @@ namespace Verkehrssimulation
             dpTimer2.Tick += dpTimer2_Tick;
             dpTimer2.Interval = new TimeSpan(0, 0, 0, 0, 150);
 
-            oh = new ObjectHandler(myCanvas);
+           
             ap = new GUI.AmpelHandler(myCanvas);
 
             builder = new EnvironmentBuilder(myCanvas, ref ap, ref trafficlight);
+            oh = new ObjectHandler(myCanvas, ref builder);
 
-   
             th = new TrafficHandler(ref builder, ref oh);
 
             MainAmpelsteuerung(this);
