@@ -9,7 +9,7 @@ using Verkehrssimulation;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
-    class EnvironmentBuilder : ITeilnehmer
+    class EnvironmentBuilder : ITeilnehmer, I_ENV_GUI
     {
         JObject obj; // für json -> Projekt-> nu-getpakete verwalten -> json linq irgendwas
         private Canvas canvas;
@@ -20,11 +20,12 @@ namespace Verkehrssimulation.Verkehrsnetz
         Streetelem[,] elems = new Streetelem[7, 7];
         int ampelcnt = 0;
         List<EntryPoint> entrypoints;
-        List<Obstacle> obstacles;
+        ObstacleHandler oh;
+        private int ampelidconnector = 0;
 
         public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref IAmpelService _trafficlight)
         {
-
+            oh = new ObstacleHandler();
             ah = _ah;
             trafficlight = _trafficlight;
 
@@ -35,14 +36,10 @@ namespace Verkehrssimulation.Verkehrsnetz
             elem = new List<Streetelem>();
             LoadJson();
             LoadEnvironment();
-
-            obstacles = new List<Obstacle>();
-            obstacles.Add(new Obstacle(250, 250, 260, 260));
-            obstacles.Add(new Obstacle(350, 350, 360, 360));
+            
         }
 
-
-        public void LoadJson()
+        private void LoadJson()
         {
 
             using (StreamReader r = new StreamReader("../../Verkehrsnetz/env_config.json"))
@@ -52,13 +49,13 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
         }
 
-        public void LoadEnvironment()
+        private void LoadEnvironment()
         {
             JArray geregelte_kreuzungen = (JArray)obj.GetValue("geregelte_kreuzungen");
             int xpos, ypos = 0;
 
             Console.WriteLine("geregelte_kreuzungen.Count: " + geregelte_kreuzungen.Count);
-            env_ah = new Env_Ampelhandler(geregelte_kreuzungen.Count*4);
+            env_ah = new Env_Ampelhandler(geregelte_kreuzungen.Count*4, obj);
             //trafficlight.setAmpelAnzahl(12);
 
             //Console.WriteLine("trafficlight.getAmpelAnzahl(): " + trafficlight.getAmpelAnzahl());
@@ -108,7 +105,6 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
         }
 
-
         public void printEntryPoints()
         {
             foreach (EntryPoint e in this.entrypoints)
@@ -127,6 +123,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.entrypoints.Add(new EntryPoint(MAX, ypos));
             this.entrypoints.Add(new EntryPoint(MIN, ypos));
         }
+
         private void addSolution(int xpos, int ypos)
         {
 
@@ -174,48 +171,6 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
-        int alternate = 0;
-        private int ampelidconnector = 0;
-
-        public void alternateLight()
-        {
-            int x = 0;
-            while (x < ampelcnt)
-            {
-                ah.yellowBlinky(x);
-
-                /*ah.setNext(x);
-
-                if (alternate % 2 == 0)
-                {
-                    if (x % 2 == 0)
-                    {
-                        ah.setNext(x);
-                    }
-                    else
-                    {
-                        ah.setNext(x);
-                    }
-                }
-                else
-                {
-                    if (x % 2 == 0)
-                    {
-                        
-                        ah.setNext(x);
-                    }
-                    else
-                    {
-                        ah.setNext(x);
-                    }
-                }*/
-
-                x++;
-            }
-
-            alternate++;
-            Console.WriteLine(alternate);
-        }
         public void setAmpeln()
         {
             int x = 0;
@@ -246,7 +201,6 @@ namespace Verkehrssimulation.Verkehrsnetz
             return e;
         }
 
-
         public void UpdateGUIAmpeln()
         {
             // ampelthread abfragen und an gui leiten
@@ -276,6 +230,10 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
         }
 
+        public bool isObstacleInMyWay(int x, int y)
+        {
+            return this.oh.checkObstacles(x, y);
+        }
 
         public EnvElement.StreetType getStreetType(int x, int y) //geht
         {
@@ -308,9 +266,9 @@ namespace Verkehrssimulation.Verkehrsnetz
             return this.entrypoints;
         }
 
-        public List<Obstacle> getObstacles()
+        public void addObstacle(int startx, int starty, int endx, int endy)
         {
-            return this.obstacles;
+            this.oh.addObstacle(new Obstacle(startx, starty, endx, endy));
         }
 
         public void getRules()
@@ -318,8 +276,22 @@ namespace Verkehrssimulation.Verkehrsnetz
             // holt die regeln
         }
 
+        public bool isOutside(int x, int y)
+        {
+            int MAX = 600;
+            int MIN = 0;
 
-
+            if (x >=MAX || x <= MIN)
+            {
+                return true;
+            }
+            else if(y>=MAX || y <= MIN)
+            {
+                return true;
+            }
+            
+            return false;
+        }
         public int getNeededEnvironmentRules(int x, int y)
         {
             return (int)getStreetType(x, y);
@@ -341,7 +313,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             info.steigungHorizontal = -1; // NI
             info.steigungVertical = -1; // NI
             
-            FKreuzung kreuzung = null;
+            Kreuzung kreuzung = null;
             if (this.getAmpelID(x, y) > -1)
             {
                 kreuzung = this.env_ah.getKreuzung(this.getAmpelID(x, y));
@@ -359,6 +331,11 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
 
             return info;
+        }
+
+        public List<Obstacle> getObstacles()
+        {
+            return oh.getObstacles();
         }
     }
 
@@ -427,20 +404,95 @@ namespace Verkehrssimulation.Verkehrsnetz
         // ===  ===
     }
 
-    public class FKreuzung
+    public interface IKreuzung
     {
-        private int id { get; set; }
+        void Update();
+    }
+
+    public abstract class Kreuzung : IKreuzung
+    {
+        protected int id { get; set; }
         public int n_status { get; set; }
         public int s_status { get; set; }
         public int w_status { get; set; }
         public int e_status { get; set; }
 
-        private int idn, ids, idw, ide;
+        protected int idn, ids, idw, ide;
 
         public int getID()
         {
             return this.id;
         }
+
+
+        public abstract void Update();
+    }
+
+    public class TKreuzung : Kreuzung, IKreuzung
+    {
+
+
+        public TKreuzung(int id, int idn, int ids, int idw, int ide)
+        {
+
+            // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
+            this.id = id;
+            this.idn = idn;
+            this.ids = ids;
+            this.idw = idw;
+            this.ide = ide;
+
+            this.n_status = -1;
+            this.w_status = -1;
+            this.e_status = -1;
+            this.s_status = -1;
+
+            //Console.WriteLine("North: " + idn + " South: " + ids + " West: " + idw + " East: " + ide);
+
+            if (idn > -1)
+            {
+                MainWindow.trafficlight.setAmpelStatus(idn, 0);
+            }
+            if (ids > -1)
+            {
+                MainWindow.trafficlight.setAmpelStatus(ids, 0);
+            }
+            if (idw > -1)
+            {
+                MainWindow.trafficlight.setAmpelStatus(idw, 2);
+            }
+            if (ide > -1)
+            {
+                MainWindow.trafficlight.setAmpelStatus(ide, 2);
+            }
+                       
+        }
+
+        public override void Update()
+        {
+            if (idn > -1)
+            {
+                n_status = MainWindow.trafficlight.getAmpelStatus(idn);
+            }
+            if (ids > -1)
+            {
+                s_status = MainWindow.trafficlight.getAmpelStatus(ids);
+            }
+            if (idw > -1)
+            {
+                w_status = MainWindow.trafficlight.getAmpelStatus(idw);
+            }
+            if (ide > -1)
+            {
+                e_status = MainWindow.trafficlight.getAmpelStatus(ide);
+            }
+            
+        }
+    }
+
+    public class FKreuzung : Kreuzung, IKreuzung
+    {
+
 
         public FKreuzung(int id , int idn, int ids, int idw, int ide)
         {
@@ -452,7 +504,12 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.idw = idw;
             this.ide = ide;
 
-            Console.WriteLine("North: " + idn +" South: "+ ids + " West: " + idw + " East: " +  ide);
+            this.n_status = -1;
+            this.w_status = -1;
+            this.e_status = -1;
+            this.s_status = -1;
+
+            //Console.WriteLine("North: " + idn +" South: "+ ids + " West: " + idw + " East: " +  ide);
 
             MainWindow.trafficlight.setAmpelStatus(idn,0);
             MainWindow.trafficlight.setAmpelStatus(ids,0);
@@ -462,7 +519,7 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
-        public void Update()
+        public override void Update()
         {
             n_status = MainWindow.trafficlight.getAmpelStatus(idn);
             s_status = MainWindow.trafficlight.getAmpelStatus(ids);
@@ -476,14 +533,14 @@ namespace Verkehrssimulation.Verkehrsnetz
     public class Env_Ampelhandler
     {
 
-        private List<FKreuzung> kreuzungen;
+        private List<Kreuzung> kreuzungen;
         private int cnt = 0;
+        private JObject configobj;
 
-        public Env_Ampelhandler(int ampelcnt)
+        public Env_Ampelhandler(int ampelcnt, JObject obj)
         {
-            
-            
-            kreuzungen = new List<FKreuzung>();
+            configobj = obj;
+            kreuzungen = new List<Kreuzung>();
             cnt = ampelcnt;
 
             MainWindow.trafficlight.setAmpelAnzahl(cnt);
@@ -499,9 +556,9 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
         }
 
-        public FKreuzung getKreuzung(int id)
+        public Kreuzung getKreuzung(int id)
         {
-            foreach(FKreuzung k in kreuzungen)
+            foreach(Kreuzung k in kreuzungen)
             {
                 if (k.getID() == id)
                 {
@@ -528,8 +585,12 @@ namespace Verkehrssimulation.Verkehrsnetz
             obstacles.Add(obs);
         }
 
-        public bool inArea(int x, int y)
+        public bool inArea(int x, int y, Obstacle obs)
         {
+            if(x > obs.StartX && x<obs.EndX && y > obs.StartY && y < obs.EndY)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -537,7 +598,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
             foreach(Obstacle obs in obstacles)
             {
-                if(inArea(x, y))
+                if(inArea(x, y,obs))
                 {
                     return true;
                 }
@@ -545,5 +606,9 @@ namespace Verkehrssimulation.Verkehrsnetz
             return false;
         }
         
+        public List<Obstacle> getObstacles()
+        {
+            return this.obstacles;
+        }
     }
 }
