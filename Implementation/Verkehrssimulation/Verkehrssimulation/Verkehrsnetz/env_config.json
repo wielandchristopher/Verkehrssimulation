@@ -1,9 +1,10 @@
 ﻿{
   "geregelte_kreuzungen": [
     {
-      "type":  4,
+      "type":  3,
       "xpos": 100,
-      "ypos": 500
+      "ypos": 500,
+      "nopath":  3
     },
     {
       "type": 3,
@@ -15,7 +16,7 @@
       "type": 3,
       "xpos": 500,
       "ypos": 200,
-      "nopath" : 2
+      "nopath" : 4
     }
   ],
 

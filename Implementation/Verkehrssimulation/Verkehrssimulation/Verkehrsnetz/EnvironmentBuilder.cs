@@ -392,7 +392,7 @@ namespace Verkehrssimulation.Verkehrsnetz
 
             //StreetType { Street = 1, ThreeKreuzung = 2, FourKreuzung = 3, Grass = 4 };
             int ampelid = -1;
-            if (type == 3)
+            if (type == 2)
             {
                 ampelid = ampelidconnector++;
             }
@@ -489,7 +489,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         /// <param name="endy"></param>
         public void addObstacle(int startx, int starty, int endx, int endy)
         {
-            Console.WriteLine("obstacle hinzugefügt bei: X=" + startx + " / Y=" + starty);
+            //Console.WriteLine("obstacle hinzugefügt bei: X=" + startx + " / Y=" + starty);
             this.oh.addObstacle(new Obstacle(startx, starty, endx, endy));
         }
 
@@ -541,6 +541,8 @@ namespace Verkehrssimulation.Verkehrsnetz
         /// <returns></returns>
         public StreetInfo getNeededStreetRules(int x, int y) 
         {
+
+            
             StreetInfo info = new StreetInfo();
        
             info.type = (int)getStreetType(x, y);
@@ -548,6 +550,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             if ((int)getStreetElement(x, y).getStreetType() == 1)
             {
                 info.layout = getStreetElement(x, y).getRotation();
+                Console.WriteLine(info.layout);
             }
             else
             {
@@ -558,6 +561,8 @@ namespace Verkehrssimulation.Verkehrsnetz
             info.steigungVertical = -1; // NI
             
             Kreuzung kreuzung = null;
+
+            //Console.WriteLine("ampelid:" + this.getAmpelID(x, y));
             if (this.getAmpelID(x, y) > -1)
             {
                 kreuzung = this.env_ah.getKreuzung(this.getAmpelID(x, y));
@@ -591,6 +596,8 @@ namespace Verkehrssimulation.Verkehrsnetz
                 info.ampelstatusRight = 3;
                 info.ampelstatusUp = 3;
             }
+
+            //Console.WriteLine("layout" + info.layout);
 
             return info;
         }
