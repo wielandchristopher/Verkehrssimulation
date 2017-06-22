@@ -47,7 +47,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         public enum Dir{Up  =0, Left = 1, Down = 2, Right = 3 };// numbers are selceted that way so that are 90° ratation can be made by adding 1; !! do not change those, it will break the module!!
         public enum Fahrzeugtyp { Car = 0, Truck = 1};
-        public enum PassingObstStatus { RightSide = 0, GoingWrongSide = 1, WrongSide = 2, GoingRightSide = 3};
+        public enum PassingObstStatus { RightSide = 0, GoingWrongSide = 1, WrongSide = 2, GoingRightSide = 3, TurnAround = 4};
         //public abstract void Update();
 
     }

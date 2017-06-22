@@ -30,275 +30,362 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         public void updateAll()
         {
-            foreach(TrafficObject obj in trafficobjs)  //check how can move forward and flag them if they can do so
+            foreach (TrafficObject obj in trafficobjs)  //check how can move forward and flag them if they can do so
             {
-                StreetInfo thisRoadInfo; 
+                StreetInfo thisRoadInfo;
                 //int nextRoadX;
                 //int nextRoadY;
-                
-                thisRoadInfo= getEnvRules(obj.Y, obj.X);
-                Tuple<int,int> nextRoadTileXY = getNextRoadTileXY(obj);
+
+                thisRoadInfo = getEnvRules(obj.Y, obj.X);
+                Tuple<int, int> nextRoadTileXY = getNextRoadTileXY(obj);
                 obj.NextX = nextRoadTileXY.Item1;
                 obj.NextY = nextRoadTileXY.Item2;
-                switch (thisRoadInfo.type)
+                if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.TurnAround)
                 {
-                    case (int)EnvElement.StreetType.Street:
-                        if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide)
+                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                    if (obj.MayDrive)
+                    {
+                        if (obj.Direction == (int)TrafficObject.Dir.Up)
                         {
-                            //may drive if road ahead is empty
-                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY,obj.Id,false) == 0); // only this car is around
-                            if (obj.MayDrive)
+                            if ((obj.X - obj.Speed) % 100 > 45)
                             {
-                                if (checkIfObstacleAhead(obj.X, obj.Y, obj.Direction, obj.Speed))
+                                decimal d = obj.NextX / 100;
+                                obj.NextX = ((int)Math.Floor(d) * 100) + 45;
+                            }
+                            if (obj.X % 100 == 45)
+                            {
+                                obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                obj.Direction = (int)TrafficObject.Dir.Down;
+                                obj.NextDirection = (int)TrafficObject.Dir.Down;
+                                nextRoadTileXY = getNextRoadTileXY(obj);
+                                obj.NextX = nextRoadTileXY.Item1;
+                                obj.NextY = nextRoadTileXY.Item2;
+                            }
+                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                        }
+
+                        if (obj.Direction == (int)TrafficObject.Dir.Down)
+                        {
+                            if ((obj.X + obj.Speed) % 100 < 55)
+                            {
+                                decimal d = obj.NextX / 100;
+                                obj.NextX = ((int)Math.Floor(d) * 100) + 55;
+                            }
+                            if (obj.X % 100 == 55)
+                            {
+                                obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                obj.Direction = (int)TrafficObject.Dir.Up;
+                                obj.NextDirection = (int)TrafficObject.Dir.Up;
+                                nextRoadTileXY = getNextRoadTileXY(obj);
+                                obj.NextX = nextRoadTileXY.Item1;
+                                obj.NextY = nextRoadTileXY.Item2;
+                            }
+                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                        }
+
+                        if (obj.Direction == (int)TrafficObject.Dir.Left)
+                        {
+                            if ((obj.Y + obj.Speed) % 100 < 55)
+                            {
+                                decimal d = obj.NextY / 100;
+                                obj.NextY = ((int)Math.Floor(d) * 100) + 55;
+                            }
+                            if (obj.Y % 100 == 55)
+                            {
+                                obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                obj.Direction = (int)TrafficObject.Dir.Right;
+                                obj.NextDirection = (int)TrafficObject.Dir.Right;
+                                nextRoadTileXY = getNextRoadTileXY(obj);
+                                obj.NextX = nextRoadTileXY.Item1;
+                                obj.NextY = nextRoadTileXY.Item2;
+                            }
+                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                        }
+
+                        if (obj.Direction == (int)TrafficObject.Dir.Right)
+                        {
+                            if ((obj.Y - obj.Speed) % 100 < 45)
+                            {
+                                decimal d = obj.NextY / 100;
+                                obj.NextY = ((int)Math.Floor(d) * 100) + 45;
+                            }
+                            if (obj.Y % 100 == 45)
+                            {
+                                obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                obj.Direction = (int)TrafficObject.Dir.Left;
+                                obj.NextDirection = (int)TrafficObject.Dir.Left;
+                                nextRoadTileXY = getNextRoadTileXY(obj);
+                                obj.NextX = nextRoadTileXY.Item1;
+                                obj.NextY = nextRoadTileXY.Item2;
+                            }
+                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                        }
+                    }
+                }
+                else
+                {
+
+                    switch (thisRoadInfo.type)
+                    {
+                        case (int)EnvElement.StreetType.Street:
+                            if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide)
+                            {
+                                //may drive if road ahead is empty
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                if (obj.MayDrive)
                                 {
-                                    if (checkIfCanPassObstacle(obj.X, obj.Y, obj.Direction))
+                                    if (checkIfObstacleAhead(obj.X, obj.Y, obj.Direction, obj.Speed))
                                     {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.GoingWrongSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
+                                        if (checkIfCanPassObstacle(obj.X, obj.Y, obj.Direction))
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.GoingWrongSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                        }
+                                        else
+                                        {
+                                            obj.MayDrive = false;
+                                        }
+                                    }
+                                }
+                            }
+                            else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
+                            {
+                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                if (obj.MayDrive)
+                                {
+                                    if (obj.Direction == (int)TrafficObject.Dir.Up)
+                                    {
+                                        if ((obj.X - obj.Speed) % 100 > 45)
+                                        {
+                                            decimal d = obj.NextX / 100;
+                                            obj.NextX = ((int)Math.Floor(d) * 100) + 45;
+                                        }
+                                        if (obj.X % 100 == 45)
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                        }
                                         obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                     }
-                                    else
+
+                                    if (obj.Direction == (int)TrafficObject.Dir.Down)
                                     {
-                                        obj.MayDrive = false;
+                                        if ((obj.X + obj.Speed) % 100 < 55)
+                                        {
+                                            decimal d = obj.NextX / 100;
+                                            obj.NextX = ((int)Math.Floor(d) * 100) + 55;
+                                        }
+                                        if (obj.X % 100 == 55)
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                        }
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                     }
+
+                                    if (obj.Direction == (int)TrafficObject.Dir.Left)
+                                    {
+                                        if ((obj.Y + obj.Speed) % 100 < 55)
+                                        {
+                                            decimal d = obj.NextY / 100;
+                                            obj.NextY = ((int)Math.Floor(d) * 100) + 55;
+                                        }
+                                        if (obj.Y % 100 == 55)
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                        }
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                    }
+
+                                    if (obj.Direction == (int)TrafficObject.Dir.Right)
+                                    {
+                                        if ((obj.Y - obj.Speed) % 100 < 45)
+                                        {
+                                            decimal d = obj.NextY / 100;
+                                            obj.NextY = ((int)Math.Floor(d) * 100) + 45;
+                                        }
+                                        if (obj.Y % 100 == 45)
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                        }
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                    }
+
                                 }
                             }
-                        }
-                        else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
-                        {
-                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                            if (obj.MayDrive)
+
+                            else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide)
                             {
-                                if (obj.Direction == (int)TrafficObject.Dir.Up)
+                                if (checkIfObstacleAhead(obj.X, obj.Y, ((int)obj.Direction + 3) % 4, 10))
                                 {
-                                    if ((obj.X-obj.Speed)%100 > 45)
-                                    {
-                                        decimal d = obj.NextX / 100;
-                                        obj.NextX = ((int)Math.Floor(d) * 100) + 45;
-                                    }
-                                    if (obj.X%100 == 45)
-                                    {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
-                                    }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0) && !checkIfObstacleAhead(obj.X, obj.Y, obj.Direction, obj.Speed);
                                 }
+                                else
+                                {
+                                    obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.GoingRightSide;
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
 
-                                if (obj.Direction == (int)TrafficObject.Dir.Down)
-                                {
-                                    if ((obj.X + obj.Speed) % 100 < 55)
-                                    {
-                                        decimal d = obj.NextX / 100;
-                                        obj.NextX = ((int)Math.Floor(d) * 100) + 55;
-                                    }
-                                    if (obj.X%100 == 55)
-                                    {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
-                                    }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                                 }
-
-                                if (obj.Direction == (int)TrafficObject.Dir.Left)
-                                {
-                                    if ((obj.Y + obj.Speed) % 100 < 55)
-                                    {
-                                        decimal d = obj.NextY / 100;
-                                        obj.NextY = ((int)Math.Floor(d) * 100) + 55;
-                                    }
-                                    if (obj.Y%100 == 55)
-                                    {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
-                                    }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                                }
-
-                                if (obj.Direction == (int)TrafficObject.Dir.Right)
-                                {
-                                    if ((obj.Y - obj.Speed) % 100 < 45)
-                                    {
-                                        decimal d = obj.NextY / 100;
-                                        obj.NextY = ((int)Math.Floor(d) * 100) + 45;
-                                    }
-                                    if (obj.Y%100 == 45)
-                                    {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.WrongSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
-                                    }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                                }
-                  
                             }
-                        }
 
-                        else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide) {
-                            if (checkIfObstacleAhead(obj.X, obj.Y,((int) obj.Direction + 3) % 4, 10))
-                            {
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0) && !checkIfObstacleAhead(obj.X, obj.Y, obj.Direction , obj.Speed);
-                            }
                             else
                             {
-                                obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.GoingRightSide;
                                 obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-
-                            }
-                        }
-
-                        else
-                        {
-                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                            if (obj.MayDrive)
-                            {
-                                if (obj.Direction == (int)TrafficObject.Dir.Down)
+                                if (obj.MayDrive)
                                 {
-                                    if ((obj.X - obj.Speed) % 100 > 45)
+                                    if (obj.Direction == (int)TrafficObject.Dir.Down)
                                     {
-                                        decimal d = obj.NextX / 100;
-                                        obj.NextX = ((int)Math.Floor(d) * 100) + 45;
-                                    }
-                                    if (obj.X%100 == 45)
-                                    {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
-                                    }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                                }
-
-                                if (obj.Direction == (int)TrafficObject.Dir.Up)
-                                {
-                                    if ((obj.X + obj.Speed) % 100 < 55)
-                                    {
-                                        decimal d = obj.NextX / 100;
-                                        obj.NextX = ((int)Math.Floor(d) * 100) + 55;
-                                    }
-                                    if (obj.X%100 == 55)
-                                    {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
-                                    }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                                }
-
-                                if (obj.Direction == (int)TrafficObject.Dir.Right)
-                                {
-                                    if ((obj.Y + obj.Speed) % 100 < 55)
-                                    {
-                                        decimal d = obj.NextY / 100;
-                                        obj.NextY = ((int)Math.Floor(d) * 100) + 55;
-                                    }
-                                    if (obj.Y%100 == 55)
-                                    {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
-                                    }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                                }
-
-                                if (obj.Direction == (int)TrafficObject.Dir.Left)
-                                {
-                                    if ((obj.Y - obj.Speed) % 100 < 45)
-                                    {
-                                        decimal d = obj.NextY / 100;
-                                        obj.NextY = ((int)Math.Floor(d) * 100) + 45;
-                                    }
-                                    if (obj.Y%100 == 45)
-                                    {
-                                        obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
-                                        nextRoadTileXY = getNextRoadTileXY(obj);
-                                        obj.NextX = nextRoadTileXY.Item1;
-                                        obj.NextY = nextRoadTileXY.Item2;
-                                    }
-                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                                }
-                            }
-                        }
-
-                        break;
-                        //TODO get more detailed information where I can go.
-                        
-
-                    case (int)EnvElement.StreetType.ThreeKreuzung:
-                    case (int)EnvElement.StreetType.FourKreuzung:
-                        int streetRegion = getStreetRegion(obj.X, obj.Y);
-                        switch (streetRegion)
-                        {
-                            case (int) StreetRegion.NormalStreet:
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
-                                break;
-                            case (int)StreetRegion.IntersectionAhead:
-                                obj.MayDrive = checkIfCanDrive4Way(obj,thisRoadInfo) && (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
-                                break;
-                            case (int)StreetRegion.Intersection:
-                                switch ((obj.NextDirection - obj.Direction +4) % 4)
-                                {
-                                    case 0: //contues to drive in same direction
-                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
-                                        break;
-                                    default: //biegt wo ab.
-                                        switch (obj.NextDirection)
+                                        if ((obj.X - obj.Speed) % 100 > 45)
                                         {
-                                            case (int) TrafficObject.Dir.Up:
-                                                if ((obj.X % 100 <= 55 && obj.NextX % 100 >= 55) || (obj.X % 100 >= 55 && obj.NextX % 100 <= 55))
-                                                {
-                                                    decimal d = obj.NextX / 100;
-                                                    obj.NextX = ((int)Math.Floor(d) * 100) + 55;
-                                                    //obj.Direction = obj.NextDirection;
-                                                }
-                                                break;
-                                            case (int) TrafficObject.Dir.Down:
-                                                if ((obj.X % 100 <= 45 && obj.NextX % 100 >= 45) || (obj.X % 100 >= 45 && obj.NextX % 100 <= 45))
-                                                {
-                                                    decimal d = obj.NextX / 100;
-                                                    obj.NextX = ((int)Math.Floor(d) * 100) + 45;
-                                                    //obj.Direction = obj.NextDirection;
-                                                }
-                                                break;
-                                            case (int)TrafficObject.Dir.Right:
-                                                if ((obj.Y % 100 <= 55 && obj.NextY % 100 >= 55) || (obj.Y % 100 >= 55 && obj.NextY % 100 <= 55))
-                                                {
-                                                    decimal d = obj.NextY / 100;
-                                                    obj.NextY = ((int)Math.Floor(d) * 100) + 55;
-                                                    //obj.Direction = obj.NextDirection;
-                                                }
-                                                break;
-                                            case (int)TrafficObject.Dir.Left:
-                                                if ((obj.Y % 100 <= 45 && obj.NextY % 100 >= 45) || (obj.Y % 100 >= 45 && obj.NextY % 100 <= 45))
-                                                {
-                                                    decimal d = obj.NextY / 100;
-                                                    obj.NextY = ((int)Math.Floor(d) * 100) + 45;
-                                                    //obj.Direction = obj.NextDirection;
-                                                }
-                                                break;
+                                            decimal d = obj.NextX / 100;
+                                            obj.NextX = ((int)Math.Floor(d) * 100) + 45;
                                         }
-                                        break;
+                                        if (obj.X % 100 == 45)
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                        }
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                    }
+
+                                    if (obj.Direction == (int)TrafficObject.Dir.Up)
+                                    {
+                                        if ((obj.X + obj.Speed) % 100 < 55)
+                                        {
+                                            decimal d = obj.NextX / 100;
+                                            obj.NextX = ((int)Math.Floor(d) * 100) + 55;
+                                        }
+                                        if (obj.X % 100 == 55)
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                        }
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                    }
+
+                                    if (obj.Direction == (int)TrafficObject.Dir.Right)
+                                    {
+                                        if ((obj.Y + obj.Speed) % 100 < 55)
+                                        {
+                                            decimal d = obj.NextY / 100;
+                                            obj.NextY = ((int)Math.Floor(d) * 100) + 55;
+                                        }
+                                        if (obj.Y % 100 == 55)
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                        }
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                    }
+
+                                    if (obj.Direction == (int)TrafficObject.Dir.Left)
+                                    {
+                                        if ((obj.Y - obj.Speed) % 100 < 45)
+                                        {
+                                            decimal d = obj.NextY / 100;
+                                            obj.NextY = ((int)Math.Floor(d) * 100) + 45;
+                                        }
+                                        if (obj.Y % 100 == 45)
+                                        {
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.RightSide;
+                                            nextRoadTileXY = getNextRoadTileXY(obj);
+                                            obj.NextX = nextRoadTileXY.Item1;
+                                            obj.NextY = nextRoadTileXY.Item2;
+                                        }
+                                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                                    }
                                 }
-                                obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
-                                break;
-                        }
-                        break;
-                    case (int)EnvElement.StreetType.Grass:
-                        //may drive if road ahead is empty
-                        obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
-                        break;
-                    default:
-                        throw new NotImplementedException();
+                            }
+
+                            break;
+                        //TODO get more detailed information where I can go.
+
+
+                        case (int)EnvElement.StreetType.ThreeKreuzung:
+                        case (int)EnvElement.StreetType.FourKreuzung:
+                            int streetRegion = getStreetRegion(obj.X, obj.Y);
+                            switch (streetRegion)
+                            {
+                                case (int)StreetRegion.NormalStreet:
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
+                                    break;
+                                case (int)StreetRegion.IntersectionAhead:
+                                    obj.MayDrive = checkIfCanDrive4Way(obj, thisRoadInfo) && (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
+                                    break;
+                                case (int)StreetRegion.Intersection:
+                                    switch ((obj.NextDirection - obj.Direction + 4) % 4)
+                                    {
+                                        case 0: //contues to drive in same direction
+                                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
+                                            break;
+                                        default: //biegt wo ab.
+                                            switch (obj.NextDirection)
+                                            {
+                                                case (int)TrafficObject.Dir.Up:
+                                                    if ((obj.X % 100 <= 55 && obj.NextX % 100 >= 55) || (obj.X % 100 >= 55 && obj.NextX % 100 <= 55))
+                                                    {
+                                                        decimal d = obj.NextX / 100;
+                                                        obj.NextX = ((int)Math.Floor(d) * 100) + 55;
+                                                        //obj.Direction = obj.NextDirection;
+                                                    }
+                                                    break;
+                                                case (int)TrafficObject.Dir.Down:
+                                                    if ((obj.X % 100 <= 45 && obj.NextX % 100 >= 45) || (obj.X % 100 >= 45 && obj.NextX % 100 <= 45))
+                                                    {
+                                                        decimal d = obj.NextX / 100;
+                                                        obj.NextX = ((int)Math.Floor(d) * 100) + 45;
+                                                        //obj.Direction = obj.NextDirection;
+                                                    }
+                                                    break;
+                                                case (int)TrafficObject.Dir.Right:
+                                                    if ((obj.Y % 100 <= 55 && obj.NextY % 100 >= 55) || (obj.Y % 100 >= 55 && obj.NextY % 100 <= 55))
+                                                    {
+                                                        decimal d = obj.NextY / 100;
+                                                        obj.NextY = ((int)Math.Floor(d) * 100) + 55;
+                                                        //obj.Direction = obj.NextDirection;
+                                                    }
+                                                    break;
+                                                case (int)TrafficObject.Dir.Left:
+                                                    if ((obj.Y % 100 <= 45 && obj.NextY % 100 >= 45) || (obj.Y % 100 >= 45 && obj.NextY % 100 <= 45))
+                                                    {
+                                                        decimal d = obj.NextY / 100;
+                                                        obj.NextY = ((int)Math.Floor(d) * 100) + 45;
+                                                        //obj.Direction = obj.NextDirection;
+                                                    }
+                                                    break;
+                                            }
+                                            break;
+                                    }
+                                    obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0);
+                                    break;
+                            }
+                            break;
+                        case (int)EnvElement.StreetType.Grass:
+                            //may drive if road ahead is empty
+                            obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
                 }
             }
 
@@ -320,15 +407,15 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     //decide where to go next (only) when leaving (100x100) roadTile
                     if ((Math.Abs(obj.X % 100 - obj.NextX % 100) > (obj.Speed + 1)) || (Math.Abs(obj.Y % 100 - obj.NextY % 100) > (obj.Speed + 1)))
                     {
-                        int nextRoadInfo = getEnvRules(obj.NextY, obj.NextX).type; 
-                        switch (nextRoadInfo)
+                        StreetInfo nextRoadInfo = getEnvRules(obj.NextY, obj.NextX); 
+                        switch (nextRoadInfo.type)
                         {
                             case (int)EnvElement.StreetType.Street:
                                 //no direction change posible
                                 break;
                             case (int)EnvElement.StreetType.ThreeKreuzung:
                                 //TODO get layout from Straßennetz
-                                int layout = 1;
+                                int layout = nextRoadInfo.layout;
                                 int rotation_modifier = 0;
                                 switch (layout)
                                 {
@@ -399,6 +486,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             case (int)EnvElement.StreetType.FourKreuzung:
                                 int rngMinus1toPlus1 = rng.Next(1, 4) - 2; // -1 <= rng <= 1
                                 obj.NextDirection = (obj.NextDirection + rngMinus1toPlus1 + 4) % 4;
+                                break;
+                            case (int)EnvElement.StreetType.Grass:
+                                obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.TurnAround;//wenden
                                 break;
                         }
                     }
