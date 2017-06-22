@@ -317,9 +317,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             }
 
                             break;
-                        //TODO get more detailed information where I can go.
-
-
                         case (int)EnvElement.StreetType.ThreeKreuzung:
                         case (int)EnvElement.StreetType.FourKreuzung:
                             int streetRegion = getStreetRegion(obj.X, obj.Y);
@@ -483,6 +480,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                             obj.NextDirection = ((int)TrafficObject.Dir.Left + rotation_modifier) % 4;
                                         }
                                         break;
+                                    case (int)TrafficObject.Dir.Left:
                                     case (int)TrafficObject.Dir.Right:
                                         if (rn == 0)
                                         {
