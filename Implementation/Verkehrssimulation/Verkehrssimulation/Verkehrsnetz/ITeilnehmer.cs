@@ -12,5 +12,6 @@ namespace Verkehrssimulation.Verkehrsnetz
         StreetInfo getNeededStreetRules(int x, int y);
         bool isObstacleInMyWay(int x, int y);
         bool isOutside(int x, int y);
+        List<Obstacle> getObstacles();
     }
 }

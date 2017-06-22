@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
-    interface IGUI
+    interface I_ENV_GUI
     {
         void addObstacle(int startx, int starty, int endx, int endy);
     }
