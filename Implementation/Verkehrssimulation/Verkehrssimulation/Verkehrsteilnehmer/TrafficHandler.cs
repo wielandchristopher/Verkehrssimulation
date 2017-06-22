@@ -412,7 +412,11 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                         {
                             case (int)EnvElement.StreetType.Street:
                                 //no direction change posible
-                                break;
+                                if (nextRoadInfo.layout == 1 && (obj.Direction == (int)TrafficObject.Dir.Up || obj.Direction == (int)TrafficObject.Dir.Down))
+                                    obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.TurnAround;
+                                if (nextRoadInfo.layout == 2 && (obj.Direction == (int)TrafficObject.Dir.Right || obj.Direction == (int)TrafficObject.Dir.Left))
+                                    obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.TurnAround;
+                               break;
                             case (int)EnvElement.StreetType.ThreeKreuzung:
                                 //TODO get layout from Straßennetz
                                 int layout = nextRoadInfo.layout;
@@ -424,22 +428,32 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                         // ===
                                         //    ||
                                         rotation_modifier = 0;
+                                        if (obj.Direction == (int) TrafficObject.Dir.Left)
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.TurnAround;
+                                        
                                         break;
                                     case 2:
                                         // ===  ===
                                         //    ||
                                         rotation_modifier = 1;
+                                        if (obj.Direction == (int)TrafficObject.Dir.Down)
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.TurnAround;
+                                      
                                         break;
                                     case 3:
                                         // ||
                                         //   ===
                                         // ||
                                         rotation_modifier = 2;
+                                        if (obj.Direction == (int)TrafficObject.Dir.Right)
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.TurnAround;
                                         break;
                                     case 4:
                                         //    ||
                                         // ===  ===
                                         rotation_modifier = 3;
+                                        if (obj.Direction == (int)TrafficObject.Dir.Up)
+                                            obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.TurnAround;                                       
                                         break;
                                     default:
                                         rotation_modifier = 0;
