@@ -61,69 +61,27 @@ namespace Ampelsteuerung
         {
             // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
 
-            //switch (value)
-            //{
-            //    case 0:
-            //        this.sekundenzähler = 0;
-            //        break;
-            //    case 1:
-            //        this.sekundenzähler = this.rotphase;
-            //        break;
-            //    case 2:
-            //        this.sekundenzähler = this.rotphase+this.gelbphase;
-            //        break;
-            //    default:
-            //        break;
-            //}
+            switch (value)
+            {
+                case 0:
+                    this.sekundenzähler = 0;
+                    break;
+                case 1:
+                    this.sekundenzähler = this.rotphase;
+                    break;
+                case 2:
+                    this.sekundenzähler = this.rotphase+this.gelbphase;
+                    break;
+                default:
+                    break;
+            }
             return Status = value;
         }
         public int setID(int value)
         {
             return ID = value;
         }
-        public void startTimer(int status)
-        {
-            System.Windows.Forms.Timer AmpelTimer = new System.Windows.Forms.Timer();
-            int time = 0;
-
-            while (status == 0)
-            {
-                AmpelTimer.Interval = time = rotphase;
-                AmpelTimer.Start();
-
-                while (time > 0)
-                {
-                    //Thread.Sleep(1000);
-                    time--;
-                }
-                status = setStatus(1);
-            }
-            while (status == 1)
-            {
-                AmpelTimer.Interval = time = gelbphase;
-                AmpelTimer.Start();
-
-                while (time > 0)
-                {
-                    //Thread.Sleep(1000);
-                    time--;
-                }
-                status = setStatus(2);
-            }
-            while (status == 2)
-            {
-                AmpelTimer.Interval = time = gruenphase;
-                AmpelTimer.Start();
-
-                while (time > 0)
-                {
-                    //Thread.Sleep(1000);
-                    time--; 
-                }
-                status = setStatus(0);
-            }            
-        }
-
+       
         int sekundenzähler = 0;
         int Status; // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
         int ID;
