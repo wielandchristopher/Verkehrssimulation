@@ -720,7 +720,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.e_status = -1;
             this.s_status = -1;
 
-            //Console.WriteLine("North: " + idn + " South: " + ids + " West: " + idw + " East: " + ide);
+            Console.WriteLine("North: " + idn + " South: " + ids + " West: " + idw + " East: " + ide);
 
             if (idn > -1)
             {

@@ -39,17 +39,32 @@ namespace Client
                 //Setzt die Anzahl der Ampeln. Sind keine Ampeln gesetzt, kann man logischerweise auch keinen Status abfragen. 
 
                 //Diese Funktion muss immer zuerst ausgeführt werden. 
-<<<<<<< HEAD
-                //test.trafficlight.setAmpelAnzahl(10);
+
+                test.trafficlight.setAmpelAnzahl(10);
 
                 //Gibt man der Funktion getAmpelStatus den integer 0 mit, so erhält man den Status aller Ampeln. Ansonsten erhält man den Status der Spezifischen ID 
-                test.trafficlight.getAmpelStatus(2);
-=======
-                test.trafficlight.setAmpelAnzahl(5);
+                int ein = test.trafficlight.getAmpelStatus(0);
+                int zwei = test.trafficlight.getAmpelStatus(1);
+                int drei = test.trafficlight.getAmpelStatus(2);
+                int vier = test.trafficlight.getAmpelStatus(3);
+                int fünf = test.trafficlight.getAmpelStatus(4);
+                int sechs = test.trafficlight.getAmpelStatus(5);
+                int sieben = test.trafficlight.getAmpelStatus(6);
+                int acht = test.trafficlight.getAmpelStatus(7);
+                int neun = test.trafficlight.getAmpelStatus(8);
+                int zehn = test.trafficlight.getAmpelStatus(9);
+
+                Console.WriteLine(ein +" "+ zwei + " " + drei + " " + vier + " " + fünf + " " + sechs + " " + sieben + " " + acht + " " + neun + " " + zehn);
+
+                test.trafficlight.setAmpelStatus(1, 2);
+
+                Console.WriteLine(ein + " " + zwei + " " + drei + " " + vier + " " + fünf + " " + sechs + " " + sieben + " " + acht + " " + neun + " " + zehn);
+
+                //test.trafficlight.setAmpelAnzahl(5);
 
                 //Gibt man der Funktion getAmpelStatus den integer 0 mit, so erhält man den Status aller Ampeln. Ansonsten erhält man den Status der Spezifischen ID 
                 /*test.trafficlight.getAmpelStatus(0);*/
->>>>>>> origin/master
+
 
                 //Hier noch einige Beispiele von Funktionen: 
 
@@ -68,7 +83,7 @@ namespace Client
                 //Testet alle Ampeln durch und prüft, welöche Ampel ausgefallen ist, und gibt diese Zurück. 0 Fragt alle Ampeln ab. Spezifische ID die spezifische Ampel. 
                 /*test.trafficlight.getAmpelAusfall(0);*/
 
-                Console.WriteLine(test.trafficlight.getAmpelStatus(0));
+
 
             }
             catch (NullReferenceException nre)

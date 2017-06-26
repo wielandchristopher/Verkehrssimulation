@@ -57,24 +57,8 @@ namespace Ampelsteuerung
         {
             return defect = value;
         }
-        public int setStatus(int value) //TODO ich glaube der status wird zwar so übernommen aber stimmt dann nicht mit dem sekundenzähler
+        public int setStatus(int value)
         {
-            // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
-
-            switch (value)
-            {
-                case 0:
-                    this.sekundenzähler = 0;
-                    break;
-                case 1:
-                    this.sekundenzähler = this.rotphase;
-                    break;
-                case 2:
-                    this.sekundenzähler = this.rotphase+this.gelbphase;
-                    break;
-                default:
-                    break;
-            }
             return Status = value;
         }
         public int setID(int value)
@@ -100,8 +84,6 @@ namespace Ampelsteuerung
         public static List<Ampeln> Trafficlights = new List<Ampeln>();
         public static int Anzahl = 0;
         static Timer Ampeltimer;
-        static int settime;
-
 
         private void StartServer()
         {
@@ -144,57 +126,26 @@ namespace Ampelsteuerung
         //Tickt jede Sekunde in diese Funktion herein und Prüft bzw. setzt den Ampelstatus
         private Task HandleTimer()
         {
-            settime++;
-
-            int tmp = 0; // zum bugfixen dass er wieder auf rot zurückspringt
             int i;
             for (i = 0; i < Trafficlights.Count; i++)
             {
-                if (settime >= 0 && settime < Trafficlights.ElementAt(i).getRotPhase())
-                {
-                    //Ampel Rot
-                    Trafficlights.ElementAt(i).setStatus(0);
-                }
-
-                if (settime >= Trafficlights.ElementAt(i).getRotPhase() && settime < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase())
-                {
-                    //Ampel Gelb
-                    Trafficlights.ElementAt(i).setStatus(1);
-                }
-                if (settime >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase())
-                {
-                    //Ampel Gruen
-                    Trafficlights.ElementAt(i).setStatus(2);
-                }
-                if (settime >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
-                {
-                    //Ampel Gelb
-                    Trafficlights.ElementAt(i).setStatus(1);
-                }
-                if (settime >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
-                {
-                    settime = 0;
-                }
-
-                /*
-                int test = Trafficlights.ElementAt(i).getID();
 
                 if (Trafficlights.ElementAt(i).getSekundenzähler() >= 0 && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getRotPhase())
                 {                                     
                     //Ampel Rot
                     Trafficlights.ElementAt(i).setStatus(0);
                 }
-                if (Trafficlights.ElementAt(i).getSekundenzähler() == Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase())
+                if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase())
                 {
                     //Ampel Gelb
                     Trafficlights.ElementAt(i).setStatus(1);
                 }
-                if (Trafficlights.ElementAt(i).getSekundenzähler() == Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase())
+                if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase())
                 {
                     //Ampel Gruen
                     Trafficlights.ElementAt(i).setStatus(2);
                 }
-                if (Trafficlights.ElementAt(i).getSekundenzähler() == Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
+                if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
                 {
                     //Ampel Gelb
                     Trafficlights.ElementAt(i).setStatus(1);
@@ -202,15 +153,14 @@ namespace Ampelsteuerung
                 if (Trafficlights.ElementAt(i).getSekundenzähler() > Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
                 {
                     Trafficlights.ElementAt(i).setSekundenzähler(0);
-                    tmp = 1;
                 }
-                */
+                
                 if (Trafficlights.ElementAt(i).getDefect() == true)
                 {
                     Trafficlights.ElementAt(i).setStatus(3);
                 }
-                Trafficlights.ElementAt(i).setSekundenzähler(Trafficlights.ElementAt(i).getSekundenzähler() + 1 - tmp);
-                tmp = 0;
+
+                Trafficlights.ElementAt(i).setSekundenzähler(Trafficlights.ElementAt(i).getSekundenzähler() + 1);
             }
             return null;
         }
@@ -291,15 +241,21 @@ namespace Ampelsteuerung
         }
         public void setAmpelStatus(int ampelid, int neuerStatus)
         {
-            if (ampelid <= Anzahl)
+                switch (neuerStatus)
             {
-                Trafficlights.ElementAt(ampelid).setStatus(neuerStatus);
+                case 0:
+                    Trafficlights.ElementAt(ampelid).setSekundenzähler(0);
+                    break;
+                case 1:
+                    Trafficlights.ElementAt(ampelid).setSekundenzähler(Trafficlights.ElementAt(ampelid - 1).getRotPhase());
+                    break;
+                case 2:
+                    Trafficlights.ElementAt(ampelid).setSekundenzähler(Trafficlights.ElementAt(ampelid - 1).getRotPhase() + Trafficlights.ElementAt(ampelid - 1).getGelbPhase());
+                    break;
+                default:
+                    Trafficlights.ElementAt(ampelid).setStatus(0);
+                    break;
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
-
         }        
         //Gibt 2 Integer zurück: 
         //Erster integer gibt ampelID zurück
