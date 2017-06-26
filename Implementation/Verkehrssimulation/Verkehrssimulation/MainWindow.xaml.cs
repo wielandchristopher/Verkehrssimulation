@@ -109,7 +109,7 @@ namespace Verkehrssimulation
         private void HandleUnchecked(object sender, RoutedEventArgs e)
         {
             I_ENV_GUI myInterface = builder;
-            myInterface.setAmpelanlage(false);
+            myInterface.setAmpelanlage(true);
         }
     }
 }
