@@ -537,7 +537,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         /// Not Implemented
         /// </summary>
         /// <param name="val"></param>
-        void setAmpelanlage(bool val)
+        public void setAmpelanlage(bool val)
         {
             throw new NotImplementedException();
         }
