@@ -720,11 +720,8 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.e_status = -1;
             this.s_status = -1;
 
-<<<<<<< HEAD
             Console.WriteLine("North: " + idn + " South: " + ids + " West: " + idw + " East: " + ide);
 
-=======
->>>>>>> origin/master
             if (idn > -1)
             {
                 MainWindow.trafficlight.setAmpelStatus(idn, 0);

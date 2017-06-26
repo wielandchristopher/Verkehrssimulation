@@ -40,26 +40,41 @@ namespace Client
 
                 //Diese Funktion muss immer zuerst ausgeführt werden. 
 
-                test.trafficlight.setAmpelAnzahl(10);
+                //test.trafficlight.setAmpelAnzahl(8);
 
                 //Gibt man der Funktion getAmpelStatus den integer 0 mit, so erhält man den Status aller Ampeln. Ansonsten erhält man den Status der Spezifischen ID 
-                int ein = test.trafficlight.getAmpelStatus(0);
-                int zwei = test.trafficlight.getAmpelStatus(1);
-                int drei = test.trafficlight.getAmpelStatus(2);
-                int vier = test.trafficlight.getAmpelStatus(3);
-                int fünf = test.trafficlight.getAmpelStatus(4);
-                int sechs = test.trafficlight.getAmpelStatus(5);
-                int sieben = test.trafficlight.getAmpelStatus(6);
-                int acht = test.trafficlight.getAmpelStatus(7);
-                int neun = test.trafficlight.getAmpelStatus(8);
-                int zehn = test.trafficlight.getAmpelStatus(9);
+                int ein = test.trafficlight.getAmpelStatus(1);
+                int zwei = test.trafficlight.getAmpelStatus(2);
+                int drei = test.trafficlight.getAmpelStatus(3);
+                int vier = test.trafficlight.getAmpelStatus(4);
+                int fünf = test.trafficlight.getAmpelStatus(5);
+                int sechs = test.trafficlight.getAmpelStatus(6);
+                int sieben = test.trafficlight.getAmpelStatus(7);
+                int acht = test.trafficlight.getAmpelStatus(8);
 
-                Console.WriteLine(ein +" "+ zwei + " " + drei + " " + vier + " " + fünf + " " + sechs + " " + sieben + " " + acht + " " + neun + " " + zehn);
 
+                Console.WriteLine(ein +" "+ zwei + " " + drei + " " + vier + " " + fünf + " " + sechs + " " + sieben + " " + acht + " ");
+                /*
+                test.trafficlight.setAmpelStatus(0, 0);
                 test.trafficlight.setAmpelStatus(1, 2);
+                test.trafficlight.setAmpelStatus(2, 0);
+                test.trafficlight.setAmpelStatus(3, 2);
+                test.trafficlight.setAmpelStatus(4, 0);
+                test.trafficlight.setAmpelStatus(5, 2);
+                test.trafficlight.setAmpelStatus(6, 0);
+                test.trafficlight.setAmpelStatus(7, 2);
 
-                Console.WriteLine(ein + " " + zwei + " " + drei + " " + vier + " " + fünf + " " + sechs + " " + sieben + " " + acht + " " + neun + " " + zehn);
+                int eins = test.trafficlight.getAmpelStatus(0);
+                int zweis = test.trafficlight.getAmpelStatus(1);
+                int dreis = test.trafficlight.getAmpelStatus(2);
+                int viers = test.trafficlight.getAmpelStatus(3);
+                int fünfs = test.trafficlight.getAmpelStatus(4);
+                int sechss = test.trafficlight.getAmpelStatus(5);
+                int siebens = test.trafficlight.getAmpelStatus(6);
+                int achts = test.trafficlight.getAmpelStatus(7);
 
+                Console.WriteLine(eins + " " + zweis + " " + dreis + " " + viers + " " + fünfs + " " + sechss + " " + siebens + " " + achts + " ");
+                
                 //test.trafficlight.setAmpelAnzahl(5);
 
                 //Gibt man der Funktion getAmpelStatus den integer 0 mit, so erhält man den Status aller Ampeln. Ansonsten erhält man den Status der Spezifischen ID 
