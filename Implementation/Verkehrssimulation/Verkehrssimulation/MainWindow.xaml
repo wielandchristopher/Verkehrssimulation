@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Verkehrssimulation"
         mc:Ignorable="d"
-        Title="Verkehrssimulation" Height="730" Width="1100" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="Verkehrsnetz/FieldBitmaps/Icon.bmp" Background="#FF28971D">
+        Title="Verkehrssimulation" Height="730" Width="1100" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="Verkehrsnetz/FieldBitmaps/Icon.bmp" Background="#FFC3D3C2">
     <Canvas x:Name="myCanvas" Margin="0" Width="800" Height="800" VerticalAlignment="Top" HorizontalAlignment="Left">
 
         <DockPanel Canvas.Left="792" Canvas.Top="192">
