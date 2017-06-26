@@ -533,6 +533,15 @@ namespace Verkehrssimulation.Verkehrsnetz
             return (int)getStreetType(x, y);
         }
 
+        /// <summary>
+        /// Not Implemented
+        /// </summary>
+        /// <param name="val"></param>
+        public void setAmpelanlage(bool val)
+        {
+            throw new NotImplementedException();
+        }
+
 
         /// <summary>
         /// Funktion zum ahbolen der Streetinfo für das Modul Verkehrsteilnehmer (Andras)
