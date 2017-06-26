@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Controls;
 using Verkehrssimulation.Verkehrsteilnehmer;
 using Verkehrssimulation;
+using System.ServiceModel;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
@@ -550,7 +551,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             if ((int)getStreetElement(x, y).getStreetType() == 1)
             {
                 info.layout = getStreetElement(x, y).getRotation();
-                Console.WriteLine(info.layout);
+                //Console.WriteLine(info.layout);
             }
             else
             {
@@ -814,8 +815,23 @@ namespace Verkehrssimulation.Verkehrsnetz
             configobj = obj;
             kreuzungen = new List<Kreuzung>();
             cnt = ampelcnt;
+                   
+            try
+            {
+                MainWindow.trafficlight.setAmpelAnzahl(cnt);
+            }
+            catch (NullReferenceException nre)
+            {
+                Console.WriteLine("Der Server ist nicht gestartet!");
+                nre.ToString();
+            }
+            catch (EndpointNotFoundException enfe)
+            {
+                Console.WriteLine("Der Server ist nicht gestartet!");
+                enfe.ToString();
+            }
 
-            MainWindow.trafficlight.setAmpelAnzahl(cnt);
+
             int newID = 0;
             int x = 0;
             JArray geregelte_kreuzungen = (JArray)obj.GetValue("geregelte_kreuzungen");

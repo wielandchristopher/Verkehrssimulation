@@ -18,11 +18,11 @@ namespace Verkehrssimulation
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DispatcherTimer dispatchTimer, dpTimer2;
+        private DispatcherTimer dispatchTimer;
         private ObjectHandler oh;
-        private GUI.AmpelHandler ap;
+        private AmpelHandler ap;
         private TrafficHandler th;
-        EnvironmentBuilder builder;
+        private EnvironmentBuilder builder;
         public static IAmpelService trafficlight;
         private RabbitMQ.RabbitMQHandler mqhandler;
 
@@ -40,7 +40,6 @@ namespace Verkehrssimulation
             }
         }
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -49,60 +48,29 @@ namespace Verkehrssimulation
             mqhandler = new RabbitMQ.RabbitMQHandler();
 
 
-            dispatchTimer = new DispatcherTimer();
-            dispatchTimer.Tick += dispatchTimer_Tick;
-            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            dispatchTimer           = new DispatcherTimer();
+            dispatchTimer.Tick      += dispatchTimer_Tick;
+            dispatchTimer.Interval  = new TimeSpan(0, 0, 0, 0, 100);
            
-            ap = new GUI.AmpelHandler(myCanvas);
-
+            ap      = new GUI.AmpelHandler(myCanvas);
             builder = new EnvironmentBuilder(myCanvas, ref ap, ref trafficlight);
-            oh = new ObjectHandler(myCanvas, ref builder);
-
-            th = new TrafficHandler(ref builder, ref oh);
-
-            MainAmpelsteuerung(this);
-
-
+            oh      = new ObjectHandler(myCanvas, ref builder);
+            th      = new TrafficHandler(ref builder, ref oh);
+            
 
             th.createNewVerkehrsteilnehmer(210, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(10, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(280, 145, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Down);
             th.createNewVerkehrsteilnehmer(255, 285, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
-            th.createNewVerkehrsteilnehmer(320, 355, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right); // Test for Obstacle 2
+            th.createNewVerkehrsteilnehmer(320, 355, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(255, 655, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
             th.createNewVerkehrsteilnehmer(255, 645, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
 
 
             dispatchTimer.Start();
-            //dpTimer2.Start();
-            builder.printEntryPoints();
         }
-        [STAThread]
-        private void MainAmpelsteuerung(MainWindow mainWindow)
-        {
-            mainWindow.StartAmpelsteuerung();
-            try
-            {
-                //mainWindow.trafficlight.setAmpelAnzahl(5);
-                //string j = mainWindow.trafficlight.getAmpelStatus(2);
-                //int i = mainWindow.trafficlight.getAmpelAnzahl();
-               // Console.WriteLine(j);
-            }
-            catch (NullReferenceException nre)
-            {
-                Console.WriteLine("Der Server ist nicht gestartet!");
-                nre.ToString();
-            }
-            catch (EndpointNotFoundException enfe)
-            {
-                Console.WriteLine("Der Server ist nicht gestartet!");
-                enfe.ToString();
-            }
-            
-
-        }
-
+        
         private void dispatchTimer_Tick(object sender, EventArgs e)
         {
             builder.UpdateGUIAmpeln();
