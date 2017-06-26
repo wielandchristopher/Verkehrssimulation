@@ -101,12 +101,15 @@ namespace Verkehrssimulation
 
         private void HandleCheck(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("The CheckBox is checked.");
+            I_ENV_GUI myInterface = builder;
+            myInterface.setAmpelanlage(false);
+
         }
 
         private void HandleUnchecked(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("The CheckBox is unchecked.");
+            I_ENV_GUI myInterface = builder;
+            myInterface.setAmpelanlage(false);
         }
     }
 }
