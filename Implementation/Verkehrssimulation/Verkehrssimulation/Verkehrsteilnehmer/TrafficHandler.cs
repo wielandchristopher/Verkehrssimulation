@@ -549,7 +549,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     obj.X = obj.NextX;
                     obj.Y = obj.NextY;//move the car to its new position
                     //send update to UI
-                    oh.updateCarWithID(obj.Y, obj.X, obj.Id,obj.Typ); //x and y are in ui the other way around
+                    oh.updateCarWithID(obj.Y, obj.X, obj.Id, obj.Typ, obj.Direction); //x and y are in ui the other way around
 
                     //destroy car if the left simulation, TODO send eventually to other group
                     if (obj.X <0 || obj.X > 700 || obj.Y < 0 || obj.Y > 700)

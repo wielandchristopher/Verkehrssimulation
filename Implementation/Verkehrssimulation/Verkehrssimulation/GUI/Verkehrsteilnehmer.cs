@@ -55,10 +55,28 @@ namespace Verkehrssimulation.GUI
             Canvas.SetLeft(shp, y);
         }
 
-        public void update(int x, int y)
+        public void update(int x, int y, int type, int dir)
         {
-            Canvas.SetTop(shp, x);
-            Canvas.SetLeft(shp, y);        
+            // Objekt ist ein LKW
+            if(type == 1)
+            {
+                if(dir == 1 || dir == 3) {
+                    shp.Width = 10;
+                    shp.Height = 5;
+                }
+                else
+                {
+                    shp.Width = 5;
+                    shp.Height = 10;
+                }
+                Canvas.SetTop(shp, x);
+                Canvas.SetLeft(shp, y);
+            }
+            else
+            {
+                Canvas.SetTop(shp, x);
+                Canvas.SetLeft(shp, y);
+            }
         }
 
         public Shape getShape()

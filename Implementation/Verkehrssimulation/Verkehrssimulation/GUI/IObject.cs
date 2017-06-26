@@ -24,6 +24,7 @@ namespace Verkehrssimulation.GUI
         /* 
          * Aktualisiert die Position eines Autos in der GUI anhand seiner ID
         */
-        bool updateCarWithID(int x, int y, int id, int typ);
-        }
+        bool updateCarWithID(int x, int y, int id, int typ, int dir);
+
+    }
 }
