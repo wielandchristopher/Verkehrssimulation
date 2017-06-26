@@ -155,7 +155,7 @@ namespace Ampelsteuerung
             {
                 int test = Trafficlights.ElementAt(i).getID();
 
-                if (Trafficlights.ElementAt(i).getSekundenzähler() == 0 && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getRotPhase())
+                if (Trafficlights.ElementAt(i).getSekundenzähler() >= 0 && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getRotPhase())
                 {                                     
                     //Ampel Rot
                     Trafficlights.ElementAt(i).setStatus(0);
