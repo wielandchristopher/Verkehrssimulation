@@ -78,6 +78,7 @@
     <Compile Include="GUI\IObject.cs" />
     <Compile Include="GUI\ObjHandlerInterface.cs" />
     <Compile Include="GUI\Verkehrsteilnehmer.cs" />
+    <Compile Include="RabbitMQ\RabbitMQHandler.cs" />
     <Compile Include="Verkehrsnetz\EnvElement.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentBuilder.cs" />
     <Compile Include="Verkehrsnetz\I_ENV_GUI.cs" />

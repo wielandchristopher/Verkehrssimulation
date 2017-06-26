@@ -5,27 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Verkehrssimulation"
         mc:Ignorable="d"
-        Title="Verkehrssimulation" Height="730" Width="1204.234" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="Verkehrsnetz/FieldBitmaps/Icon.bmp">
+        Title="Verkehrssimulation" Height="730" Width="1100" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="Verkehrsnetz/FieldBitmaps/Icon.bmp" Background="#FF28971D">
     <Canvas x:Name="myCanvas" Margin="0" Width="800" Height="800" VerticalAlignment="Top" HorizontalAlignment="Left">
-        <DockPanel Canvas.Left="849" Canvas.Top="90">
-            <TextBox Text="{Binding ElementName=SliderSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+
+        <DockPanel Canvas.Left="792" Canvas.Top="192">
+            <TextBox Text="{Binding Value, ElementName=SliderSpeed, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
             <Slider x:Name="SliderSpeed" Width="86" Maximum="100" ValueChanged="SliderSpeed_ValueChanged" TickFrequency="5" TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
         </DockPanel>
-        
-        <DockPanel Canvas.Left="849" Canvas.Top="135">
-            <TextBox Text="{Binding ElementName=SliderLKW, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+        <DockPanel Canvas.Left="792" Canvas.Top="238">
+            <TextBox Text="{Binding Value, ElementName=SliderLKW, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
             <Slider x:Name="SliderLKW" Width="86" Maximum="100" TickPlacement="BottomRight" ValueChanged="SliderLKW_ValueChanged" TickFrequency="5" IsSnapToTickEnabled="True"/>
         </DockPanel>
-
-        <DockPanel Canvas.Left="849" Canvas.Top="179">
-            <TextBox Text="{Binding ElementName=SliderNum, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+        <DockPanel Canvas.Left="792" Canvas.Top="282">
+            <TextBox Text="{Binding Value, ElementName=SliderNum, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
             <Slider x:Name="SliderNum" Width="86" Maximum="100" ValueChanged="SliderNum_ValueChanged" TickFrequency="5" TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
         </DockPanel>
-        
-        <Label Content="Geschwindigkeit" Canvas.Left="1008" Canvas.Top="86" Width="112"/>
-        <Label Content="Anteil an LKWs" Canvas.Left="1008" Canvas.Top="133" Width="112"/>
-        <Label Content="Anzahl an Fahrzeugen" Canvas.Left="1008" Canvas.Top="177" Width="128"/>
-        <TextBox Height="27" Canvas.Left="849" TextWrapping="Wrap" Text="Konfigurationsmenü" Canvas.Top="21" Width="180" TextChanged="TextBox_TextChanged" FontSize="16" TextAlignment="Center"/>
-        <CheckBox Content="Ampelanlage ausschalten" Canvas.Left="849" Canvas.Top="227"/>
+        <Label Content="Geschwindigkeit" Canvas.Left="938" Canvas.Top="188"/>
+        <Label Content="Anteil an LKWs" Canvas.Left="938" Canvas.Top="236"/>
+        <Label Content="Anzahl an Fahrzeugen" Canvas.Left="938" Canvas.Top="280"/>
+        <TextBlock TextWrapping="Wrap" Text="Konfigurationsmenü" FontSize="16" TextAlignment="Center" Canvas.Left="792" Canvas.Top="130"/>
+        <CheckBox Content="Ampelanlage ausschalten" Canvas.Left="792" Canvas.Top="330"/>
+
     </Canvas>
 </Window>
