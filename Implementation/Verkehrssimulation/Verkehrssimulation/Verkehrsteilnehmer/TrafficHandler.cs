@@ -560,6 +560,10 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 else
                 {
                     obj.WaitingCounter++;
+                    if (obj.WaitingCounter >= 100)
+                    {
+                        removeIds.Add(obj.Id);
+                    }
                 }
             }
 
@@ -576,7 +580,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             if (trafficobjs.Count < targetNumberOfCars)
             {
                 double proberbility = 1 - Math.Pow((double)trafficobjs.Count / (double)targetNumberOfCars, 2);
-                if (proberbility < rng.NextDouble())
+                if (proberbility > rng.NextDouble())
                 {
                     List<EntryPoint> entrypoints = eb.getEnvironmentEntries();
                     int entrypointIndex = rng.Next(0, entrypoints.Count);
