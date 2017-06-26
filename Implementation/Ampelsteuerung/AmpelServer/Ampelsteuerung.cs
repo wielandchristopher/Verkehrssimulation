@@ -99,8 +99,10 @@ namespace Ampelsteuerung
         bool run = false;
         public static List<Ampeln> Trafficlights = new List<Ampeln>();
         public static int Anzahl = 0;
-        static Timer Ampeltimer;       
-        
+        static Timer Ampeltimer;
+        static int settime;
+
+
         private void StartServer()
         {
             try
@@ -141,18 +143,40 @@ namespace Ampelsteuerung
         }
         //Tickt jede Sekunde in diese Funktion herein und Prüft bzw. setzt den Ampelstatus
         private Task HandleTimer()
-        {            
-
-            //hinweis for ezier code
-            //foreach(Ampeln a in Trafficlights)
-            //{
-                
-            //}
+        {
+            settime++;
 
             int tmp = 0; // zum bugfixen dass er wieder auf rot zurückspringt
             int i;
             for (i = 0; i < Trafficlights.Count; i++)
             {
+                if (settime >= 0 && settime < Trafficlights.ElementAt(i).getRotPhase())
+                {
+                    //Ampel Rot
+                    Trafficlights.ElementAt(i).setStatus(0);
+                }
+
+                if (settime >= Trafficlights.ElementAt(i).getRotPhase() && settime < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase())
+                {
+                    //Ampel Gelb
+                    Trafficlights.ElementAt(i).setStatus(1);
+                }
+                if (settime >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase())
+                {
+                    //Ampel Gruen
+                    Trafficlights.ElementAt(i).setStatus(2);
+                }
+                if (settime >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
+                {
+                    //Ampel Gelb
+                    Trafficlights.ElementAt(i).setStatus(1);
+                }
+                if (settime >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
+                {
+                    settime = 0;
+                }
+
+                /*
                 int test = Trafficlights.ElementAt(i).getID();
 
                 if (Trafficlights.ElementAt(i).getSekundenzähler() >= 0 && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getRotPhase())
@@ -180,7 +204,7 @@ namespace Ampelsteuerung
                     Trafficlights.ElementAt(i).setSekundenzähler(0);
                     tmp = 1;
                 }
-
+                */
                 if (Trafficlights.ElementAt(i).getDefect() == true)
                 {
                     Trafficlights.ElementAt(i).setStatus(3);
