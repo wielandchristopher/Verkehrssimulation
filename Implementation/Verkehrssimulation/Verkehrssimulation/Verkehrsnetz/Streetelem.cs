@@ -87,6 +87,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             MenuItem item3 = new MenuItem();
             MenuItem item4 = new MenuItem();
             MenuItem item5 = new MenuItem();
+            MenuItem item6 = new MenuItem();
 
             item1.Header = "Rotate";
             item1.Click += new RoutedEventHandler(elemRotate);
@@ -108,8 +109,14 @@ namespace Verkehrssimulation.Verkehrsnetz
             item5.Click += new RoutedEventHandler(changetoGrass);
             pMenu.Items.Add(item5);
 
+            item6.Header = "Hinderniss";
+            item6.Click += new RoutedEventHandler(addObstacle);
+            pMenu.Items.Add(item6);
+
             img.ContextMenu = pMenu;
         }
+
+        public void addObstacle(object sender, EventArgs e) { }
 
         public void changetoKreuzung(object sender, EventArgs e)
         {

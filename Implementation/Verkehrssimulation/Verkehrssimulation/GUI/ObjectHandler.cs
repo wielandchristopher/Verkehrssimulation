@@ -26,17 +26,6 @@ namespace Verkehrssimulation.GUI
 
         }
 
-
-        public void addObstacle(object sender, EventArgs e)
-        {
-            Point p = Mouse.GetPosition(canvas);
-            Obstacle obs = new Obstacle((int)p.X, (int)p.Y, 1);
-            canvas.Children.Add(obs.getShape());
-            builder.addObstacle((int)p.X, (int)p.Y, (int)p.X + 1, (int)p.Y + 1);
-
-
-        }
-
         public bool addCarObject(int x, int y, int id)
         {
             Verkehrsteilnehmer obj = new Verkehrsteilnehmer(x, y, id);
@@ -65,6 +54,15 @@ namespace Verkehrssimulation.GUI
             return true;
         }
 
+        public void addObstacle(object sender, EventArgs e)
+        {
+            Point p = Mouse.GetPosition(canvas);
+            Obstacle obs = new Obstacle((int)p.X, (int)p.Y, 1);
+            canvas.Children.Add(obs.getShape());
+            builder.addObstacle((int)p.X, (int)p.Y, (int)p.X + 1, (int)p.Y + 1);
+
+
+        }
 
         //private int getlinepos(int line, int dir)
         //{

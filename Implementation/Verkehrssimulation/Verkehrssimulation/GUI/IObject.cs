@@ -16,7 +16,6 @@ namespace Verkehrssimulation.GUI
         bool addCarObject(int x, int y, int id);
 
 
-        // Configurationseinstellungen der GUI
         /* 
          * Fügt ein LKW der GUI hinzu
          */

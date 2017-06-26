@@ -79,6 +79,8 @@ namespace Verkehrssimulation
         private void SliderSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int speed = (int)SliderSpeed.Value;
+            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100 - speed);
+            dispatchTimer.Start();
         }
 
         private void SliderLKW_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
