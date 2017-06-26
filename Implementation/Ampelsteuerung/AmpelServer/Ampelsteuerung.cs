@@ -129,28 +129,30 @@ namespace Ampelsteuerung
             int i;
             for (i = 0; i < Trafficlights.Count; i++)
             {
+                //Setzt den sekundenzähler um 1 hoch
+                Trafficlights.ElementAt(i).setSekundenzähler(Trafficlights.ElementAt(i).getSekundenzähler() + 1);
 
-                if (Trafficlights.ElementAt(i).getSekundenzähler() >= 0 && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getRotPhase())
+                if (Trafficlights.ElementAt(i).getSekundenzähler() >= 0 && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getRotPhase() && !Trafficlights.ElementAt(i).getDefect())
                 {                                     
                     //Ampel Rot
                     Trafficlights.ElementAt(i).setStatus(0);
                 }
-                if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase())
+                else if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() && !Trafficlights.ElementAt(i).getDefect())
                 {
                     //Ampel Gelb
                     Trafficlights.ElementAt(i).setStatus(1);
                 }
-                if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase())
+                else if (Trafficlights.ElementAt(i).getSekundenzähler() >= 1+Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() && !Trafficlights.ElementAt(i).getDefect())
                 {
                     //Ampel Gruen
                     Trafficlights.ElementAt(i).setStatus(2);
                 }
-                if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
+                else if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() && Trafficlights.ElementAt(i).getSekundenzähler() < Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase() && !Trafficlights.ElementAt(i).getDefect())
                 {
                     //Ampel Gelb
                     Trafficlights.ElementAt(i).setStatus(1);
                 }
-                if (Trafficlights.ElementAt(i).getSekundenzähler() > Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase())
+                else if (Trafficlights.ElementAt(i).getSekundenzähler() >= Trafficlights.ElementAt(i).getGelbPhase() + Trafficlights.ElementAt(i).getRotPhase() + Trafficlights.ElementAt(i).getGruenPhase() + Trafficlights.ElementAt(i).getGelbPhase() && !Trafficlights.ElementAt(i).getDefect())
                 {
                     Trafficlights.ElementAt(i).setSekundenzähler(0);
                 }
@@ -158,9 +160,7 @@ namespace Ampelsteuerung
                 if (Trafficlights.ElementAt(i).getDefect() == true)
                 {
                     Trafficlights.ElementAt(i).setStatus(3);
-                }
-
-                Trafficlights.ElementAt(i).setSekundenzähler(Trafficlights.ElementAt(i).getSekundenzähler() + 1);
+                }               
             }
             return null;
         }
@@ -187,7 +187,7 @@ namespace Ampelsteuerung
             }
             else if(ampelid != 0)
             {
-                AmpelStatus = Trafficlights.ElementAt(ampelid - 1).getStatus();
+                AmpelStatus = Trafficlights.ElementAt(ampelid-1).getStatus();
                 return  AmpelStatus; //Trafficlights.ElementAt(ampelid - 1).getID() + " " +
             }
             return -1;
@@ -245,15 +245,22 @@ namespace Ampelsteuerung
             {
                 case 0:
                     Trafficlights.ElementAt(ampelid).setSekundenzähler(0);
+                    Trafficlights.ElementAt(ampelid).setStatus(0);
                     break;
                 case 1:
-                    Trafficlights.ElementAt(ampelid).setSekundenzähler(Trafficlights.ElementAt(ampelid - 1).getRotPhase());
+                    Trafficlights.ElementAt(ampelid).setSekundenzähler(Trafficlights.ElementAt(ampelid).getRotPhase());
+                    Trafficlights.ElementAt(ampelid).setStatus(1);
                     break;
                 case 2:
-                    Trafficlights.ElementAt(ampelid).setSekundenzähler(Trafficlights.ElementAt(ampelid - 1).getRotPhase() + Trafficlights.ElementAt(ampelid - 1).getGelbPhase());
+                    Trafficlights.ElementAt(ampelid).setSekundenzähler(Trafficlights.ElementAt(ampelid).getRotPhase() + Trafficlights.ElementAt(ampelid).getGelbPhase());
+                    Trafficlights.ElementAt(ampelid).setStatus(2);
+                    break;
+                case 3:
+                    Trafficlights.ElementAt(ampelid).setStatus(3);
+                    Trafficlights.ElementAt(ampelid).setDefect(true);
                     break;
                 default:
-                    Trafficlights.ElementAt(ampelid).setStatus(0);
+                    Trafficlights.ElementAt(ampelid - 1).setStatus(0);
                     break;
             }
         }        
