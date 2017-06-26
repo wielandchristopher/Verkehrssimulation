@@ -231,13 +231,21 @@ namespace Ampelsteuerung
         }
         public void setAmpelAusfall(int ampelid)
         {
-            Trafficlights.ElementAt(ampelid - 1).setDefect(true);
-            Trafficlights.ElementAt(ampelid - 1).setStatus(3);
+            if (ampelid > -1)
+            {
+                Trafficlights.ElementAt(ampelid).setDefect(true); // deleted ampelid - 1 . needed?
+                Trafficlights.ElementAt(ampelid).setStatus(3);
+            }
+
         }
         public void setAmpelOn(int ampelid)
         {
-            Trafficlights.ElementAt(ampelid - 1).setDefect(false);
-            Trafficlights.ElementAt(ampelid - 1).setStatus(0);
+            if (ampelid > -1)
+            {
+                Trafficlights.ElementAt(ampelid).setDefect(false);
+                Trafficlights.ElementAt(ampelid).setStatus(0);
+            }
+
         }
         public void setAmpelStatus(int ampelid, int neuerStatus)
         {

@@ -539,7 +539,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         /// <param name="val"></param>
         public void setAmpelanlage(bool val)
         {
-            throw new NotImplementedException();
+            this.env_ah.setOffline(val);
         }
 
 
@@ -709,6 +709,23 @@ namespace Verkehrssimulation.Verkehrsnetz
 
 
         public abstract void Update();
+
+        internal void setOffline()
+        {
+            MainWindow.trafficlight.setAmpelAusfall(idn);
+            MainWindow.trafficlight.setAmpelAusfall(ids);
+            MainWindow.trafficlight.setAmpelAusfall(idw);
+            MainWindow.trafficlight.setAmpelAusfall(ide);
+
+        }
+
+        internal void setOnline()
+        {
+            MainWindow.trafficlight.setAmpelOn(idn);
+            MainWindow.trafficlight.setAmpelOn(ids);
+            MainWindow.trafficlight.setAmpelOn(idw);
+            MainWindow.trafficlight.setAmpelOn(ide);
+        }
     }
 
     public class TKreuzung : Kreuzung, IKreuzung
@@ -902,6 +919,21 @@ namespace Verkehrssimulation.Verkehrsnetz
                 }
             }
             return null; // wenn nicht vorhanden
+        }
+
+        internal void setOffline(bool val)
+        {
+            foreach(Kreuzung k in kreuzungen)
+            {
+                if (val)
+                {
+                    k.setOnline();
+                }
+                else
+                {
+                    k.setOffline();
+                }
+            }
         }
     }
 
