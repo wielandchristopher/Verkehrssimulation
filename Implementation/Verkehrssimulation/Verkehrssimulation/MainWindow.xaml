@@ -24,7 +24,7 @@
         <Label Content="Anteil an LKWs" Canvas.Left="938" Canvas.Top="236"/>
         <Label Content="Anzahl an Fahrzeugen" Canvas.Left="938" Canvas.Top="280"/>
         <TextBlock TextWrapping="Wrap" Text="Konfigurationsmenü" FontSize="16" TextAlignment="Center" Canvas.Left="792" Canvas.Top="130"/>
-        <CheckBox Content="Ampelanlage ausschalten" Canvas.Left="792" Canvas.Top="330"/>
+        <CheckBox  x:Name="cb1" Content="Ampelanlage ausschalten" Canvas.Left="792" Canvas.Top="330" Checked="HandleCheck" Unchecked="HandleUnchecked" />
 
     </Canvas>
 </Window>

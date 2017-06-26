@@ -98,5 +98,15 @@ namespace Verkehrssimulation
             myInterface.updateCarAmount(num);
             Console.WriteLine("Slider Anzahl: " + num);
         }
+
+        private void HandleCheck(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("The CheckBox is checked.");
+        }
+
+        private void HandleUnchecked(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("The CheckBox is unchecked.");
+        }
     }
 }
