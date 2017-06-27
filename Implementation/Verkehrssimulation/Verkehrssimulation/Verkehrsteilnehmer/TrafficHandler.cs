@@ -47,7 +47,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     {
                         if (obj.Direction == (int)TrafficObject.Dir.Up)
                         {
-                            if ((obj.X - obj.Speed) % 100 > 45)
+                            if ((obj.X - obj.Speed) % 100 < 45)
                             {
                                 decimal d = obj.NextX / 100;
                                 obj.NextX = ((int)Math.Floor(d) * 100) + 45;
@@ -64,9 +64,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                         }
 
-                        if (obj.Direction == (int)TrafficObject.Dir.Down)
+                        else if (obj.Direction == (int)TrafficObject.Dir.Down)
                         {
-                            if ((obj.X + obj.Speed) % 100 < 55)
+                            if ((obj.X + obj.Speed) % 100 > 55)
                             {
                                 decimal d = obj.NextX / 100;
                                 obj.NextX = ((int)Math.Floor(d) * 100) + 55;
@@ -83,9 +83,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                         }
 
-                        if (obj.Direction == (int)TrafficObject.Dir.Left)
+                        else if (obj.Direction == (int)TrafficObject.Dir.Left)
                         {
-                            if ((obj.Y + obj.Speed) % 100 < 55)
+                            if ((obj.Y + obj.Speed) % 100 > 55)
                             {
                                 decimal d = obj.NextY / 100;
                                 obj.NextY = ((int)Math.Floor(d) * 100) + 55;
@@ -102,7 +102,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                             obj.MayDrive = (checkIfTilesAreEmpty(obj.X, obj.Y, obj.NextX, obj.NextY, obj.Id, false) == 0); // only this car is around
                         }
 
-                        if (obj.Direction == (int)TrafficObject.Dir.Right)
+                        else if (obj.Direction == (int)TrafficObject.Dir.Right)
                         {
                             if ((obj.Y - obj.Speed) % 100 < 45)
                             {
@@ -209,7 +209,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
                                     if (obj.Direction == (int)TrafficObject.Dir.Right)
                                     {
-                                        if ((obj.Y - obj.Speed) % 100 < 45)
+                                        if ((obj.Y - obj.Speed) % 100 > 45)
                                         {
                                             decimal d = obj.NextY / 100;
                                             obj.NextY = ((int)Math.Floor(d) * 100) + 45;
@@ -744,28 +744,28 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 case (int)TrafficObject.Dir.Up:
                     if (obj.PassingObstacleStatus == (int) TrafficObject.PassingObstStatus.RightSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide)
                        return new Tuple<int, int>(obj.X, obj.Y - obj.Speed);
-                    else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
+                    else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.TurnAround)
                         return new Tuple<int, int>(obj.X - obj.Speed, obj.Y);
                     else 
                         return new Tuple<int, int>(obj.X + obj.Speed, obj.Y);
                 case (int)TrafficObject.Dir.Down:
                     if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide)
                         return new Tuple<int, int>(obj.X, obj.Y + obj.Speed);
-                    else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
+                    else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.TurnAround)
                         return new Tuple<int, int>(obj.X + obj.Speed, obj.Y);
                     else 
                         return new Tuple<int, int>(obj.X - obj.Speed, obj.Y);
                 case (int)TrafficObject.Dir.Left:
                     if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide)
                         return new Tuple<int, int>(obj.X - obj.Speed, obj.Y);
-                    else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
+                    else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.TurnAround)
                         return new Tuple<int, int>(obj.X, obj.Y + obj.Speed);
                     else 
                         return new Tuple<int, int>(obj.X, obj.Y - obj.Speed);
                 case (int)TrafficObject.Dir.Right:
                     if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.RightSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.WrongSide)
                         return new Tuple<int, int>(obj.X + obj.Speed, obj.Y);
-                    else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide)
+                    else if (obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.GoingWrongSide || obj.PassingObstacleStatus == (int)TrafficObject.PassingObstStatus.TurnAround)
                         return new Tuple<int, int>(obj.X, obj.Y - obj.Speed);
                     else 
                         return new Tuple<int, int>(obj.X, obj.Y + obj.Speed);
