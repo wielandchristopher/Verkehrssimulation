@@ -26,5 +26,10 @@ namespace Verkehrssimulation.GUI
         */
         bool updateCarWithID(int x, int y, int id, int typ, int dir);
 
+        /*
+         * Enfernt einen Verkehrsteilnehmer anhand seiner ID
+         */
+        bool removeObject(int id);
+
     }
 }

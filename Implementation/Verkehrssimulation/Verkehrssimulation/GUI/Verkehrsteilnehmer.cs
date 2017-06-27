@@ -116,6 +116,5 @@ namespace Verkehrssimulation.GUI
             Console.WriteLine("Das Auto mit der ID " + this.id );
 
         }
-        
     }
 }

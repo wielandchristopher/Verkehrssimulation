@@ -64,6 +64,21 @@ namespace Verkehrssimulation.GUI
 
         }
 
+        public bool removeObject(int id)
+        {
+            // Suchen und löschen des Fahrzeugs
+            foreach (Verkehrsteilnehmer obj in this.objlist)
+            {
+                if (obj.getID() == id)
+                {
+                    objlist.Remove(obj);
+                    canvas.Children.Remove(obj.getShape()); ;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         //private int getlinepos(int line, int dir)
         //{
         //    int pos = line * 100;
