@@ -640,7 +640,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 trafficobjs.Remove(removeObject);
             }
 
-            //TODO call UI to remove car
+            oh.removeObject(id);
         }
 
         private int checkIfTilesAreEmpty(int startX, int startY, int destX, int destY, int requesterId, Boolean ignoreStandingCars)
