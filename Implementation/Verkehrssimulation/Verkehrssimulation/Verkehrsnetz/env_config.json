@@ -10,6 +10,18 @@
       "type": 3,
       "xpos": 300,
       "ypos": 400,
+      "nopath": 3
+    },
+    {
+      "type": 3,
+      "xpos": 200,
+      "ypos": 600,
+      "nopath": 2
+    },
+    {
+      "type": 3,
+      "xpos": 400,
+      "ypos": 100,
       "nopath": 1
     },
     {

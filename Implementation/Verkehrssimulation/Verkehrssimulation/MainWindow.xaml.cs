@@ -110,6 +110,7 @@ namespace Verkehrssimulation
         {
             I_ENV_GUI myInterface = builder;
             myInterface.setAmpelanlage(true);
+
         }
     }
 }

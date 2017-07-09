@@ -57,9 +57,19 @@ namespace Verkehrssimulation.GUI
         public void addObstacle(object sender, EventArgs e)
         {
             Point p = Mouse.GetPosition(canvas);
-            Obstacle obs = new Obstacle((int)p.X, (int)p.Y, 1);
-            canvas.Children.Add(obs.getShape());
-            builder.addObstacle((int)p.X, (int)p.Y, (int)p.X + 1, (int)p.Y + 1);
+
+
+            if(builder.getStreetType((int)p.Y, (int)p.X) != EnvElement.StreetType.FourKreuzung && 
+               builder.getStreetType((int)p.Y, (int)p.X) != EnvElement.StreetType.ThreeKreuzung)
+            {
+                Obstacle obs = new Obstacle((int)p.X, (int)p.Y, 1);
+                canvas.Children.Add(obs.getShape());
+                builder.addObstacle((int)p.X, (int)p.Y, (int)p.X + 1, (int)p.Y + 1);
+            }
+            else
+            {
+                Console.WriteLine("Es ist nicht möglich ein Obstacle an die Kreuzung zu setzen.");
+            }
 
 
         }

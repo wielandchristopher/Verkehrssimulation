@@ -153,22 +153,22 @@ namespace Verkehrssimulation.Verkehrsnetz
             switch (nopath)
             {
                 case 1: // kein norden -> keine ampel bei links oben
+                    ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++); // rechts unten
                     ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++); // links unten
                     ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++); // rechts oben
-                    ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++); // rechts unten
-                    break;
-                case 2: 
-                    ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++); // rechts unten
-                    ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++); // links oben
-                    ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++); // rechts oben
-                    break;
-                case 3:
-                    ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++); // links unten
-                    ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++); // links oben
-                    ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++); // rechts oben
-                    break;
-                case 4:
 
+                    break;
+                case 2: // kein East
+                    ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++); // rechts unten
+                    ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++); // links oben
+                    ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++); // rechts oben
+                    break;
+                case 3: // kein south
+                    ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++); // links unten
+                    ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++); // links oben
+                    ah.addTrafficLight(xpos + 60, ypos + 7, 4, ampelcnt++); // rechts oben
+                    break;
+                case 4: // kein west
                     ah.addTrafficLight(xpos + 60, ypos + 60, 1, ampelcnt++); // rechts unten
                     ah.addTrafficLight(xpos + 30, ypos + 60, 2, ampelcnt++); // links unten
                     ah.addTrafficLight(xpos + 7, ypos + 30, 3, ampelcnt++); // links oben
@@ -176,6 +176,8 @@ namespace Verkehrssimulation.Verkehrsnetz
                 default:
                     break;
             }
+            
+
         }
 
         private void rotateElement(int cnt, int xpos, int ypos)
@@ -425,7 +427,7 @@ namespace Verkehrssimulation.Verkehrsnetz
                         ah.setGreen(tmp - 1);
                         break;
                     case 3:
-                        Console.WriteLine("ausfall oder ausgeschaltet");
+                        ah.yellowBlinky(tmp - 1);
                         break;
                     default:
                         Console.WriteLine("nicht gehandelter status");
@@ -540,6 +542,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         public void setAmpelanlage(bool val)
         {
             this.env_ah.setOffline(val);
+            this.UpdateGUIAmpeln();
         }
 
 
@@ -690,6 +693,7 @@ namespace Verkehrssimulation.Verkehrsnetz
     public interface IKreuzung
     {
         void Update();
+        void InitAmpeln();
     }
 
     public abstract class Kreuzung : IKreuzung
@@ -726,10 +730,13 @@ namespace Verkehrssimulation.Verkehrsnetz
             MainWindow.trafficlight.setAmpelOn(idw);
             MainWindow.trafficlight.setAmpelOn(ide);
         }
+
+        public abstract void InitAmpeln();
     }
 
     public class TKreuzung : Kreuzung, IKreuzung
     {
+        
 
         public TKreuzung(int id, int idn, int ide, int ids, int idw)
         {
@@ -745,26 +752,40 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.w_status = -1;
             this.e_status = -1;
             this.s_status = -1;
-            
-            Console.WriteLine("North: " + idn + " South: " + ids + " West: " + idw + " East: " + ide);
-            
-            if (idn > -1)
-            {
-                MainWindow.trafficlight.setAmpelStatus(idn, 0);
-            }
-            if (ids > -1)
+
+            InitAmpeln();
+
+        }
+
+        public override void InitAmpeln()
+        {
+            if (idn < 0)
             {
                 MainWindow.trafficlight.setAmpelStatus(ids, 0);
-            }
-            if (idw > -1)
-            {
-                MainWindow.trafficlight.setAmpelStatus(idw, 2);
-            }
-            if (ide > -1)
-            {
                 MainWindow.trafficlight.setAmpelStatus(ide, 2);
+                MainWindow.trafficlight.setAmpelStatus(idw, 2);
+
             }
-                       
+            else if (ids < 0)
+            {
+                MainWindow.trafficlight.setAmpelStatus(idn, 0);
+                MainWindow.trafficlight.setAmpelStatus(ide, 2);
+                MainWindow.trafficlight.setAmpelStatus(idw, 2);
+
+            }
+            else if (idw < 0)
+            {
+                MainWindow.trafficlight.setAmpelStatus(ids, 2);
+                MainWindow.trafficlight.setAmpelStatus(ide, 0);
+                MainWindow.trafficlight.setAmpelStatus(idn, 2);
+
+            }
+            else if (ide < 0)
+            {
+                MainWindow.trafficlight.setAmpelStatus(ids, 2);
+                MainWindow.trafficlight.setAmpelStatus(idn, 2);
+                MainWindow.trafficlight.setAmpelStatus(idw, 0);
+            }
         }
 
         public override void Update()
@@ -792,8 +813,8 @@ namespace Verkehrssimulation.Verkehrsnetz
     public class FKreuzung : Kreuzung, IKreuzung
     {
 
-
-        public FKreuzung(int id , int idn, int ids, int idw, int ide)
+        
+        public FKreuzung(int id, int ids, int idw, int idn, int ide)
         {
 
             // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
@@ -810,12 +831,17 @@ namespace Verkehrssimulation.Verkehrsnetz
 
             //Console.WriteLine("North: " + idn +" South: "+ ids + " West: " + idw + " East: " +  ide);
 
-            MainWindow.trafficlight.setAmpelStatus(idn,0);
-            MainWindow.trafficlight.setAmpelStatus(ids,0);
-            MainWindow.trafficlight.setAmpelStatus(idw,2);
-            MainWindow.trafficlight.setAmpelStatus(ide,2);
+            InitAmpeln();
 
 
+        }
+
+        public override void InitAmpeln()
+        {
+            MainWindow.trafficlight.setAmpelStatus(this.idn, 2);
+            MainWindow.trafficlight.setAmpelStatus(this.ids, 2);
+            MainWindow.trafficlight.setAmpelStatus(this.idw, 0);
+            MainWindow.trafficlight.setAmpelStatus(this.ide, 0);
         }
 
         public override void Update()
@@ -876,17 +902,18 @@ namespace Verkehrssimulation.Verkehrsnetz
 
                     switch (k.GetValue("nopath").Value<int>())
                     {
-                        case 1:
-                            kreuzungen.Add(new TKreuzung(newID, -1,x,x+1,x+2));
+                        case 1: // north closed
+                            kreuzungen.Add(new TKreuzung(newID,-1, x + 1, x, x + 2 ));
                             break;
-                        case 2:
-                            kreuzungen.Add(new TKreuzung(newID, x, -1, x + 1, x + 2));
+                        case 2: // east closed
+                            kreuzungen.Add(new TKreuzung(newID, x+1,-1,x,x+2));
+
                             break;
-                        case 3:
-                            kreuzungen.Add(new TKreuzung(newID, x, x + 1, -1, x + 2));
+                        case 3: // south closed
+                            kreuzungen.Add(new TKreuzung(newID, x+1,x+2,-1,x));
                             break;
-                        case 4:
-                            kreuzungen.Add(new TKreuzung(newID, x, x + 1, x + 2, -1));
+                        case 4: // west closed
+                            kreuzungen.Add(new TKreuzung(newID, x+2, x+1, x, -1));
                             break;
                         default:
                             break;
@@ -928,13 +955,16 @@ namespace Verkehrssimulation.Verkehrsnetz
                 if (val)
                 {
                     k.setOnline();
+                    k.InitAmpeln();
                 }
                 else
                 {
                     k.setOffline();
+                    
                 }
             }
         }
+
     }
 
     public class ObstacleHandler
