@@ -50,7 +50,7 @@ namespace Verkehrssimulation
 
             dispatchTimer           = new DispatcherTimer();
             dispatchTimer.Tick      += dispatchTimer_Tick;
-            dispatchTimer.Interval  = new TimeSpan(0, 0, 0, 0, 100);
+            dispatchTimer.Interval  = new TimeSpan(0, 0, 0, 0, 50);
            
             ap      = new GUI.AmpelHandler(myCanvas);
             builder = new EnvironmentBuilder(myCanvas, ref ap, ref trafficlight);
@@ -79,7 +79,7 @@ namespace Verkehrssimulation
         private void SliderSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int speed = (int)SliderSpeed.Value;
-            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100 - speed);
+            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 50 - speed/2);
             dispatchTimer.Start();
         }
 

@@ -18,8 +18,8 @@ namespace Verkehrssimulation.GUI
         public Obstacle(double x, double y, int newId)
         {
             shp = new Rectangle();
-            shp.Width = 5;
-            shp.Height = 5;
+            shp.Width = 10;
+            shp.Height = 10;
             shp.Fill = new SolidColorBrush(Colors.Red);
 
             id = newId;
