@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verkehrssimulation.Verkehrsnetz;
 using Verkehrssimulation.GUI;
+using static Verkehrssimulation.RabbitMQ.RabbitMQHandler;
 
 namespace Verkehrssimulation.Verkehrsteilnehmer
 {
@@ -15,16 +16,19 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
         private ITeilnehmer eb; // ref auf Environmenthandler zum abfragen der rules
         private IObject oh; //ref zu GUI
+        private RabbitMQ.RabbitMQHandler mqhandler; //rabbitMq
+        private RabbitMQ.RabbitMQHandler.RemoteTransaction remoteTransaction;
         Random rng = new Random(); //random number generator
         int id_number;
 
         public enum StreetRegion { NormalStreet = 0, IntersectionAhead = 1, Intersection = 2};
 
-        public TrafficHandler(ref ITeilnehmer _eb, ref IObject _oh)
+        public TrafficHandler(ref ITeilnehmer _eb, ref IObject _oh, ref RabbitMQ.RabbitMQHandler _mqhandler)
         {
             trafficobjs = new List<TrafficObject>();
             oh = _oh;
             eb = _eb;
+            mqhandler = _mqhandler;
             id_number = 1;
         }
 
@@ -399,8 +403,6 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 {
                     obj.WaitingCounter = 0;
                     Tuple<int, int> nextRoadXY = getNextRoadTileXY(obj);
-                    //int nextRoadX = nextRoadXY.Item1;
-                    //int nextRoadY = nextRoadXY.Item2;
                     //decide where to go next (only) when leaving (100x100) roadTile
                     if ((Math.Abs(obj.X % 100 - obj.NextX % 100) > (obj.Speed + 1)) || (Math.Abs(obj.Y % 100 - obj.NextY % 100) > (obj.Speed + 1)))
                     {
@@ -555,6 +557,28 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     if (obj.X <0 || obj.X > 700 || obj.Y < 0 || obj.Y > 700)
                     {
                         removeIds.Add(obj.Id);
+
+                        //send Cars to other group via RabbitMq
+                        int speed = obj.Speed * 20;
+                        String group = "";
+                        switch (obj.Direction)
+                        {
+                            case (int)TrafficObject.Dir.Down:
+                                group = "group1";
+                                break;
+                            case (int)TrafficObject.Dir.Right:
+                                group = "group2";
+                                break;
+                            case (int)TrafficObject.Dir.Up:
+                                group = "group4";
+                                break;
+                        }
+                        if (!group.Equals("")){
+                            string typ = obj.Typ == (int) TrafficObject.Fahrzeugtyp.Car ? "PKW" : "LKW";
+                            remoteTransaction = new RemoteTransaction(speed > 100 ? 100 : speed, typ);
+                            mqhandler.Send(remoteTransaction, group);
+                        }
+                            
                     }
                 }
                 else

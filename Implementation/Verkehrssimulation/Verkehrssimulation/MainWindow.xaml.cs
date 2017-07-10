@@ -58,7 +58,7 @@ namespace Verkehrssimulation
             oh      = new ObjectHandler(myCanvas, ref builder);
             ITeilnehmer iTeilnehmer = builder;
             IObject iObject = oh;
-            th      = new TrafficHandler(ref iTeilnehmer, ref iObject);
+            th      = new TrafficHandler(ref iTeilnehmer, ref iObject, ref mqhandler);
 
             th.createNewVerkehrsteilnehmer(210, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
