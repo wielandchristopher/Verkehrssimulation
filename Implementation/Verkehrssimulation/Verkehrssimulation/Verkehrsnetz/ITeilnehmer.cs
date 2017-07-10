@@ -13,5 +13,6 @@ namespace Verkehrssimulation.Verkehrsnetz
         bool isObstacleInMyWay(int x, int y);
         bool isOutside(int x, int y);
         List<Obstacle> getObstacles();
+        List<EntryPoint> getEnvironmentEntries();
     }
 }

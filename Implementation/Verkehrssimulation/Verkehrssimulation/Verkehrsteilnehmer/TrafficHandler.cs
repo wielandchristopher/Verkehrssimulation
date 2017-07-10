@@ -13,14 +13,14 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         private int targetNumberOfCars = 20;
         private int truckratio = 0; 
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
-        private EnvironmentBuilder eb; // ref auf Environmenthandler zum abfragen der rules
-        private ObjectHandler oh; //ref zu GUI
+        private ITeilnehmer eb; // ref auf Environmenthandler zum abfragen der rules
+        private IObject oh; //ref zu GUI
         Random rng = new Random(); //random number generator
         int id_number;
 
         public enum StreetRegion { NormalStreet = 0, IntersectionAhead = 1, Intersection = 2};
 
-        public TrafficHandler(ref EnvironmentBuilder _eb, ref ObjectHandler _oh)
+        public TrafficHandler(ref ITeilnehmer _eb, ref IObject _oh)
         {
             trafficobjs = new List<TrafficObject>();
             oh = _oh;

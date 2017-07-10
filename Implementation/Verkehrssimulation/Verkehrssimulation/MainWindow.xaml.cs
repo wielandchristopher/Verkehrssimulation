@@ -52,10 +52,13 @@ namespace Verkehrssimulation
             dispatchTimer.Tick      += dispatchTimer_Tick;
             dispatchTimer.Interval  = new TimeSpan(0, 0, 0, 0, 50);
            
+
             ap      = new GUI.AmpelHandler(myCanvas);
             builder = new EnvironmentBuilder(myCanvas, ref ap, ref trafficlight);
             oh      = new ObjectHandler(myCanvas, ref builder);
-            th      = new TrafficHandler(ref builder, ref oh);
+            ITeilnehmer iTeilnehmer = builder;
+            IObject iObject = oh;
+            th      = new TrafficHandler(ref iTeilnehmer, ref iObject);
 
             th.createNewVerkehrsteilnehmer(210, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             th.createNewVerkehrsteilnehmer(35, 155, 4, (int)TrafficObject.Fahrzeugtyp.Car, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
