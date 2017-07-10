@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Verkehrssimulation.Verkehrsteilnehmer;
 
@@ -99,8 +100,9 @@ namespace Verkehrssimulation.RabbitMQ
                                          noAck: false,  //If noAck: false the command channel.BasicAck (see above) has to be implemented. Don't set it true, or the message will not get resubmitted, if the bank was offline
                                          consumer: consumer);
 
-                   // Console.WriteLine(" Press [enter] to exit receive.");
-                   // Console.ReadLine();
+                    // Console.WriteLine(" Press [enter] to exit receive.");
+                    // Console.ReadLine();
+                    Thread.Sleep(100);
                 }
             }
         }
