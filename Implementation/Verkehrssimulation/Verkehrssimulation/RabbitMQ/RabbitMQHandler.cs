@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Verkehrssimulation.Verkehrsteilnehmer;
 
 namespace Verkehrssimulation.RabbitMQ
 {
@@ -21,9 +22,11 @@ namespace Verkehrssimulation.RabbitMQ
         * */
 
         RemoteTransaction remoteTransaction;
+        ITrafficHandler th;
 
         public RabbitMQHandler()
         {
+            th = TrafficHandler.getInstance();
             // RabbitMQ
             remoteTransaction = new RemoteTransaction(10.1, "PKW");
             Send(remoteTransaction, "group3");
@@ -68,6 +71,7 @@ namespace Verkehrssimulation.RabbitMQ
                                  arguments: null);
 
                     var consumer = new EventingBasicConsumer(channel);
+                    ITrafficHandler th = TrafficHandler.getInstance();
 
                     consumer.Received += (model, ea) =>
                     {
@@ -78,14 +82,25 @@ namespace Verkehrssimulation.RabbitMQ
 
                         Console.WriteLine("[x] Received:");
                         PrintTransaction(transaction);
+
+                        if (th != null)
+                        {
+                            int speed = (int) transaction.Speed / 20;
+                            if (speed > 5)
+                                speed = 5;
+                            if (transaction.CarType == "PKW")                            
+                                th.addCarToEntryPoint(null, (int)TrafficObject.Fahrzeugtyp.Car, speed);                            
+                            if (transaction.CarType == "LKW")                          
+                                th.addCarToEntryPoint(null, (int)TrafficObject.Fahrzeugtyp.Truck, speed);                           
+                        }
                     };
 
                     channel.BasicConsume(queue: "group3",
                                          noAck: false,  //If noAck: false the command channel.BasicAck (see above) has to be implemented. Don't set it true, or the message will not get resubmitted, if the bank was offline
                                          consumer: consumer);
 
-                    Console.WriteLine(" Press [enter] to exit receive.");
-                    Console.ReadLine();
+                   // Console.WriteLine(" Press [enter] to exit receive.");
+                   // Console.ReadLine();
                 }
             }
         }
