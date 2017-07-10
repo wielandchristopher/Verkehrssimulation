@@ -614,11 +614,37 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     int typ = getCurrentTruckRatio() < truckratio ? (int) TrafficObject.Fahrzeugtyp.Truck : (int) TrafficObject.Fahrzeugtyp.Car;
                     if(entrypoint.TileX == 0)
                     {
-                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 5, typ, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
+                        if(entrypoint.TileY == 0 || entrypoint.TileY == 600)
+                        {
+                            if (eb.getNeededStreetRules(entrypoint.TileX, entrypoint.TileY).layout == 1)
+                                createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 5, typ, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+                            else
+                            {
+                                if(entrypoint.TileY == 0)
+                                    createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 5, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                                else
+                                    createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 5, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up); 
+                            }
+                        }
+                        else
+                            createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, 5, typ, (int) TrafficObject.Dir.Right, (int) TrafficObject.Dir.Right);
                     }
                     else if(entrypoint.TileX == 600)
                     {
-                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 5, typ, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
+                        if (entrypoint.TileY == 0 || entrypoint.TileY == 600)
+                        {
+                            if (eb.getNeededStreetRules(entrypoint.TileX, entrypoint.TileY).layout == 1)
+                                createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 5, typ, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
+                            else
+                            {
+                                if (entrypoint.TileY == 0)
+                                    createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, 5, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                                else
+                                    createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, 5, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+                            }
+                        }
+                        else
+                            createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, 5, typ, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
                     }
                     else if(entrypoint.TileY == 0)
                     {
