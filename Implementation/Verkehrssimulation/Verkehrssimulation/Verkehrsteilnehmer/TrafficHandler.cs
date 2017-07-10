@@ -417,7 +417,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                     obj.PassingObstacleStatus = (int)TrafficObject.PassingObstStatus.TurnAround;
                                break;
                             case (int)EnvElement.StreetType.ThreeKreuzung:
-                                //TODO get layout from Straßennetz
+                                //get layout from Straßennetz
                                 int layout = nextRoadInfo.layout;
                                 int rotation_modifier = 0;
                                 switch (layout)
@@ -553,7 +553,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     //send update to UI
                     oh.updateCarWithID(obj.Y, obj.X, obj.Id, obj.Typ, obj.Direction); //x and y are in ui the other way around
 
-                    //destroy car if the left simulation, TODO send eventually to other group
+                    //destroy car if the left simulation, send eventually to other group
                     if (obj.X <0 || obj.X > 700 || obj.Y < 0 || obj.Y > 700)
                     {
                         removeIds.Add(obj.Id);
@@ -851,7 +851,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             }
         }
 
-        private Boolean checkIfObstacleAhead(int x, int y, int direction, int speed)
+        private Boolean checkIfObstacleAhead(int y, int x, int direction, int speed) //x and y other way round in other packages
         {
             List<Verkehrsnetz.Obstacle> obstacles = eb.getObstacles();
             switch (direction)
@@ -908,7 +908,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             return false;
         }
 
-        private Boolean checkIfCanPassObstacle(int x, int y, int direction)
+        private Boolean checkIfCanPassObstacle(int y, int x, int direction)//x and y other way round in other packages
         {
             List<Verkehrsnetz.Obstacle> obstacles = eb.getObstacles();
             int speed = 50;
