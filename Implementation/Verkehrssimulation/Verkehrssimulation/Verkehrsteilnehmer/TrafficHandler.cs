@@ -768,6 +768,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         private Boolean checkIfCanDriveWithTrafficLight(TrafficObject obj, int trafficLightColour)
         {
+
             Boolean isGreen = (trafficLightColour == 2);
             if (!isGreen)
             {

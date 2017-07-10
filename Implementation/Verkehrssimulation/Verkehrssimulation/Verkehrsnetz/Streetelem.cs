@@ -113,7 +113,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             item6.Click += new RoutedEventHandler(addObstacle);
             pMenu.Items.Add(item6);
 
-            img.ContextMenu = pMenu;
+           // img.ContextMenu = pMenu;
         }
 
         public void addObstacle(object sender, EventArgs e) { }
@@ -172,6 +172,7 @@ namespace Verkehrssimulation.Verkehrsnetz
         }
         public void printStreetType(object sender, EventArgs e)
         {
+
             Console.WriteLine("Ampelid: " + this.ampelid);
             Console.WriteLine("Position (X/Y) " + this.x + this.y);
             Console.WriteLine(this.stype.ToString());

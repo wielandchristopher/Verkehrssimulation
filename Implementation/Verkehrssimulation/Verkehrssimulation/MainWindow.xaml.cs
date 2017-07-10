@@ -77,6 +77,7 @@ namespace Verkehrssimulation
         {
             builder.UpdateGUIAmpeln();
             th.updateAll();
+            
         }
 
         private void SliderSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

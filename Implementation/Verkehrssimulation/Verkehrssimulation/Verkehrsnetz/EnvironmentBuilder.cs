@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using Verkehrssimulation.Verkehrsteilnehmer;
 using Verkehrssimulation;
 using System.ServiceModel;
+using System.Windows.Input;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
@@ -31,6 +32,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             trafficlight = _trafficlight;
 
             canvas = mycanvas;
+            mycanvas.MouseMove += getEnvType;
             Console.WriteLine("Buidler loaded");
 
             entrypoints = new List<EntryPoint>();
@@ -38,6 +40,18 @@ namespace Verkehrssimulation.Verkehrsnetz
             LoadJson();
             LoadEnvironment();
             
+        }
+
+        private void getEnvType(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("X: "+ e.GetPosition(canvas).X + "/ Y: " + e.GetPosition(canvas).Y + "\n" + this.getStreetType((int)e.GetPosition(canvas).Y, (int)e.GetPosition(canvas).X).ToString());
+            //Kreuzung k = this.env_ah.getKreuzung(this.getStreetElement((int)e.GetPosition(canvas).X, (int)e.GetPosition(canvas).Y).getAmpelID());
+            //k.printStatus();
+            //env_ah.getKreuzung(0).Update();
+            //env_ah.getKreuzung(0).printStatus();
+
+            // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
+
         }
 
         private void LoadJson()
@@ -412,11 +426,16 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
             // ampelthread abfragen und an gui leiten
 
+
+
             for (int tmp = 1; tmp <= trafficlight.getAmpelAnzahl(); tmp++)
             {
+                int mycase = trafficlight.getAmpelStatus(tmp);
+                this.env_ah.updateAmpel(tmp-1,mycase);
 
-                switch (trafficlight.getAmpelStatus(tmp))
-                {
+                switch (mycase)
+                {                  
+
                     case 0:
                         ah.setRed(tmp - 1);
                         break;
@@ -433,8 +452,13 @@ namespace Verkehrssimulation.Verkehrsnetz
                         Console.WriteLine("nicht gehandelter status");
                         break;
                 }
-                //Console.WriteLine("trafficlight.getAmpelStatus(" + tmp + "): " + trafficlight.getAmpelStatus(tmp));
+
+                
             }
+            Console.Clear();
+            this.env_ah.printStatus();
+            
+            //this.env_ah.updateKreuzungen();
         }
 
         public bool isObstacleInMyWay(int x, int y)
@@ -444,8 +468,6 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         public EnvElement.StreetType getStreetType(int x, int y) //geht
         {
-            //holt den straßentyp und die ausrichtung vom aktuellen feld wo das auto fährt
-            //Console.WriteLine(this.elems[x / 100, y / 100].getStreetType().ToString());
 
             if (x > 600) { x = 600; }
             else if (x < 0) { x = 0; }
@@ -467,8 +489,6 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         public int getAmpelID(int x, int y) //geht
         {
-            //holt den straßentyp und die ausrichtung vom aktuellen feld wo das auto fährt
-            //Console.WriteLine(this.elems[x / 100, y / 100].getStreetType().ToString());
 
             if (x > 600) { x = 600; }
             else if (x < 0) { x = 0; }
@@ -560,10 +580,16 @@ namespace Verkehrssimulation.Verkehrsnetz
        
             info.type = (int)getStreetType(x, y);
 
+
+            if(info.type == 2)
+            {
+
+            }
+            //Console.WriteLine("abgefragter Streeettype {0}{1} : " + getStreetType(x, y).ToString(), x,y);
+
             if ((int)getStreetElement(x, y).getStreetType() == 1)
             {
                 info.layout = getStreetElement(x, y).getRotation();
-                //Console.WriteLine(info.layout);
             }
             else
             {
@@ -579,6 +605,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             if (this.getAmpelID(x, y) > -1)
             {
                 kreuzung = this.env_ah.getKreuzung(this.getAmpelID(x, y));
+
 
                 if (kreuzung.s_status == -1)
                 {
@@ -596,11 +623,18 @@ namespace Verkehrssimulation.Verkehrsnetz
                 {
                     info.layout = 1;
                 }
-
+                
                 info.ampelstatusDown = kreuzung.s_status;
                 info.ampelstatusLeft = kreuzung.w_status;
                 info.ampelstatusRight = kreuzung.e_status;
                 info.ampelstatusUp = kreuzung.n_status;
+
+                //if (kreuzung.getID() == 0)
+                //{
+                //    Console.Clear();
+                //    Console.WriteLine("\nn " + kreuzung.n_status + "\ne " + kreuzung.e_status + "\ns " + kreuzung.s_status + "\nw " + kreuzung.w_status);
+                //    // 0 = Rot, 1 = Gelb, 2 = Grün, 3 = Ausfall
+                //}
             }
             else
             {
@@ -732,6 +766,42 @@ namespace Verkehrssimulation.Verkehrsnetz
         }
 
         public abstract void InitAmpeln();
+
+        internal void printStatus()
+        {
+            if(n_status>-2 && s_status > -2 && w_status > -2 && e_status > -2)
+            Console.WriteLine("\nID: " + this.id +"\n"+ "/n " + this.n_status + "/e " + this.e_status + "/s " + this.s_status + "/w " + this.w_status);
+           
+        }
+
+        internal bool writeStatus(int ampelid, int mycase)
+        {
+
+         
+            if (this.idn == ampelid)
+            {
+                this.n_status = mycase;
+                return true;
+            }
+            else if(ids == ampelid)
+            {
+                this.s_status = mycase;
+
+                return true;
+            }
+            else if(idw == ampelid)
+            {
+                this.w_status = mycase;
+                return true;
+            }
+            else if(this.ide == ampelid)
+            {
+                this.e_status = mycase;
+
+                return true;
+            }
+            return false;
+        }
     }
 
     public class TKreuzung : Kreuzung, IKreuzung
@@ -828,6 +898,8 @@ namespace Verkehrssimulation.Verkehrsnetz
             this.w_status = -1;
             this.e_status = -1;
             this.s_status = -1;
+
+           
 
             //Console.WriteLine("North: " + idn +" South: "+ ids + " West: " + idw + " East: " +  ide);
 
@@ -926,12 +998,12 @@ namespace Verkehrssimulation.Verkehrsnetz
 
 
 
-            while (x < cnt)
-            {
-                kreuzungen.Add(new FKreuzung(newID, x, x + 1, x + 2, x + 3));
-                x = x + 4;
-                newID++;
-            }
+            //while (x < cnt)
+            //{
+            //    kreuzungen.Add(new FKreuzung(newID, x, x + 1, x + 2, x + 3));
+            //    x = x + 4;
+            //    newID++;
+            //}
         }
 
         public Kreuzung getKreuzung(int id)
@@ -940,8 +1012,6 @@ namespace Verkehrssimulation.Verkehrsnetz
             {
                 if (k.getID() == id)
                 {
-                    k.Update();
-                    
                     return k; // wenn gefunden
                 }
             }
@@ -965,6 +1035,32 @@ namespace Verkehrssimulation.Verkehrsnetz
             }
         }
 
+        internal void updateKreuzungen()
+        {
+            foreach (Kreuzung k in kreuzungen)
+            {
+                k.Update();
+            }
+        }
+
+        internal void printStatus()
+        {
+            foreach(Kreuzung k in kreuzungen)
+            {
+                k.printStatus();
+            }
+        }
+
+        internal void updateAmpel(int ampelid, int mycase)
+        {
+            foreach(Kreuzung k in kreuzungen)
+            {
+                if (k.writeStatus(ampelid,mycase))
+                {
+                    return;
+                }
+            }
+        }
     }
 
     public class ObstacleHandler

@@ -84,7 +84,6 @@
     <Compile Include="Verkehrsnetz\I_ENV_GUI.cs" />
     <Compile Include="Verkehrsnetz\ITeilnehmer.cs" />
     <Compile Include="Verkehrsnetz\Streetelem.cs" />
-    <Compile Include="Verkehrsnetz\StreetInfo.cs" />
     <Compile Include="Verkehrsregeln\AllgemeineVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\IVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\Schilder.cs" />
