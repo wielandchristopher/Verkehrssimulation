@@ -73,7 +73,7 @@ namespace Verkehrssimulation.RabbitMQ
 
                     var consumer = new EventingBasicConsumer(channel);
                     ITrafficHandler th = TrafficHandler.getInstance();
-
+                    int counter = 0;
                     consumer.Received += (model, ea) =>
                     {
                         var body = GetString(ea.Body);
@@ -90,9 +90,10 @@ namespace Verkehrssimulation.RabbitMQ
                             if (speed > 5)
                                 speed = 5;
                             if (transaction.CarType == "PKW")                            
-                                th.addCarToEntryPoint(null, (int)TrafficObject.Fahrzeugtyp.Car, speed);                            
+                                th.addCarToEntryPoint(null, (int)TrafficObject.Fahrzeugtyp.Car, speed, counter*5);                            
                             if (transaction.CarType == "LKW")                          
-                                th.addCarToEntryPoint(null, (int)TrafficObject.Fahrzeugtyp.Truck, speed);                           
+                                th.addCarToEntryPoint(null, (int)TrafficObject.Fahrzeugtyp.Truck, speed, counter*5);
+                            counter++;                           
                         }
                     };
 

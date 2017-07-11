@@ -588,7 +588,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                                 group = "group4";
                                 break;
                         }
-                        if (!group.Equals("")){
+                        if ((!group.Equals("")) && rng.NextDouble() < 0.1){ //cars only have a 10% change to be sent
                             string typ = obj.Typ == (int) TrafficObject.Fahrzeugtyp.Car ? "PKW" : "LKW";
                             remoteTransaction = new RemoteTransaction(speed > 100 ? 100 : speed, typ);
                             mqhandler.Send(remoteTransaction, group);
@@ -630,6 +630,9 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                     addCarToEntryPoint(entrypoint, typ);
                 }
             }
+
+            if (rng.NextDouble() < 0.05) //for performance there is only a 5% change to request cars from rabbirmq
+                mqhandler.Receive(); //add Cars from other group
         }
 
         private StreetInfo getEnvRules(int x, int y)
@@ -649,7 +652,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             id_number++;
         }
 
-        public void addCarToEntryPoint(EntryPoint entrypoint, int typ, int speed = 5)
+        public void addCarToEntryPoint(EntryPoint entrypoint, int typ, int speed = 5, int moveForward = 0)
         {
             if (entrypoint == null) {
                 entrypoint = eb.getEnvironmentEntries().ElementAt(0);
@@ -660,42 +663,42 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
                 if (entrypoint.TileY == 0 || entrypoint.TileY == 600)
                 {
                     if (eb.getNeededStreetRules(entrypoint.TileX, entrypoint.TileY).layout == 1)
-                        createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, speed, typ, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+                        createNewVerkehrsteilnehmer(moveForward, entrypoint.TileY + 55, speed, typ, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
                     else
                     {
                         if (entrypoint.TileY == 0)
-                            createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, speed, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                            createNewVerkehrsteilnehmer(entrypoint.TileX + 45, moveForward, speed, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
                         else
-                            createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, speed, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+                            createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700 - moveForward, speed, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
                     }
                 }
                 else
-                    createNewVerkehrsteilnehmer(0, entrypoint.TileY + 55, speed, typ, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
+                    createNewVerkehrsteilnehmer(moveForward, entrypoint.TileY + 55, speed, typ, (int)TrafficObject.Dir.Right, (int)TrafficObject.Dir.Right);
             }
             else if (entrypoint.TileX == 600)
             {
                 if (entrypoint.TileY == 0 || entrypoint.TileY == 600)
                 {
                     if (eb.getNeededStreetRules(entrypoint.TileX, entrypoint.TileY).layout == 1)
-                        createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, speed, typ, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
+                        createNewVerkehrsteilnehmer(700- moveForward, entrypoint.TileY + 45, speed, typ, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
                     else
                     {
                         if (entrypoint.TileY == 0)
-                            createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, speed, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                            createNewVerkehrsteilnehmer(entrypoint.TileX + 45, moveForward, speed, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
                         else
-                            createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, speed, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+                            createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700 - moveForward, speed, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
                     }
                 }
                 else
-                    createNewVerkehrsteilnehmer(700, entrypoint.TileY + 45, speed, typ, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
+                    createNewVerkehrsteilnehmer(700 - moveForward, entrypoint.TileY + 45, speed, typ, (int)TrafficObject.Dir.Left, (int)TrafficObject.Dir.Left);
             }
             else if (entrypoint.TileY == 0)
             {
-                createNewVerkehrsteilnehmer(entrypoint.TileX + 45, 0, speed, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
+                createNewVerkehrsteilnehmer(entrypoint.TileX + 45, moveForward, speed, typ, (int)TrafficObject.Dir.Down, (int)TrafficObject.Dir.Down);
             }
             else if (entrypoint.TileY == 600)
             {
-                createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700, speed, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
+                createNewVerkehrsteilnehmer(entrypoint.TileX + 55, 700 - moveForward, speed, typ, (int)TrafficObject.Dir.Up, (int)TrafficObject.Dir.Up);
             }
         }
     

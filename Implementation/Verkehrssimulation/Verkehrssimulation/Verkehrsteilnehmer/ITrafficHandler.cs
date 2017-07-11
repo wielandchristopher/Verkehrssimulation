@@ -11,7 +11,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
     {
         void updateAll();
         void createNewVerkehrsteilnehmer(int x, int y, int speed, int typ, int direction, int nextDirection);
-        void addCarToEntryPoint(EntryPoint entrypoint, int typ, int speed = 5);
+        void addCarToEntryPoint(EntryPoint entrypoint, int typ, int speed = 5, int moveForward = 0);
         void removeVerkehrsteilnehmer(int id);
     }
 }
