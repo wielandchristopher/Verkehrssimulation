@@ -36,6 +36,7 @@ namespace Verkehrssimulation.RabbitMQ
 
         public  void Send(RemoteTransaction transaction, String group)
         {
+            th = TrafficHandler.getInstance();
             var factory = new ConnectionFactory();
             factory.Uri = "amqp://user3:bQx3TzjSUFxLakHr@rabbit.binna.eu/";  //Insert your own user and password
 
@@ -58,6 +59,7 @@ namespace Verkehrssimulation.RabbitMQ
 
         public  void Receive()
         {
+            th = TrafficHandler.getInstance();
             var factory = new ConnectionFactory();
             factory.Uri = "amqp://user3:bQx3TzjSUFxLakHr@rabbit.binna.eu/";
 
