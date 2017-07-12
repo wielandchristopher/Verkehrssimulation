@@ -34,7 +34,7 @@ namespace Verkehrssimulation.RabbitMQ
             Receive();
         }
 
-        public  void Send(RemoteTransaction transaction, String group)
+        public void Send(RemoteTransaction transaction, String group)
         {
             th = TrafficHandler.getInstance();
             var factory = new ConnectionFactory();
