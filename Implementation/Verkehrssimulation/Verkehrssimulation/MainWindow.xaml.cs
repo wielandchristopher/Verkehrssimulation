@@ -10,6 +10,7 @@ using System.ServiceModel;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Verkehrssimulation
 {
@@ -41,7 +42,8 @@ namespace Verkehrssimulation
         }
 
         public MainWindow()
-        {
+        {   
+            Process.Start(@"..\..\Ampelsteuerung.exe");
             InitializeComponent();
             StartAmpelsteuerung();
 
