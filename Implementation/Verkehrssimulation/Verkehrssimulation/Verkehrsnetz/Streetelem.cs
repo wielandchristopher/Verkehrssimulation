@@ -9,6 +9,28 @@ using System.Windows.Media.Imaging;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
+    abstract class EnvElement
+    {
+        public enum StreetType { Street = 1, ThreeKreuzung = 2, FourKreuzung = 3, Grass = 4, greenCircle = 5 };
+        protected Image img;
+        protected int x, y, dir;
+        protected StreetType stype;
+        public Image getImage()
+        {
+            return img;
+        }
+
+        public void enter(object sender, EventArgs e)
+        {
+            ((Image)sender).Opacity = 0.9;
+        }
+
+        public void leave(object sender, EventArgs e)
+        {
+            ((Image)sender).Opacity = 1;
+        }
+    }
+
     class Streetelem : EnvElement
     {
         private int ampelid = 0;
@@ -38,7 +60,6 @@ namespace Verkehrssimulation.Verkehrsnetz
         {
             return ampelid;
         }
-
 
         public void updateType(StreetType type)
         {
@@ -177,9 +198,6 @@ namespace Verkehrssimulation.Verkehrsnetz
             Console.WriteLine("Position (X/Y) " + this.x + this.y);
             Console.WriteLine(this.stype.ToString());
         }
-
-        
-        
 
         public void elemRotate(object sender, EventArgs e)
         {

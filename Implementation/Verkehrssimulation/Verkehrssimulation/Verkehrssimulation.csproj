@@ -79,10 +79,11 @@
     <Compile Include="GUI\ObjHandlerInterface.cs" />
     <Compile Include="GUI\Verkehrsteilnehmer.cs" />
     <Compile Include="RabbitMQ\RabbitMQHandler.cs" />
-    <Compile Include="Verkehrsnetz\EnvElement.cs" />
     <Compile Include="Verkehrsnetz\EnvironmentBuilder.cs" />
     <Compile Include="Verkehrsnetz\I_ENV_GUI.cs" />
     <Compile Include="Verkehrsnetz\ITeilnehmer.cs" />
+    <Compile Include="Verkehrsnetz\Kreuzungen.cs" />
+    <Compile Include="Verkehrsnetz\Obstacle.cs" />
     <Compile Include="Verkehrsnetz\Streetelem.cs" />
     <Compile Include="Verkehrsregeln\AllgemeineVerkehrsregeln.cs" />
     <Compile Include="Verkehrsregeln\IVerkehrsregeln.cs" />
@@ -129,7 +130,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Verkehrsnetz\env_config.json" />
-    <None Include="Verkehrsnetz\env_config_save.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -139,7 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Verkehrsnetz\FieldBitmaps\4kreuzung.bmp" />
-    <Resource Include="Verkehrsnetz\FieldBitmaps\StrRightshort.bmp" />
     <Resource Include="Verkehrsnetz\FieldBitmaps\grass.bmp" />
   </ItemGroup>
   <ItemGroup>
