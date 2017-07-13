@@ -28,9 +28,10 @@ namespace Verkehrssimulation.RabbitMQ
         public RabbitMQHandler()
         {
             th = TrafficHandler.getInstance();
-            // RabbitMQ
-            remoteTransaction = new RemoteTransaction(10.1, "PKW");
-            Send(remoteTransaction, "group3");
+          
+            //remoteTransaction = new RemoteTransaction(10.1, "PKW");
+            //Send(remoteTransaction, "group3");
+
             Receive();
         }
 
@@ -105,8 +106,10 @@ namespace Verkehrssimulation.RabbitMQ
 
                     if (th == null)
                     {
+                        Thread.Sleep(3000);
                         Console.WriteLine(" Press [enter] to exit receive.");
                         Console.ReadLine();
+                        
                     }
                     Thread.Sleep(100);
 
