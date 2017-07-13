@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FFC890C6-0D38-4B01-8451-BF99FF94A9F1}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Verkehrssimulation</RootNamespace>
     <AssemblyName>Verkehrssimulation</AssemblyName>
@@ -79,9 +79,9 @@
     <Compile Include="GUI\ObjHandlerInterface.cs" />
     <Compile Include="GUI\Verkehrsteilnehmer.cs" />
     <Compile Include="RabbitMQ\RabbitMQHandler.cs" />
-    <Compile Include="Verkehrsnetz\EnvironmentBuilder.cs" />
+    <Compile Include="Verkehrsnetz\EnvironmentHandler.cs" />
     <Compile Include="Verkehrsnetz\I_ENV_GUI.cs" />
-    <Compile Include="Verkehrsnetz\ITeilnehmer.cs" />
+    <Compile Include="Verkehrsnetz\I_ENV_VKTeilnehmer.cs" />
     <Compile Include="Verkehrsnetz\Kreuzungen.cs" />
     <Compile Include="Verkehrsnetz\Obstacle.cs" />
     <Compile Include="Verkehrsnetz\Streetelem.cs" />

@@ -105,7 +105,7 @@ namespace Verkehrssimulation.RabbitMQ
 
                     // Console.WriteLine(" Press [enter] to exit receive.");
                     // Console.ReadLine();
-                    Thread.Sleep(100);
+                    //Thread.Sleep(100);
                 }
             }
         }

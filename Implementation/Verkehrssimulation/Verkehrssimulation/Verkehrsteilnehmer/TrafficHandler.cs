@@ -15,7 +15,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
         private int targetNumberOfCars = 20;
         private int truckratio = 0; 
         private List<TrafficObject> trafficobjs; // liste mit Verkehrsobjekten
-        private ITeilnehmer eb; // ref auf Environmenthandler zum abfragen der rules
+        private I_ENV_VKTeilnehmer eb; // ref auf Environmenthandler zum abfragen der rules
         private IObject oh; //ref zu GUI
         private RabbitMQ.RabbitMQHandler mqhandler; //rabbitMq
         private RabbitMQ.RabbitMQHandler.RemoteTransaction remoteTransaction;
@@ -24,7 +24,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
 
         public enum StreetRegion { NormalStreet = 0, IntersectionAhead = 1, Intersection = 2};
 
-        private TrafficHandler(ref ITeilnehmer _eb, ref IObject _oh, ref RabbitMQ.RabbitMQHandler _mqhandler)
+        private TrafficHandler(ref I_ENV_VKTeilnehmer _eb, ref IObject _oh, ref RabbitMQ.RabbitMQHandler _mqhandler)
         {
             trafficobjs = new List<TrafficObject>();
             oh = _oh;
@@ -33,7 +33,7 @@ namespace Verkehrssimulation.Verkehrsteilnehmer
             id_number = 1;
         }
 
-        public static TrafficHandler getInstance(ref ITeilnehmer _eb, ref IObject _oh, ref RabbitMQ.RabbitMQHandler _mqhandler)
+        public static TrafficHandler getInstance(ref I_ENV_VKTeilnehmer _eb, ref IObject _oh, ref RabbitMQ.RabbitMQHandler _mqhandler)
         {
             if (instance == null)
             {
