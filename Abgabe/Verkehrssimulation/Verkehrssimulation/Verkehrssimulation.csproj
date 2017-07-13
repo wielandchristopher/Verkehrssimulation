@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FFC890C6-0D38-4B01-8451-BF99FF94A9F1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Verkehrssimulation</RootNamespace>
+    <AssemblyName>Verkehrssimulation</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.4.1.3\lib\net451\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Ampelsteuerung Client\CallbackClient.cs" />
+    <Compile Include="Ampelsteuerung Client\IAmpelCallback.cs" />
+    <Compile Include="Ampelsteuerung Client\IAmpelService.cs" />
+    <Compile Include="GUI\Ampel.cs" />
+    <Compile Include="GUI\AmpelHandler.cs" />
+    <Compile Include="GUI\Obstacle.cs" />
+    <Compile Include="GUI\IVerkehrsnetz.cs" />
+    <Compile Include="GUI\ObjectHandler.cs" />
+    <Compile Include="GUI\IObject.cs" />
+    <Compile Include="GUI\ObjHandlerInterface.cs" />
+    <Compile Include="GUI\Verkehrsteilnehmer.cs" />
+    <Compile Include="RabbitMQ\RabbitMQHandler.cs" />
+    <Compile Include="Verkehrsnetz\EnvironmentHandler.cs" />
+    <Compile Include="Verkehrsnetz\I_ENV_GUI.cs" />
+    <Compile Include="Verkehrsnetz\I_ENV_VKTeilnehmer.cs" />
+    <Compile Include="Verkehrsnetz\Kreuzungen.cs" />
+    <Compile Include="Verkehrsnetz\Obstacle.cs" />
+    <Compile Include="Verkehrsnetz\Streetelem.cs" />
+    <Compile Include="Verkehrsregeln\AllgemeineVerkehrsregeln.cs" />
+    <Compile Include="Verkehrsregeln\IVerkehrsregeln.cs" />
+    <Compile Include="Verkehrsregeln\Schilder.cs" />
+    <Compile Include="Verkehrsteilnehmer\IGUI.cs" />
+    <Compile Include="Verkehrsteilnehmer\ITrafficHandler.cs" />
+    <Compile Include="Verkehrsteilnehmer\TrafficHandler.cs" />
+    <Compile Include="Verkehrsteilnehmer\TrafficObject.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Verkehrsnetz\env_config.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\StrTop.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\4kreuzung.bmp" />
+    <Resource Include="Verkehrsnetz\FieldBitmaps\grass.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\3kreuzung.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\street.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\Icon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Verkehrsnetz\FieldBitmaps\green.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
