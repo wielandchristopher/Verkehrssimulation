@@ -368,18 +368,6 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
-        public void setAmpeln()
-        {
-            int x = 0;
-            while (x < ampelcnt)
-            {
-                ah.setNext(x);
-                x++;
-            }
-
-            ah.setNext(7);
-        }
-
         public Streetelem addObject(int x, int y, int type)
         {
 

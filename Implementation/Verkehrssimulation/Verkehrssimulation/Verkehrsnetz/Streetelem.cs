@@ -99,6 +99,26 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
+        public StreetType getStreetType()
+        {
+            return this.stype;
+        }
+        public void printStreetType(object sender, EventArgs e)
+        {
+
+            Console.WriteLine("Ampelid: " + this.ampelid);
+            Console.WriteLine("Position (X/Y) " + this.x + this.y);
+            Console.WriteLine(this.stype.ToString());
+        }
+        
+        public int getRotation()
+        {
+            return this.rotation;
+        }
+
+
+        //**** Experimentelle Methoden ***//
+
         /// <summary>
         /// optional -> Könnte weitergeführt werden um die Straße dynamisch veränderbar zu machen
         /// </summary>
@@ -136,10 +156,8 @@ namespace Verkehrssimulation.Verkehrsnetz
             item6.Click += new RoutedEventHandler(addObstacle);
             pMenu.Items.Add(item6);
 
-           // img.ContextMenu = pMenu;
+            // img.ContextMenu = pMenu;
         }
-
-        public void addObstacle(object sender, EventArgs e) { }
 
         public void changetoKreuzung(object sender, EventArgs e)
         {
@@ -189,17 +207,7 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
-        public StreetType getStreetType()
-        {
-            return this.stype;
-        }
-        public void printStreetType(object sender, EventArgs e)
-        {
-
-            Console.WriteLine("Ampelid: " + this.ampelid);
-            Console.WriteLine("Position (X/Y) " + this.x + this.y);
-            Console.WriteLine(this.stype.ToString());
-        }
+        public void addObstacle(object sender, EventArgs e) { }
 
         public void elemRotate(object sender, EventArgs e)
         {
@@ -209,7 +217,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             bi.UriSource = (img.Source as BitmapImage).UriSource;
             // new Uri((img.Source as BitmapImage).UriSource.ToString(), UriKind.RelativeOrAbsolute);
 
-            if((img.Source as BitmapImage).Rotation == Rotation.Rotate0)
+            if ((img.Source as BitmapImage).Rotation == Rotation.Rotate0)
             {
                 bi.Rotation = Rotation.Rotate90; //(img.Source as BitmapImage).Rotation;
             }
@@ -233,11 +241,5 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
-        public int getRotation()
-        {
-            return this.rotation;
-        }
-
-      
     }
 }
