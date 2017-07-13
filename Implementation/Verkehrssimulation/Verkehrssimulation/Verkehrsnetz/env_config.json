@@ -4,7 +4,7 @@
     "type": "3er oder 4er kreuzung",
     "xpos": "X-Position (angabe in 100 Schritten)",
     "ypos": "Y-Position (angabe in 100 Schritten)",
-    "nopath": "Wenn type == 3 -> T-Kreuzung   (North = 1 , East = 2, South = 3, West = 4)"
+    "nopath": "Drehrichtung - Wenn type == 3 -> T-Kreuzung   (North = 1 , East = 2, South = 3, West = 4)"
 
   },
 
@@ -20,18 +20,6 @@
       "xpos": 300,
       "ypos": 400,
       "nopath": 3
-    },
-    {
-      "type": 3,
-      "xpos": 200,
-      "ypos": 600,
-      "nopath": 2
-    },
-    {
-      "type": 3,
-      "xpos": 400,
-      "ypos": 100,
-      "nopath": 1
     },
     {
       "type": 3,
