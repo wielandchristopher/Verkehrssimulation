@@ -103,8 +103,11 @@ namespace Verkehrssimulation.RabbitMQ
                                          noAck: false,  //If noAck: false the command channel.BasicAck (see above) has to be implemented. Don't set it true, or the message will not get resubmitted, if the bank was offline
                                          consumer: consumer);
 
-                    // Console.WriteLine(" Press [enter] to exit receive.");
-                    // Console.ReadLine();
+                    if (th == null)
+                    {
+                        Console.WriteLine(" Press [enter] to exit receive.");
+                        Console.ReadLine();
+                    }
                     Thread.Sleep(100);
                 }
             }
