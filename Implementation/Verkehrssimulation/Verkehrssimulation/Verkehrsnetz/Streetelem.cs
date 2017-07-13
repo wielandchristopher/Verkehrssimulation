@@ -52,7 +52,6 @@ namespace Verkehrssimulation.Verkehrsnetz
             img.MouseDown += printStreetType;
 
             initImgType();
-            addContextMenue();
 
         }
 
@@ -100,6 +99,9 @@ namespace Verkehrssimulation.Verkehrsnetz
 
         }
 
+        /// <summary>
+        /// optional -> Könnte weitergeführt werden um die Straße dynamisch veränderbar zu machen
+        /// </summary>
         private void addContextMenue()
         {
             ContextMenu pMenu = new ContextMenu();

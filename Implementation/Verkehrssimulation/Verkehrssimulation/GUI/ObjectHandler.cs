@@ -15,9 +15,9 @@ namespace Verkehrssimulation.GUI
     {
         List<Verkehrsteilnehmer> objlist;
         Canvas canvas;
-        private EnvironmentBuilder builder;
+        private EnvironmentHandler builder;
 
-        public ObjectHandler(Canvas mycanvas, ref EnvironmentBuilder builder)
+        public ObjectHandler(Canvas mycanvas, ref EnvironmentHandler builder)
         {
             objlist = new List<Verkehrsteilnehmer>();
             this.builder = builder;

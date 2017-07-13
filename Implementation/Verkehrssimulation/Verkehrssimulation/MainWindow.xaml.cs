@@ -23,7 +23,7 @@ namespace Verkehrssimulation
         private ObjectHandler oh;
         private AmpelHandler ap;
         private TrafficHandler th;
-        private EnvironmentBuilder builder;
+        private EnvironmentHandler builder;
         public static IAmpelService trafficlight;
         private RabbitMQ.RabbitMQHandler mqhandler;
 
@@ -56,9 +56,9 @@ namespace Verkehrssimulation
            
 
             ap      = new GUI.AmpelHandler(myCanvas);
-            builder = new EnvironmentBuilder(myCanvas, ref ap, ref trafficlight);
+            builder = new EnvironmentHandler(myCanvas, ref ap, ref trafficlight);
             oh      = new ObjectHandler(myCanvas, ref builder);
-            ITeilnehmer iTeilnehmer = builder;
+            I_ENV_VKTeilnehmer iTeilnehmer = builder;
             IObject iObject = oh;
             th      = TrafficHandler.getInstance(ref iTeilnehmer, ref iObject, ref mqhandler);
 

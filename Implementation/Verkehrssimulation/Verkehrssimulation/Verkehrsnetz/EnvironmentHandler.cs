@@ -11,7 +11,8 @@ using System.Windows.Input;
 
 namespace Verkehrssimulation.Verkehrsnetz
 {
-    class EnvironmentBuilder : ITeilnehmer, I_ENV_GUI
+
+    class EnvironmentHandler : I_ENV_VKTeilnehmer, I_ENV_GUI
     {
         JObject obj; // für json -> Projekt-> nu-getpakete verwalten -> json linq irgendwas
         private Canvas canvas;
@@ -25,15 +26,15 @@ namespace Verkehrssimulation.Verkehrsnetz
         ObstacleHandler oh;
         private int ampelidconnector = 0;
 
-        public EnvironmentBuilder(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref IAmpelService _trafficlight)
+        public EnvironmentHandler(Canvas mycanvas, ref GUI.AmpelHandler _ah, ref IAmpelService _trafficlight)
         {
             oh = new ObstacleHandler();
             ah = _ah;
             trafficlight = _trafficlight;
 
             canvas = mycanvas;
-            mycanvas.MouseMove += getEnvType;
-            Console.WriteLine("Buidler loaded");
+            //mycanvas.MouseMove += getEnvType;
+            //Console.WriteLine("Buidler loaded");
 
             entrypoints = new List<EntryPoint>();
             elem = new List<Streetelem>();
@@ -75,7 +76,7 @@ namespace Verkehrssimulation.Verkehrsnetz
             JArray geregelte_kreuzungen = (JArray)obj.GetValue("geregelte_kreuzungen");
             int xpos, ypos = 0;
             
-            Console.WriteLine("geregelte_kreuzungen.Count: " + geregelte_kreuzungen.Count);
+            //Console.WriteLine("geregelte_kreuzungen.Count: " + geregelte_kreuzungen.Count);
             env_ah = new Env_Ampelhandler(calcAmpelCnt(), obj);
             //trafficlight.setAmpelAnzahl(12);
 

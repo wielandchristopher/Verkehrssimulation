@@ -109,6 +109,7 @@ namespace Verkehrssimulation.RabbitMQ
                         Console.ReadLine();
                     }
                     Thread.Sleep(100);
+
                 }
             }
         }
